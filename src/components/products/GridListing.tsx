@@ -2,9 +2,12 @@
 
 import React, { useEffect } from 'react';
 import ProductCard from './ProductCard';
-import { ToastContainer } from 'react-toastify';
 import Image from 'next/image';
-import { ProductDataInterface, getProducts } from '@/redux/slices/ProductSlice';
+import {
+  ProductDataInterface,
+  getProducts,
+  deleteProduct
+} from '@/redux/slices/ProductSlice';
 import Pagination from '../pagination/Pagination';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks/hook';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -50,8 +53,41 @@ const GridListing: React.FC<GridListingProps> = ({ data }) => {
 
   const { role } = useAppSelector((state: RootState) => state.user);
   const { userRole } = useAppSelector((state: RootState) => state.otp);
-
+  const { showSuccess, showError } = useToast();
+  const { success } = useAppSelector((state: RootState) => state.products);
   const loggedIn = userRole || role || 'buyer';
+
+  const [showModal, setShowModal] = useState(false);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [productList, setProductList] = useState(products);
+
+  const confirmDelete = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    if (deleteId) {
+      const resultAction = await dispatch(deleteProduct(deleteId));
+      if (success) {
+        await dispatch(getProducts({}));
+        toast.success('Product deleted successfully');
+      } else {
+        toast.error('Failed to delete product');
+      }
+      setShowModal(false);
+      setDeleteId(null);
+    }
+  };
+
+  const handleproduct = (e: React.MouseEvent, productId: string) => {
+    router.push(`/dashboard/update-item?productId=${productId}`);
+  };
+  const handleDeleteClick = (id: string) => {
+    setDeleteId(id);
+    setShowModal(true);
+  };
+
+  const handleCancel = () => {
+    setShowModal(false);
+    setDeleteId(null);
+  };
 
   return (
     <>
@@ -69,11 +105,9 @@ const GridListing: React.FC<GridListingProps> = ({ data }) => {
             </h2>
           </div>
 
-          <div className=" w-full p-1 rounded-lg overflow-y-auto mt-10">
-            {products?.length == 0 ? (
-              <NotFound />
-            ) : loggedIn === USER_ROLE.SELLER ? (
-              <table className="min-w-full text-sm text-left mt-10">
+          <div className="w-full p-1 rounded-lg overflow-y-auto">
+            {loggedIn === USER_ROLE.SELLER ? (
+              <table className="min-w-full text-sm text-left">
                 <thead>
                   <tr>
                     <th className="p-2 w-min">Image</th>
@@ -111,10 +145,19 @@ const GridListing: React.FC<GridListingProps> = ({ data }) => {
                           $ {product.price.toLocaleString()}
                         </td>
                         <td className="p-2 truncate">{product.quantity}</td>
-                        <td className="hidden p-2 font-bold h-full gap-4 overflow-hidden items-center mt-1 md:flex">
-                          <CiEdit size={34} />
-
-                          <IoIosCloseCircle size={34} />
+                        <td className="hidden p-2 font-bold h-full gap-4 overflow-hidden items-center mt-1 md:flex ">
+                          <button onClick={e => handleproduct(e, product.id)}>
+                            <CiEdit
+                              size={34}
+                              className="hover:bg-green-500 rounded-lg "
+                            />
+                          </button>
+                          <button onClick={() => handleDeleteClick(product.id)}>
+                            <IoIosCloseCircle
+                              size={34}
+                              className="hover:bg-red-500 rounded-lg "
+                            />
+                          </button>
                         </td>
                       </tr>
                     ))}
@@ -140,8 +183,8 @@ const GridListing: React.FC<GridListingProps> = ({ data }) => {
             </div>
           )}
         </section>
-        <ToastContainer />
       </div>
+      <ToastContainer />
     </>
   );
 };
