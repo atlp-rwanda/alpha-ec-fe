@@ -12,13 +12,12 @@ interface PostsState {
 }
 
 const initialState: PostsState = {
-  posts: [],
+  posts: []
 };
 
 export const addPostThunk = createAsyncThunk(
   'posts/addPost',
   async (post: Post, { dispatch }) => {
-   
     dispatch(addPost(post));
     return post;
   }
@@ -27,7 +26,6 @@ export const addPostThunk = createAsyncThunk(
 export const deletePostThunk = createAsyncThunk(
   'posts/deletePost',
   async (postId: number, { dispatch }) => {
-
     dispatch(deletePost(postId));
     return postId;
   }
@@ -37,15 +35,15 @@ const postsSlice = createSlice({
   name: 'posts',
   initialState,
   reducers: {},
-  extraReducers: (builder) => {
+  extraReducers: builder => {
     builder
       .addCase(addPost, (state, action: PayloadAction<Post>) => {
         state.posts.push(action.payload);
       })
       .addCase(deletePost, (state, action: PayloadAction<number>) => {
         state.posts = state.posts.filter(post => post.id !== action.payload);
-      })
-  },
+      });
+  }
 });
 
 export default postsSlice.reducer;
