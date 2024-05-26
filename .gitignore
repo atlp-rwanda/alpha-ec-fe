@@ -36,7 +36,12 @@ next-env.d.ts
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 *storybook.log
 
 =======
 >>>>>>> (hound CI and eslint): (#4)
+=======
+*storybook.log
+
+>>>>>>> feat(Storybook-Configuration)

@@ -4,10 +4,17 @@ import   Banner from "./Banner";
 
 const meta:Meta<typeof Banner> ={
     component:Banner,
-    title:'Banner'
+    title:'Banner',
+    tags:['autodocs'],
+    argTypes:{
+       variant :{
+        control:{ type :'text'},
+        options:['Info','congrats','documentation','danger']
+       }  
+    }
 }
 type Story = StoryObj<typeof meta>
-
+/** default*/
 export const Info :Story={
 args:{
   children: "Children Informations",
@@ -34,7 +41,6 @@ args:{
 };
 
 export default meta;
-
 
 
 
