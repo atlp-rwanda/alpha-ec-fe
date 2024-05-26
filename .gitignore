@@ -35,5 +35,8 @@ yarn-error.log*
 next-env.d.ts
 
 
+<<<<<<< HEAD
 *storybook.log
 
+=======
+>>>>>>> (hound CI and eslint): (#4)
