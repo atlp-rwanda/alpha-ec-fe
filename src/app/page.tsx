@@ -1,7 +1,9 @@
-import Image from "next/image";
+import Posts from './posts/post';
 
 export default function Home() {
   return (
-   <div className=" flex bg-slate-300 "> Welcome to our e commerce frontend </div>
-  );
+    <main className="flex min-h-screen flex-col items-center p-24">
+      <Posts />
+    </main>
+  )
 }
