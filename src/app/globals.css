@@ -31,3 +31,15 @@ body {
     text-wrap: balance;
   }
 }
+
+.angled-right {
+  width: calc(50% - 50px);
+  box-sizing: border-box;
+}
+
+.angled-left {
+  width: calc(50% + 50px);
+  box-sizing: border-box;
+  border-left: 100px solid #E7F6F2;
+  border-bottom: 800px solid transparent;
+}
