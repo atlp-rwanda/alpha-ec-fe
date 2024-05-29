@@ -1,4 +1,4 @@
-[![CircleCI](https://dl.circleci.com/status-badge/img/gh/atlp-rwanda/alpha-ec-fe/tree/ft-setup-localtests-ci-187300092.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/atlp-rwanda/alpha-ec-fe/tree/ft-setup-localtests-ci-187300092) [![Coverage Status](https://coveralls.io/repos/github/atlp-rwanda/alpha-ec-fe/badge.svg?branch=develop)](https://coveralls.io/github/atlp-rwanda/alpha-ec-fe?branch=develop) <a href="https://codeclimate.com/github/atlp-rwanda/alpha-ec-fe/maintainability"><img src="https://api.codeclimate.com/v1/badges/a29a749c484c8a730e61/maintainability" /></a>
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/atlp-rwanda/alpha-ec-fe/tree/develop.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/atlp-rwanda/alpha-ec-fe/tree/develop) [![Coverage Status](https://coveralls.io/repos/github/atlp-rwanda/alpha-ec-fe/badge.svg?branch=develop)](https://coveralls.io/github/atlp-rwanda/alpha-ec-fe?branch=develop) <a href="https://codeclimate.com/github/atlp-rwanda/alpha-ec-fe/maintainability"><img src="https://api.codeclimate.com/v1/badges/a29a749c484c8a730e61/maintainability" /></a>
 
 # alpha-ec-fe
 
