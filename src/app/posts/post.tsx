@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import React, { useState } from 'react';
 import { useAppSelector, useAppDispatch } from '@/redux/hooks/hook';
 import { addPost, deletePost } from '@/redux/actions/postActions';
@@ -17,7 +17,7 @@ const Posts: React.FC = () => {
     const newPost = {
       id: Date.now(),
       title,
-      description,
+      description
     };
 
     dispatch(addPost(newPost));
@@ -38,15 +38,18 @@ const Posts: React.FC = () => {
           className="p-2 mb-2 bg-white border border-gray-300 text-black"
           placeholder="Title"
           value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          onChange={e => setTitle(e.target.value)}
         />
         <textarea
           placeholder="Description"
           value={description}
           className="p-2 mb-2 h-24 bg-white border border-gray-300 text-black"
-          onChange={(e) => setDescription(e.target.value)}
+          onChange={e => setDescription(e.target.value)}
         ></textarea>
-        <button className="bg-blue-500 text-white border-none p-2 cursor-pointer" type="submit">
+        <button
+          className="bg-blue-500 text-white border-none p-2 cursor-pointer"
+          type="submit"
+        >
           Add New Post
         </button>
       </form>

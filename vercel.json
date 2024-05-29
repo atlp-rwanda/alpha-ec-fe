@@ -1,20 +1,20 @@
 {
-    "version": 2,
-    "name":"alpha-ec-fe",
-    "builds": [
-        {
-            "src":"next.config.js",
-            "use": "@vercel/next"
-        }
-    ],
-    "routes": [
-        {
-            "src":"/(.*)",
-            "dest":"/$1"
-        }
-    ],
-    "github": {
-        "enabled":true,
-        "autoJobCancelation": true
+  "version": 2,
+  "name": "alpha-ec-fe",
+  "builds": [
+    {
+      "src": "next.config.js",
+      "use": "@vercel/next"
     }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
+    }
+  ],
+  "github": {
+    "enabled": true,
+    "autoJobCancelation": true
+  }
 }
