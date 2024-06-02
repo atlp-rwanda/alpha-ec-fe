@@ -16,7 +16,12 @@ const config: Config = {
       screens: {
         desktop: '1440px',
         tablets: '744px',
-        phone: ['430px', '375px']
+        phone: '430px, 375px',
+        xs: '325px',
+        sm: '640px',
+        md: '768px',
+        lg: '1024px',
+        xl: '1280px'
       },
       colors: {
         blue: '#1fb6ff',
@@ -24,19 +29,25 @@ const config: Config = {
         purple: '#7e5bef',
         'gray-dark': '#273444',
         gray: '#8492a6',
-        'gray-light': '#d3dce6'
+        'gray-light': '#d3dce6',
+        main: {
+          100: '#E7F6F2',
+          200: '#A5C9CA',
+          300: '#395B64',
+          400: '#2C3333'
+        }
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
         serif: ['Georgia', 'serif']
       },
       spacing: {
-        '1': '8px',
-        '2': '12px',
-        '3': '16px',
-        '4': '24px',
-        '5': '32px',
-        '6': '48px'
+        1: '8px',
+        2: '12px',
+        3: '16px',
+        4: '24px',
+        5: '32px',
+        6: '48px'
       }
     }
   },
