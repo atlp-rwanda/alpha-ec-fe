@@ -27,7 +27,8 @@ export const axiosRequest = async <T = any>(
   const headers = { ...axiosInstance.defaults.headers.common };
 
   if (authenticate) {
-    headers['Authorization'] = 'Bearer TOKEN';
+    const token = JSON.parse(localStorage.getItem('token') || '');
+    headers['Authorization'] = `Bearer ${token}`;
   }
 
   const requestConfig: CustomAxiosConfig = {
