@@ -21,8 +21,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <Providers>
-          <div className="flex min-h-screen flex-col justify-between min-w-screen bg-main-100 text-main-400 h-auto relative pt-20 px-0">
-            {/* <MainNav /> */}
+          <div className="flex min-h-screen flex-col justify-between min-w-screen bg-main-100 text-main-400 h-auto relative px-0">
             <Suspense fallback={<PageLoading />}>{children}</Suspense>
           </div>
         </Providers>

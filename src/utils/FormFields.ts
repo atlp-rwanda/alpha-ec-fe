@@ -7,6 +7,13 @@ interface RegistrationField {
   key: RegistrationKeys;
   message: string;
 }
+
+interface ReasonField {
+  placeholder: string;
+  type: React.HTMLInputTypeAttribute;
+  message: string;
+}
+
 export const RegistrationFields: RegistrationField[] = [
   {
     key: 'name',
@@ -42,5 +49,13 @@ export const RegistrationFields: RegistrationField[] = [
     placeholder: 'Password',
     type: 'password',
     message: 'Please provide a valid password'
+  }
+];
+
+export const ReasonFields: ReasonField[] = [
+  {
+    placeholder: 'Type here reasons',
+    type: 'text',
+    message: 'Provide valid reasons'
   }
 ];

@@ -11,3 +11,5 @@ export const loginUser = createAction<UserRegistrationInterface>(
 export const resetpassword = createAction<UserInterface>(
   'authentication/resetpassword'
 );
+
+export const allUsers = createAction<UserInterface>('users/fetchAllUsers');
