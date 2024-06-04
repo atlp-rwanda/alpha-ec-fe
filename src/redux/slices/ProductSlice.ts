@@ -103,6 +103,22 @@ export const getProductDetails = createAsyncThunk(
   }
 );
 
+export const deleteProduct = createAsyncThunk(
+  'products/delete',
+  async (productId: string, { rejectWithValue }) => {
+    try {
+      const response = await axiosRequest('DELETE', `/products/${productId}`);
+      return response.data.data;
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err) && err.response) {
+        return rejectWithValue(err.response.data || 'Failed to delete product');
+      }
+      const error = err as Error;
+      return rejectWithValue({ message: error.message });
+    }
+  }
+);
+
 export const getProducts = createAsyncThunk(
   'products/search',
   async (productQuery: ProductQueryInterface, { rejectWithValue }) => {
