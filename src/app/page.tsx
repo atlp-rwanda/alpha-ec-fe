@@ -14,7 +14,7 @@ export default function Home() {
       localStorage.setItem('token', token);
       router.push('/');
     }
-  }, [token]);
+  }, [router, token]);
 
   return (
     <main className="flex min-h-screen flex-col items-center p-24">

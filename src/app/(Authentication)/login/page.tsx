@@ -66,12 +66,17 @@ export default function Home() {
     const newErrors: ErrorInterface[] = [];
 
     if (!regExPatterns.email.test(formData.email)) {
-      newErrors.push({ target: 'email', msg: 'please enter a valid email' });
+      newErrors.push({
+        target: 'email',
+        msg: 'please enter a valid email',
+        message: ''
+      });
     }
     if (!regExPatterns.password.test(formData.password)) {
       newErrors.push({
         target: 'password',
-        msg: 'please enter a valid password'
+        msg: 'please enter a valid password',
+        message: ''
       });
     }
 
@@ -100,9 +105,10 @@ export default function Home() {
       if (errorMessage === 'Validation Errors!') {
         const newErrors: ErrorInterface[] = [];
         error?.data.forEach((err: { field: string; message: string }) => {
-          newErrors.push({
+          return newErrors.push({
             target: err.field as keyof FormDataInterface,
-            msg: err.message
+            msg: err.message,
+            message: ''
           });
         });
         setErrors(newErrors);
@@ -144,6 +150,16 @@ export default function Home() {
               )}
             </div>
           ))}
+
+          <div className="flex justify-between items-center mt-0">
+            <div></div>
+            <Link
+              href="/forgot-password"
+              className="text-gray text-xs underline mt-3"
+            >
+              Forgot Password?
+            </Link>
+          </div>
           <Button
             label="login"
             style={ButtonStyle.DARK}

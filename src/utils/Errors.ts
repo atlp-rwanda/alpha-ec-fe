@@ -1,4 +1,5 @@
 import { RegistrationKeys } from '@/app/(Authentication)/register/page';
+import { ResetPasswordKeys } from '@/app/(Authentication)/reset-password/page';
 
 export interface FormErrorInterface {
   status: 'Success!' | 'Error';
@@ -7,7 +8,12 @@ export interface FormErrorInterface {
 }
 
 export interface ErrorInterface {
+  message?: string;
   target: RegistrationKeys;
+  msg: string;
+}
+export interface ResetpasswordErrorInterface {
+  target: ResetPasswordKeys;
   msg: string;
 }
 

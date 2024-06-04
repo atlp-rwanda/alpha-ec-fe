@@ -7,7 +7,6 @@ interface RegistrationField {
   key: RegistrationKeys;
   message: string;
 }
-
 export const RegistrationFields: RegistrationField[] = [
   {
     key: 'name',
