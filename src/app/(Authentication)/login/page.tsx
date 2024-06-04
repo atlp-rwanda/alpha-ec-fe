@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import _ from 'lodash';
 import { Button, ButtonStyle, Input } from '@/components/formElements';
 import { FormEvent, useState } from 'react';
@@ -8,7 +8,6 @@ import Link from 'next/link';
 import { logInFields } from '@/utils/logInFormFields';
 import {
   regExPatterns,
-  testPassword,
   FormErrorInterface,
   ErrorInterface,
   getErrorForField
@@ -17,9 +16,11 @@ import { useRouter } from 'next/navigation';
 import { useSelector } from 'react-redux';
 import { logInUser } from '@/redux/slices/loginSlice';
 import { RootState } from '@/redux/store';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks/hook';
+import { useAppDispatch } from '@/redux/hooks/hook';
 import useToast from '@/components/alerts/Alerts';
 import { ToastContainer } from 'react-toastify';
+import Google from '@/assets/images/Google.png';
+import Image from 'next/image';
 
 export interface FormDataInterface {
   email: string;
@@ -53,6 +54,10 @@ export default function Home() {
       const updatedFormData = { ...prevFormData, [key]: value };
       return updatedFormData;
     });
+  };
+
+  const handleGoogleAuth = () => {
+    router.push(`${process.env.NEXT_PUBLIC_API_URL}/api/users/google-auth`);
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -146,6 +151,13 @@ export default function Home() {
             loading={loading}
           />
         </form>
+        <div className="flex items-center justify-center space-x-0">
+          <span className="text-main-300 font-bold">or login with</span>
+          <button onClick={handleGoogleAuth} className="rounded-md">
+            <Image src={Google} alt="google image" />
+          </button>
+        </div>
+
         <span className="mt-6 mx-auto text-sm text-black">
           Or create an account?{' '}
           <Link
