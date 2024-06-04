@@ -42,7 +42,6 @@ describe('registerUser thunk', () => {
     );
 
     const state = store.getState() as RootState;
-    console.log('state', state);
     expect(state.register.loading).toBe(false);
     expect(state.register.success).toBe(true);
   });

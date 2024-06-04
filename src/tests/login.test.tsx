@@ -31,7 +31,7 @@ describe('loginUser thunk', () => {
     };
 
     const response = { message: 'login successfully' };
-
+    console.log('URLLLLLLLLL', URL);
     mock.onPost(`${URL}/api/users/login`).reply(200, response);
 
     const result = await (store.dispatch as AppDispatch)(logInUser(userData));

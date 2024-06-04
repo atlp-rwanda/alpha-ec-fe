@@ -77,17 +77,10 @@ export default function Home() {
     const result = await dispatch(logInUser(formData));
 
     if (logInUser.fulfilled.match(result)) {
-      const payload = result.payload as unknown as
-        | FormErrorInterface
-        | undefined;
-      if (payload?.message === 'Verify OTP sent to your email to continue') {
-        router.push('/sellerAuth');
-      } else {
-        showSuccess('Login Successful!');
-        setTimeout(() => {
-          router.push('/');
-        }, 2000);
-      }
+      showSuccess('login Successfull!');
+      setTimeout(() => {
+        router.push('/dashboard/accountstatus');
+      }, 2000);
     } else if (logInUser.rejected.match(result) && result.payload) {
       const errorMessage =
         (result.payload as FormErrorInterface).message || 'An error occurred';

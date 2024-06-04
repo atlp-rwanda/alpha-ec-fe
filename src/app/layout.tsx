@@ -33,7 +33,7 @@ export default function RootLayout({
       </Head>
       <body>
         <Providers>
-          <div className="flex min-h-screen flex-col items-center justify-between min-w-screen bg-main-100 h-screen">
+          <div className="flex min-h-screen flex-col items-center justify-between min-w-screen bg-main-100 sm:h-full lg:h-screen  md:h-full">
             {children}
           </div>
         </Providers>
