@@ -1,8 +1,9 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
+import userReducer from './slices/userSlice';
+import fetchReducer from './slices/fetchSlice';
 import otpReducer from './slices/otpSlice';
 import resetpasswordReducer from './slices/ResetpasswordSlice';
 import forgotPasswordReducer from './slices/ForgotpasswordSlice';
-import userReducer from './slices/userSlice';
 import productReducer from './slices/ProductSlice';
 import categoriesReducer from './slices/categorySlice';
 import sellerReducer from './slices/sellerSlice';
@@ -10,19 +11,23 @@ import usersReducer from './slices/disableaccount';
 import profileReducer from './slices/profileSlice';
 import itemReducer from './slices/itemSlice';
 import updatePasswordReducer from './slices/updatePasswordSlice';
+import assignRoleReducer from './slices/assignroleSlice';
 
 export const rootReducer = combineReducers({
   otp: otpReducer,
-  categories: categoriesReducer,
-  user: userReducer,
   products: productReducer,
+  categories: categoriesReducer,
   Resetpassword: resetpasswordReducer,
   forgotPassword: forgotPasswordReducer,
   sellers: sellerReducer,
+  fetch: fetchReducer,
+  user: userReducer,
+  assignRole: assignRoleReducer,
   registereUsers: usersReducer,
   profile: profileReducer,
   product: itemReducer,
-  updatePassword: updatePasswordReducer
+  updatePassword: updatePasswordReducer,
+  users: userReducer
 });
 
 export const store = configureStore({

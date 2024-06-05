@@ -3,7 +3,7 @@ import MockAdapter from 'axios-mock-adapter';
 import userReducer, {
   UserRegistrationInterface,
   registerUser
-} from '../redux/slices/userSlice';
+} from '../redux/slices/userSlice.ts';
 import { ThunkDispatch } from 'redux-thunk';
 import { axiosInstance, URL } from '@/utils';
 

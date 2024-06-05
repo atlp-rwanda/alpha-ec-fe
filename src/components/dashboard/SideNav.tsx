@@ -9,7 +9,7 @@ import { RiAccountCircleLine, RiLogoutBoxRLine } from 'react-icons/ri';
 import { IoIosHelpCircleOutline } from 'react-icons/io';
 import { IoCalendarNumberOutline } from 'react-icons/io5';
 import { useRouter, usePathname } from 'next/navigation';
-import { FaKey } from 'react-icons/fa';
+import { FaKey, FaUserPlus } from 'react-icons/fa';
 
 type SidebarButtonProps = {
   paths?: string[];
@@ -63,7 +63,7 @@ const SideNav: React.FC<SideNavProps1> = ({ className }) => {
       </div>
       <nav className="space-y-4 pl-[-38px] text-black z-99">
         <div>
-          <SidebarButton paths={[]}>
+          <SidebarButton paths={['/dashboard']}>
             <FiHome className="text-2xl" />
             <p>Dashboard</p>
           </SidebarButton>
@@ -82,9 +82,9 @@ const SideNav: React.FC<SideNavProps1> = ({ className }) => {
             <FcStatistics className="text-xl" />
             <p className="text-nowrap">Statistics</p>
           </SidebarButton>
-          <SidebarButton paths={[]}>
-            <MdErrorOutline className="text-xl" />
-            <p className=" text-nowrap">Error</p>
+          <SidebarButton paths={['/assignrole']}>
+            <FaUserPlus className="text-xl" />
+            <p className=" text-nowrap">Assign Role</p>
           </SidebarButton>
           <SidebarButton paths={['/dashboard/add-items']}>
             <AiOutlineProduct className="text-xl" />

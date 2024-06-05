@@ -22,7 +22,8 @@ export enum ButtonStyle {
   LIGHT = 'light',
   DARK = 'dark',
   DISABLED = 'DISABLED',
-  DELETE = 'DELETE'
+  DELETE = 'DELETE',
+  Primary = 'Primary'
 }
 
 export const Button = ({
@@ -31,6 +32,7 @@ export const Button = ({
   style,
   size,
   icon,
+  onClick,
   ...rest
 }: ButtonProps) => {
   return (
