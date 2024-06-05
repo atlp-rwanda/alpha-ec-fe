@@ -1,10 +1,12 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import registrationReducer from './slices/RegisterSlice';
 import loginReducer from './slices/loginSlice';
+import otpReducer from './slices/otpSlice';
 
 export const rootReducer = combineReducers({
   register: registrationReducer,
-  login: loginReducer
+  login: loginReducer,
+  otp: otpReducer
 });
 
 export const store = configureStore({
