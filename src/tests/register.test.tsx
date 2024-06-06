@@ -1,9 +1,9 @@
 import { configureStore, AnyAction } from '@reduxjs/toolkit';
 import MockAdapter from 'axios-mock-adapter';
-import registerReducer, {
-  registerUser,
-  UserInterface
-} from '../redux/slices/RegisterSlice';
+import userReducer, {
+  UserRegistrationInterface,
+  registerUser
+} from '../redux/slices/userSlice';
 import { ThunkDispatch } from 'redux-thunk';
 import { axiosInstance, URL } from '@/utils';
 
@@ -12,7 +12,7 @@ type AppDispatch = ThunkDispatch<RootState, unknown, AnyAction>;
 
 const store = configureStore({
   reducer: {
-    register: registerReducer
+    user: userReducer
   }
 });
 
@@ -25,7 +25,7 @@ describe('registerUser thunk', () => {
   });
 
   it('should dispatch fulfilled when registration is successful', async () => {
-    const userData: UserInterface = {
+    const userData: UserRegistrationInterface = {
       name: 'Eric',
       email: 'ericer@gmail.com',
       password: 'Password123!',
@@ -42,13 +42,12 @@ describe('registerUser thunk', () => {
     );
 
     const state = store.getState() as RootState;
-    console.log('state', state);
-    expect(state.register.loading).toBe(false);
-    expect(state.register.success).toBe(true);
+    expect(state.user.loading).toBe(false);
+    expect(state.user.success).toBe(true);
   });
 
   it('should dispatch rejected when registration fails', async () => {
-    const userData: UserInterface = {
+    const userData: UserRegistrationInterface = {
       name: 'Eric',
       email: 'erice@gmail.com',
       password: 'Password123!',
@@ -65,7 +64,7 @@ describe('registerUser thunk', () => {
     );
 
     const state = store.getState() as RootState;
-    expect(state.register.loading).toBe(false);
-    expect(state.register.success).toBe(false);
+    expect(state.user.loading).toBe(false);
+    expect(state.user.success).toBe(false);
   });
 });

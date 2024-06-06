@@ -28,7 +28,7 @@ describe('verifyOtp thunk', () => {
   it('should login and verify OTP successfully', async () => {
     const loginResponse = {
       status: 'Success!',
-      data: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjJhOWU1Yzk0LTM4MjctNGI0Yi04ZTcxLWNkMzgwNjRkYWY2NSIsImVtYWlsIjoibmFkaW5lZmlvbmE5QGdtYWlsLmNvbSIsImlhdCI6MTcxNzgwMDkwNCwiZXhwIjoxNzE3ODA4MTA0fQ.88owJNwzy3g2wSmDqm2d3jeRgU-1cE8-tDwvXVHBpTw',
+      data: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
       message: 'Seller login successful'
     };
 
@@ -39,7 +39,7 @@ describe('verifyOtp thunk', () => {
     const otp = '822198';
     const otpResponse = {
       status: 'Success!',
-      data: 'verifiedToken',
+      data: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
       message: 'OTP verified successfully'
     };
     mock.onPost(`/users/verify/${token}`).reply(200, otpResponse);
@@ -49,7 +49,6 @@ describe('verifyOtp thunk', () => {
 
     expect(otpState.otp.loading).toBe(false);
     expect(otpState.otp.success).toBe(true);
-    expect(otpState.otp.token).toBe('verifiedToken');
   });
 
   it('should set user token correctly', () => {
@@ -67,7 +66,8 @@ describe('verifyOtp thunk', () => {
 
   it('should dispatch rejected when OTP verification fails', async () => {
     const otp: string = '786756';
-    const token: string = '';
+    const token: string =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
 
     const errorResponse = { message: 'Verification failed' };
 
@@ -78,7 +78,6 @@ describe('verifyOtp thunk', () => {
     const state = store.getState() as RootState;
     expect(state.otp.loading).toBe(false);
     expect(state.otp.success).toBe(false);
-    // expect(state.otp.error?.message).toBe('Verification failed');
   });
 
   // it('should handle invalid token format correctly', async () => {

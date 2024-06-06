@@ -10,7 +10,7 @@ import { ResetPasswordFormDataInterface } from '@/app/(Authentication)/reset-pas
 import loginReducer, {
   LogInInterface,
   logInUser
-} from '@/redux/slices/loginSlice';
+} from '@/redux/slices/userSlice';
 import {
   UserInterface,
   forgotpassword

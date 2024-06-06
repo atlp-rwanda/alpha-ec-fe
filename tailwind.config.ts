@@ -48,6 +48,16 @@ const config: Config = {
         4: '24px',
         5: '32px',
         6: '48px'
+      },
+      fontSize: {
+        xxs: '0.7rem',
+        '2xs': '0.4rem'
+      },
+      height: {
+        120: '30rem'
+      },
+      maxHeight: {
+        120: '30rem'
       }
     }
   },

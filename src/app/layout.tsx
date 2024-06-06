@@ -1,13 +1,11 @@
 /* eslint-disable @next/next/no-page-custom-font */
 import './globals.css';
 import type { Metadata } from 'next';
-import React from 'react';
+import React, { Suspense } from 'react';
 import Providers from '@/redux/provider';
-import Head from 'next/head';
-// import { Inter } from 'next/font/google';
 import 'animate.css';
-
-// const inter = Inter({ subsets: ['latin'] });
+import MainNav from '@/components/siteNavigation/MainNav';
+import PageLoading from '@/components/Loading/PageLoading';
 
 export const metadata: Metadata = {
   title: 'Alpha',
@@ -21,20 +19,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <Head>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap"
-          rel="stylesheet"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap"
-          rel="stylesheet"
-        />
-      </Head>
       <body>
         <Providers>
-          <div className="flex min-h-screen flex-col items-center justify-between min-w-screen bg-main-100 h-screen">
-            {children}
+          <div className="flex min-h-screen flex-col justify-between min-w-screen bg-main-100 text-main-400 h-auto relative pt-20 px-0">
+            {/* <MainNav /> */}
+            <Suspense fallback={<PageLoading />}>{children}</Suspense>
           </div>
         </Providers>
       </body>

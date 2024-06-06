@@ -1,6 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { axiosRequest, FormErrorInterface } from '@/utils';
+import { DecodedInterface, USER_ROLE } from './userSlice';
+import { jwtDecode } from 'jwt-decode';
 
 interface OtpState {
   loading: boolean;
@@ -8,6 +10,7 @@ interface OtpState {
   success: boolean;
   token: string | null;
   userToken: string | null;
+  userRole: USER_ROLE | null;
 }
 
 const initialState: OtpState = {
@@ -15,7 +18,8 @@ const initialState: OtpState = {
   error: null,
   success: false,
   token: null,
-  userToken: null
+  userToken: null,
+  userRole: null
 };
 
 export interface VerifyOtpResponse {
@@ -62,18 +66,23 @@ const otpSlice = createSlice({
         state.error = null;
         state.success = false;
         state.token = null;
+        state.userRole = null;
       })
       .addCase(verifyOtp.fulfilled, (state, action) => {
         state.loading = false;
         state.error = null;
         state.success = true;
         state.token = action.payload.data;
+        state.userRole = (
+          jwtDecode(action.payload.data) as DecodedInterface
+        ).role;
       })
       .addCase(verifyOtp.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as FormErrorInterface;
         state.success = false;
         state.token = null;
+        state.userRole = null;
       });
   }
 });

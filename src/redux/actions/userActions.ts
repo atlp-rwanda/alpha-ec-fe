@@ -1,10 +1,11 @@
 import { createAction } from '@reduxjs/toolkit';
-import { UserInterface } from '../slices/RegisterSlice';
+import { UserRegistrationInterface } from '../slices/userSlice';
+import { UserInterface } from '../slices/ResetpasswordSlice';
 
-export const registerUser = createAction<UserInterface>(
+export const registerUser = createAction<UserRegistrationInterface>(
   'authentication/registerUser'
 );
-export const loginUser = createAction<UserInterface>(
+export const loginUser = createAction<UserRegistrationInterface>(
   'authentication/loginUser'
 );
 export const resetpassword = createAction<UserInterface>(

@@ -13,8 +13,7 @@ import {
   getErrorForField
 } from '@/utils';
 import { useRouter } from 'next/navigation';
-import { useSelector } from 'react-redux';
-import { registerUser } from '@/redux/slices/RegisterSlice';
+import { registerUser } from '@/redux/slices/userSlice';
 import { RootState } from '@/redux/store';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks/hook';
 import useToast from '@/components/alerts/Alerts';
@@ -44,8 +43,8 @@ export default function Register() {
 
   const { showSuccess, showError } = useToast();
 
-  const { loading, success, error } = useSelector(
-    (state: RootState) => state.register
+  const { loading, success, error } = useAppSelector(
+    (state: RootState) => state.user
   );
 
   const [formData, setFormData] =
