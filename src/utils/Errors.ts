@@ -17,10 +17,7 @@ export interface ResetpasswordErrorInterface {
   msg: string;
 }
 
-export const getErrorForField = (
-  errors: ErrorInterface[],
-  key: RegistrationKeys
-) => {
+export const getErrorForField = (errors: ErrorInterface[], key: string) => {
   const error = errors.find(error => error.target === key);
   return error ? error.msg : null;
 };

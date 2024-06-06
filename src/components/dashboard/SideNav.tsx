@@ -71,7 +71,7 @@ const SideNav: React.FC<SideNavProps1> = ({ className }) => {
             <MdOutlineManageAccounts className="text-2xl" />
             <p>Profile</p>
           </SidebarButton>
-          <SidebarButton paths={['/change-password']}>
+          <SidebarButton paths={['/update-password']}>
             <FaKey className="text-2xl" />
             <p>Privacy</p>
           </SidebarButton>
