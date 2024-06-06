@@ -5,6 +5,7 @@ import forgotPasswordReducer from './slices/ForgotpasswordSlice';
 import userReducer from './slices/userSlice';
 import productReducer from './slices/ProductSlice';
 import usersReducer from './slices/disableaccount';
+import profileReducer from './slices/profileSlice';
 
 export const rootReducer = combineReducers({
   otp: otpReducer,
@@ -12,7 +13,8 @@ export const rootReducer = combineReducers({
   products: productReducer,
   Resetpassword: resetpasswordReducer,
   forgotPassword: forgotPasswordReducer,
-  registereUsers: usersReducer
+  registereUsers: usersReducer,
+  profile: profileReducer
 });
 
 export const store = configureStore({

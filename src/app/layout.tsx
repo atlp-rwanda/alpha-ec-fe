@@ -6,6 +6,7 @@ import Providers from '@/redux/provider';
 import 'animate.css';
 import MainNav from '@/components/siteNavigation/MainNav';
 import PageLoading from '@/components/Loading/PageLoading';
+import Head from 'next/head';
 
 export const metadata: Metadata = {
   title: 'Alpha',
@@ -19,6 +20,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" href="/favicon.ico" />
+      </head>
       <body>
         <Providers>
           <div className="flex min-h-screen flex-col justify-between min-w-screen bg-main-100 text-main-400 h-auto relative px-0">

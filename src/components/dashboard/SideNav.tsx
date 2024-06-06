@@ -1,5 +1,4 @@
 'use client';
-
 import React from 'react';
 import Link from 'next/link';
 import { FiHome } from 'react-icons/fi';
@@ -9,83 +8,104 @@ import { AiOutlineProduct } from 'react-icons/ai';
 import { RiAccountCircleLine, RiLogoutBoxRLine } from 'react-icons/ri';
 import { IoIosHelpCircleOutline } from 'react-icons/io';
 import { IoCalendarNumberOutline } from 'react-icons/io5';
+import { useRouter, usePathname } from 'next/navigation';
+import { FaKey } from 'react-icons/fa';
 
-const SideNav = () => {
+type SidebarButtonProps = {
+  paths?: string[];
+  icon?: React.ReactNode;
+  children?: React.ReactNode;
+  className?: React.ReactNode;
+};
+interface SideNavProps1 {
+  className?: string;
+}
+
+function SidebarButton({
+  paths,
+  icon,
+  children,
+  className
+}: SidebarButtonProps) {
+  const router = useRouter();
+  const pathname = usePathname();
+  if (!paths) {
+    return;
+  }
+  const isActive = paths.includes(pathname);
+
+  const handleClick = () => {
+    if (paths) {
+      router.push(paths[0] || '');
+    }
+  };
+
   return (
-    <div className="bg-[#a5c9ca] w-full h-full p-5 absolute z-100 md:relative md:z-100">
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-[#32475C]">alpha-team</h1>
+    <div
+      onClick={handleClick}
+      className={`flex cursor-pointer items-center gap-2 ml-[-10px] p-2 ${isActive ? 'bg-[#40586A] text-white rounded' : 'text-black hover:bg-[#40586A]/50 hover:text-white hover:rounded active:bg-[#40586A]/70 transition duration-200 ease-in-out'}`}
+    >
+      {icon}
+      {children}
+    </div>
+  );
+}
+
+const SideNav: React.FC<SideNavProps1> = ({ className }) => {
+  return (
+    <div
+      className={`bg-[#a5c9ca] h-full p-5 fixed sm:relative md:relative overflow-x-auto shadow-md ${className} `}
+    >
+      <div>
+        <Link href="/">
+          <h1 className="text-2xl font-bold text-[#32475C]">alpha-team</h1>
+        </Link>
       </div>
-      <nav className="space-y-4 text-black">
-        <Link
-          href="/dashboard"
-          className="text-lg flex hover:bg-[#32475C] hover:text-white hover:py-[3px] hover:pl-[3px] hover:rounded-[5px]"
-        >
-          <FiHome className="text-xl" />
-          <p className="pl-2">Dashboard</p>
-        </Link>
-        <Link
-          href="/account-settings"
-          className="flex text-lg hover:bg-[#32475C] hover:text-white hover:py-[3px] hover:pl-[3px] hover:rounded-[5px]"
-        >
-          <MdOutlineManageAccounts className="text-2xl" />
-          <p className="pl-2 text-nowrap">Account Settings</p>
-        </Link>
-        <div className="mt-6 pt-3">
+      <nav className="space-y-4 pl-[-38px] text-black z-99">
+        <div>
+          <SidebarButton paths={[]}>
+            <FiHome className="text-2xl" />
+            <p>Dashboard</p>
+          </SidebarButton>
+          <SidebarButton paths={['/profile', '/profile-edit']}>
+            <MdOutlineManageAccounts className="text-2xl" />
+            <p>Profile</p>
+          </SidebarButton>
+          <SidebarButton paths={['/change-password']}>
+            <FaKey className="text-2xl" />
+            <p>Privacy</p>
+          </SidebarButton>
+        </div>
+        <div className="mt-6 ">
           <h2 className="text-xl font-semibold">Activities</h2>
-          <Link
-            href="/stastics"
-            className="flex mt-2 hover:bg-[#32475C] hover:text-white hover:py-[3px] hover:pl-[3px] hover:rounded-[5px]"
-          >
+          <SidebarButton paths={[]}>
             <FcStatistics className="text-xl" />
-            <p className="pl-2 text-nowrap">Statistics</p>
-          </Link>
-          <Link
-            href="/error"
-            className="flex mt-2 hover:bg-[#32475C] hover:text-white hover:py-[3px] hover:pl-[3px] hover:rounded-[5px]"
-          >
+            <p className="text-nowrap">Statistics</p>
+          </SidebarButton>
+          <SidebarButton paths={[]}>
             <MdErrorOutline className="text-xl" />
-            <p className="pl-2 text-nowrap">Error</p>
-          </Link>
-          <Link
-            href="/Products"
-            className="flex mt-2 hover:bg-[#32475C] hover:text-white hover:py-[3px] hover:pl-[3px] hover:rounded-[5px]"
-          >
+            <p className=" text-nowrap">Error</p>
+          </SidebarButton>
+          <SidebarButton paths={[]}>
             <AiOutlineProduct className="text-xl" />
-            <p className="pl-2 text-nowrap">Products</p>
-          </Link>
+            <p className=" text-nowrap">Products</p>
+          </SidebarButton>
         </div>
-        <div className="mt-10 pt-3">
+        <div>
           <h2 className="text-xl font-semibold">More Info</h2>
-          <Link
-            href="/account-status"
-            className="flex mt-2 hover:bg-[#32475C] hover:text-white hover:py-[3px] hover:pl-[3px] hover:rounded-[5px]"
-          >
+          <SidebarButton paths={['/dashboard/accountstatus']}>
             <RiAccountCircleLine className="text-xl" />
-            <p className="pl-2 text-nowrap">Account Status</p>
-          </Link>
-          <Link
-            href="/help"
-            className="flex mt-2 hover:bg-[#32475C] hover:text-white hover:py-[3px] hover:pl-[3px] hover:rounded-[5px]"
-          >
+            <p className=" text-nowrap">Account Status</p>
+          </SidebarButton>
+          <SidebarButton paths={[]}>
             <IoIosHelpCircleOutline className="text-xl" />
-            <p className="pl-2 text-nowrap">Help</p>
-          </Link>
-          <Link
-            href="/calendar"
-            className="flex mt-2 hover:bg-[#32475C] hover:text-white hover:py-[3px] hover:pl-[3px] hover:rounded-[5px]"
-          >
-            <IoCalendarNumberOutline className="text-xl" />
-            <p className="pl-2 text-nowrap">Calendar</p>
-          </Link>
+            <p className="text-nowrap">Help</p>
+          </SidebarButton>
+          <SidebarButton paths={[]}>
+            <RiLogoutBoxRLine className="text-xl" />
+            <p className="text-nowrap">Logout</p>
+          </SidebarButton>
         </div>
-        <Link
-          href="/logout"
-          className="flex mt-4 hover:bg-[#32475C] hover:text-white hover:py-[3px] hover:pl-[3px] hover:rounded-[5px]"
-        >
-          <RiLogoutBoxRLine className="text-xl" />
-          <p className="pl-2 text-nowrap">Logout</p>
-        </Link>
       </nav>
     </div>
   );
