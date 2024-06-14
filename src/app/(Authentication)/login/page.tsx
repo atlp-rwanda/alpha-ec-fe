@@ -14,7 +14,6 @@ import {
 } from '@/utils';
 import { useRouter } from 'next/navigation';
 import { useSelector } from 'react-redux';
-import { logInUser } from '@/redux/slices/loginSlice';
 import { RootState } from '@/redux/store';
 import { useAppDispatch } from '@/redux/hooks/hook';
 import useToast from '@/components/alerts/Alerts';
@@ -36,11 +35,11 @@ const InitialFormValues: FormDataInterface = {
 
 export default function Home() {
   const router = useRouter();
-  const dispatch = useAppDispatch();
+  const { logInUser } = useAppDispatch();
 
   const { showSuccess, showError } = useToast();
 
-  const { loading, success, error } = useSelector(
+  const { loading, success, error, data } = useSelector(
     (state: RootState) => state.login
   );
 
@@ -79,13 +78,17 @@ export default function Home() {
       setErrors(newErrors);
       return;
     }
-    const result = await dispatch(logInUser(formData));
+    const result = await logInUser(formData);
 
-    if (logInUser.fulfilled.match(result)) {
-      const payload = result.payload as unknown as
-        | FormErrorInterface
-        | undefined;
-      if (payload?.message === 'Verify OTP sent to your email to continue') {
+    if (success) {
+      // if (data?.message === 'Verify OTP sent to your email to continue') {
+      //   router.push('/sellerAuth');
+      //   showSuccess('Login Successful!');
+      //   setTimeout(() => {
+      //     router.push('/');
+      //   }, 2000);
+      // }
+      if (data?.message === 'Verify OTP sent to your email to continue') {
         router.push('/sellerAuth');
       } else {
         showSuccess('Login Successful!');
@@ -93,9 +96,8 @@ export default function Home() {
           router.push('/');
         }, 2000);
       }
-    } else if (logInUser.rejected.match(result) && result.payload) {
-      const errorMessage =
-        (result.payload as FormErrorInterface).message || 'An error occurred';
+    } else if (error) {
+      const errorMessage = data?.message || 'An error occurred';
 
       if (errorMessage === 'Validation Errors!') {
         const newErrors: ErrorInterface[] = [];

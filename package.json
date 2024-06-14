@@ -17,6 +17,7 @@
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@reduxjs/toolkit": "^2.2.5",
+    "@types/redux-mock-store": "^1.0.6",
     "animate.css": "^4.1.1",
     "autoprefixer": "^10.4.19",
     "css-loader": "^7.1.2",

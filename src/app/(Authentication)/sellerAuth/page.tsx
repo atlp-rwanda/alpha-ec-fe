@@ -3,7 +3,7 @@ import React, { FormEvent, useState, useEffect } from 'react';
 import { Button, ButtonStyle, Input } from '@/components/formElements';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { verifyOtp, setUserToken } from '@/redux/slices/otpSlice';
+import { verifyOtp } from '@/redux/slices/otpSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks/hook';
 import useToast from '@/components/alerts/Alerts';
 import { ToastContainer } from 'react-toastify';
@@ -18,7 +18,7 @@ const InitialFormValues: OtpFormDataInterface = {
 
 export default function VerifyOtp() {
   const router = useRouter();
-  const dispatch = useAppDispatch();
+  const { setUserToken } = useAppDispatch();
   const { showSuccess, showError } = useToast();
   const [formData, setFormData] =
     useState<OtpFormDataInterface>(InitialFormValues);
@@ -32,14 +32,16 @@ export default function VerifyOtp() {
     if (tokenString) {
       try {
         const tokenData = JSON.parse(tokenString);
-        dispatch(setUserToken(tokenData.data));
+
+        setUserToken(tokenData);
+        console.log(tokenData);
       } catch (error) {
         showError('Invalid token format. Please login again.');
       }
     } else {
       showError('Token not found. Please login again.');
     }
-  }, [dispatch, showError]);
+  }, [setUserToken, showError]);
 
   const handleChange = (value: string) => {
     setFormData({ otp: value });
@@ -63,14 +65,14 @@ export default function VerifyOtp() {
       token: userToken
     };
 
-    dispatch(verifyOtp(payload));
+    verifyOtp(payload);
   };
 
   useEffect(() => {
     if (success) {
       showSuccess('OTP Verified Successfully!');
       setTimeout(() => {
-        router.push('/sellerDashboard');
+        router.push('/dashboard/product');
       }, 2000);
     } else if (error) {
       showError(error.message || 'Verification Failed!');
@@ -79,7 +81,7 @@ export default function VerifyOtp() {
 
   useEffect(() => {
     if (success && token) {
-      localStorage.setItem('token', JSON.stringify({ data: token }));
+      localStorage.setItem('token', JSON.stringify({ token }));
     }
   }, [success, token]);
 
@@ -108,7 +110,7 @@ export default function VerifyOtp() {
           <Button
             label="Verify"
             style={ButtonStyle.DARK}
-            disabled={loading}
+            disabled={false}
             loading={loading}
           />
         </form>

@@ -7,6 +7,13 @@ interface RegistrationField {
   key: RegistrationKeys;
   message: string;
 }
+interface ProductField {
+  label: string;
+  placeholder: string;
+  type: React.HTMLInputTypeAttribute;
+  key: any;
+  message: string;
+}
 
 export const RegistrationFields: RegistrationField[] = [
   {
@@ -43,5 +50,43 @@ export const RegistrationFields: RegistrationField[] = [
     placeholder: 'Password',
     type: 'password',
     message: 'Please provide a valid password'
+  }
+];
+
+export const ProductFields: ProductField[] = [
+  {
+    key: 'name',
+    label: 'Product Name',
+    placeholder: 'Product name',
+    type: 'text',
+    message: 'Please provide a valid name!'
+  },
+  {
+    key: 'price',
+    label: 'Price',
+    placeholder: 'Price',
+    type: 'text',
+    message: 'Please provide a valid price'
+  },
+  {
+    key: 'quantity',
+    label: 'Quantity',
+    placeholder: 'Quantity',
+    type: 'text',
+    message: 'Please provide a valid quantity'
+  },
+  {
+    key: 'bonus',
+    label: 'Bonus',
+    placeholder: 'Bonus',
+    type: 'text',
+    message: 'Please provide a valid Bonus!'
+  },
+  {
+    key: 'status',
+    label: 'Status',
+    placeholder: 'Status',
+    type: 'Status',
+    message: 'Please provide a valid Status'
   }
 ];
