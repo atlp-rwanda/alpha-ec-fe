@@ -7,3 +7,6 @@ export const registerUser = createAction<UserInterface>(
 export const loginUser = createAction<UserInterface>(
   'authentication/loginUser'
 );
+export const resetpassword = createAction<UserInterface>(
+  'authentication/resetpassword'
+);
