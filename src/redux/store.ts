@@ -4,13 +4,15 @@ import resetpasswordReducer from './slices/ResetpasswordSlice';
 import forgotPasswordReducer from './slices/ForgotpasswordSlice';
 import userReducer from './slices/userSlice';
 import productReducer from './slices/ProductSlice';
+import usersReducer from './slices/disableaccount';
 
 export const rootReducer = combineReducers({
   otp: otpReducer,
   user: userReducer,
   products: productReducer,
   Resetpassword: resetpasswordReducer,
-  forgotPassword: forgotPasswordReducer
+  forgotPassword: forgotPasswordReducer,
+  registereUsers: usersReducer
 });
 
 export const store = configureStore({

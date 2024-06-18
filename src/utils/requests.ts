@@ -43,7 +43,10 @@ export const axiosRequest = async <TRequest = any, TResponse = any>(
   if (authenticate && token) {
     headers['Authorization'] = `Bearer ${token}`;
   }
-
+  // if (authenticate) {
+  //   const token = JSON.parse(localStorage.getItem('token') || '');
+  //   console.log('tokennnnn', token);
+  //   headers['Authorization'] = `Bearer ${token['data']}`;
   const requestConfig: CustomAxiosConfig = {
     method,
     url,
