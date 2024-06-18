@@ -59,7 +59,7 @@ const ProductListing: React.FC<ProductListingProps> = ({ data }) => {
         <div className="min-h-screen bg-white hidden lg:flex flex-col lg:w-1/5"></div>
 
         <section className="sm:py-4 w-full p-2 flex flex-col gap-2 ">
-          <div className=" flex justify-between w-full h-min  pt-20 ">
+          <div className=" flex justify-between w-full h-min pt-20">
             <h2 className="text-xl font-bold flex gap-3 items-center pl-2">
               <MdOutlineAddchart />
               <span>All products</span>

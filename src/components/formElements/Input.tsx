@@ -11,6 +11,7 @@ interface InputProps {
   type?: React.HTMLInputTypeAttribute;
   min?: number;
   max?: number;
+  readOnly?: boolean;
 }
 
 export const Input = ({ type = 'text', valid, ...rest }: InputProps) => {

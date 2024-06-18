@@ -79,22 +79,4 @@ describe('verifyOtp thunk', () => {
     expect(state.otp.loading).toBe(false);
     expect(state.otp.success).toBe(false);
   });
-
-  // it('should handle invalid token format correctly', async () => {
-  //   localStorage.setItem(
-  //     'token',
-  //     JSON.stringify({ data: 'invalidTokenFormat' })
-  //   );
-
-  //   store.dispatch(setUserToken('invalidTokenFormat'));
-  //   const state = store.getState() as RootState;
-  //   expect(state.otp.userToken).toBe('invalidTokenFormat');
-  // });
-
-  // it('should handle token not found correctly', async () => {
-  //   localStorage.removeItem('token');
-  //   store.dispatch(clearUserToken());
-  //   const state = store.getState() as RootState;
-  //   expect(state.otp.userToken).toBe(null);
-  // });
 });

@@ -12,7 +12,7 @@ const HomeContent = () => {
 
   useEffect(() => {
     if (token) {
-      localStorage.setItem('token', token);
+      localStorage.setItem('token', `"${token}"`);
       router.push('/');
     }
   }, [token, router]);
