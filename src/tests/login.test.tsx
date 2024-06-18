@@ -1,9 +1,7 @@
 import { configureStore, AnyAction } from '@reduxjs/toolkit';
 import MockAdapter from 'axios-mock-adapter';
-import loginReducer, {
-  logInUser,
-  LogInInterface
-} from '../redux/slices/loginSlice';
+import { logInUser, LogInInterface } from '../redux/slices/userSlice';
+import userReducer from '../redux/slices/userSlice';
 import { ThunkDispatch } from 'redux-thunk';
 import { axiosInstance, URL } from '@/utils';
 
@@ -12,7 +10,7 @@ type AppDispatch = ThunkDispatch<RootState, unknown, AnyAction>;
 
 const store = configureStore({
   reducer: {
-    login: loginReducer
+    user: userReducer
   }
 });
 
@@ -30,15 +28,19 @@ describe('loginUser thunk', () => {
       password: 'Password123!'
     };
 
-    const response = { message: 'login successfully' };
+    const response = {
+      status: 'Success!',
+      data: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
+      message: 'OTP verified successfully'
+    };
 
     mock.onPost(`${URL}/api/users/login`).reply(200, response);
 
     const result = await (store.dispatch as AppDispatch)(logInUser(userData));
 
     const state = store.getState() as RootState;
-    expect(state.login.loading).toBe(false);
-    expect(state.login.success).toBe(true);
+    expect(state.user.loading).toBe(false);
+    expect(state.user.success).toBe(true);
   });
 
   it('should dispatch rejected when login fails', async () => {
@@ -54,7 +56,7 @@ describe('loginUser thunk', () => {
     const result = await (store.dispatch as AppDispatch)(logInUser(userData));
 
     const state = store.getState() as RootState;
-    expect(state.login.loading).toBe(false);
-    expect(state.login.success).toBe(false);
+    expect(state.user.loading).toBe(false);
+    expect(state.user.success).toBe(false);
   });
 });

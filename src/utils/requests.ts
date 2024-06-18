@@ -1,3 +1,5 @@
+'use client';
+
 import axios, {
   AxiosInstance,
   AxiosRequestConfig,
@@ -18,16 +20,27 @@ interface CustomAxiosConfig extends AxiosRequestConfig {
   authenticate?: boolean;
 }
 
-export const axiosRequest = async <T = any>(
+export let token: string | null = null;
+if (typeof window !== 'undefined') {
+  const tokenString = localStorage.getItem('token');
+  if (tokenString) {
+    try {
+      token = JSON.parse(tokenString);
+    } catch (error) {
+      console.error('Failed to parse token from localStorage', error);
+    }
+  }
+}
+
+export const axiosRequest = async <TRequest = any, TResponse = any>(
   method: Method,
   url: string,
-  data?: T,
+  data?: TRequest,
   authenticate?: boolean
-): Promise<AxiosResponse<T>> => {
+): Promise<AxiosResponse<TResponse>> => {
   const headers = { ...axiosInstance.defaults.headers.common };
 
-  if (authenticate) {
-    const token = JSON.parse(localStorage.getItem('token') || '');
+  if (authenticate && token) {
     headers['Authorization'] = `Bearer ${token}`;
   }
 
@@ -38,7 +51,7 @@ export const axiosRequest = async <T = any>(
     headers
   };
 
-  return axiosInstance.request<T>(requestConfig);
+  return axiosInstance.request<TResponse>(requestConfig);
 };
 
 export default axiosInstance;

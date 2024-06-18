@@ -15,11 +15,11 @@ export enum ButtonStyle {
 
 export const Button = ({ loading, label, style, ...rest }: ButtonProps) => {
   return (
-    <div className="relative">
+    <div className="relative w-full">
       <button
         type={'submit'}
         {...rest}
-        className={`rounded-full w-max p-3 text-base hover:bg-main-300 hover:shadow-md flex items-center justify-center gap-2 cursor-pointer mt-10 mx-auto  ${
+        className={`rounded-full max-w-full min-w-52 md:w-max justify-center p-3 text-base hover:bg-main-300 hover:shadow-md flex items-center gap-2 cursor-pointer  lg:mt-8 mx-auto  ${
           style === ButtonStyle.LIGHT
             ? 'border-1 border-main-400  font-medium text-main-400 bg-main-100 bg-transparent'
             : style === ButtonStyle.DARK
@@ -35,7 +35,7 @@ export const Button = ({ loading, label, style, ...rest }: ButtonProps) => {
             Please wait...
           </span>
         ) : (
-          <span className="px-24">{label}</span>
+          <span className="">{label}</span>
         )}
       </button>
     </div>

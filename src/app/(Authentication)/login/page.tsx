@@ -14,13 +14,14 @@ import {
 } from '@/utils';
 import { useRouter } from 'next/navigation';
 import { useSelector } from 'react-redux';
-import { logInUser } from '@/redux/slices/loginSlice';
+import { logInUser } from '@/redux/slices/userSlice';
 import { RootState } from '@/redux/store';
-import { useAppDispatch } from '@/redux/hooks/hook';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks/hook';
 import useToast from '@/components/alerts/Alerts';
 import { ToastContainer } from 'react-toastify';
 import Google from '@/assets/images/Google.png';
 import Image from 'next/image';
+import PageLoading from '@/components/Loading/PageLoading';
 
 export interface FormDataInterface {
   email: string;
@@ -37,11 +38,12 @@ const InitialFormValues: FormDataInterface = {
 export default function Home() {
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const [pageLoading, setPageLoading] = useState<boolean>(false);
 
   const { showSuccess, showError } = useToast();
 
-  const { loading, success, error } = useSelector(
-    (state: RootState) => state.login
+  const { loading, success, error } = useAppSelector(
+    (state: RootState) => state.user
   );
 
   const [formData, setFormData] =
@@ -95,8 +97,10 @@ export default function Home() {
       } else {
         showSuccess('Login Successful!');
         setTimeout(() => {
+          setPageLoading(true);
           router.push('/');
-        }, 2000);
+          setPageLoading(false);
+        }, 1000);
       }
     } else if (logInUser.rejected.match(result) && result.payload) {
       const errorMessage =
@@ -116,6 +120,8 @@ export default function Home() {
       showError(errorMessage || `login Failed!`);
     }
   };
+
+  if (pageLoading) return <PageLoading />;
 
   return (
     <>

@@ -32,7 +32,7 @@ export default function VerifyOtp() {
     if (tokenString) {
       try {
         const tokenData = JSON.parse(tokenString);
-        dispatch(setUserToken(tokenData.data));
+        dispatch(setUserToken(tokenData));
       } catch (error) {
         showError('Invalid token format. Please login again.');
       }
@@ -70,7 +70,7 @@ export default function VerifyOtp() {
     if (success) {
       showSuccess('OTP Verified Successfully!');
       setTimeout(() => {
-        router.push('/sellerDashboard');
+        router.push('/');
       }, 2000);
     } else if (error) {
       showError(error.message || 'Verification Failed!');
@@ -79,7 +79,7 @@ export default function VerifyOtp() {
 
   useEffect(() => {
     if (success && token) {
-      localStorage.setItem('token', JSON.stringify({ data: token }));
+      localStorage.setItem('token', JSON.stringify(token));
     }
   }, [success, token]);
 
