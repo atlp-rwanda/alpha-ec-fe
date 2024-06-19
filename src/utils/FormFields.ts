@@ -14,6 +14,14 @@ interface ReasonField {
   message: string;
 }
 
+interface ProductField {
+  label: string;
+  placeholder: string;
+  type: React.HTMLInputTypeAttribute;
+  key: any;
+  message: string;
+}
+
 export const RegistrationFields: RegistrationField[] = [
   {
     key: 'name',
@@ -57,5 +65,35 @@ export const ReasonFields: ReasonField[] = [
     placeholder: 'Type here reasons',
     type: 'text',
     message: 'Provide valid reasons'
+  }
+];
+export const ProductFields: ProductField[] = [
+  {
+    key: 'name',
+    label: 'Product Name',
+    placeholder: 'Product name',
+    type: 'text',
+    message: 'Please provide a valid name!'
+  },
+  {
+    key: 'price',
+    label: 'Price',
+    placeholder: 'Price',
+    type: 'text',
+    message: 'Please provide a valid price'
+  },
+  {
+    key: 'quantity',
+    label: 'Quantity',
+    placeholder: 'Quantity',
+    type: 'text',
+    message: 'Please provide a valid quantity'
+  },
+  {
+    key: 'description',
+    label: 'description',
+    placeholder: 'description',
+    type: 'text',
+    message: 'Please provide a description!'
   }
 ];

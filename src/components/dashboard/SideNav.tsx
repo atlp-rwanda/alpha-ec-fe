@@ -86,7 +86,7 @@ const SideNav: React.FC<SideNavProps1> = ({ className }) => {
             <MdErrorOutline className="text-xl" />
             <p className=" text-nowrap">Error</p>
           </SidebarButton>
-          <SidebarButton paths={[]}>
+          <SidebarButton paths={['/dashboard/add-items']}>
             <AiOutlineProduct className="text-xl" />
             <p className=" text-nowrap">Products</p>
           </SidebarButton>

@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { axiosRequest, FormErrorInterface } from '@/utils';
+import { ReactNode } from 'react';
 
 export interface CategoryAttributes {
   id: string;
@@ -52,6 +53,12 @@ export interface SellerInterface {
 }
 
 export interface ProductDetailsInterface {
+  images: string[];
+  name: ReactNode;
+  price: any;
+  category: any;
+  status: any;
+  bonus: string;
   product: ProductInterface;
   relatedProducts: ProductInterface[];
   sellerInfo: SellerInterface;

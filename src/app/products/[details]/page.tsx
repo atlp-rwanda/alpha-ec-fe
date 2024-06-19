@@ -1,18 +1,26 @@
 'use client';
-
-import { useSearchParams } from 'next/navigation';
-import React, { Suspense, useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation'; // corrected import path
+import React, { ChangeEvent, Suspense, useEffect, useState } from 'react';
 import { IoAdd } from 'react-icons/io5';
 import { HiMinusSmall } from 'react-icons/hi2';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-import { getProductDetails } from '@/redux/slices/ProductSlice';
-import { Button, ButtonStyle } from '@/components/formElements';
+import {
+  ProductInterface,
+  getProductDetails
+} from '@/redux/slices/ProductSlice';
+import { Button, ButtonStyle, Input } from '@/components/formElements';
 import { useAppDispatch } from '@/redux/hooks/hook';
 import ProductsDetailsNav from '@/components/siteNavigation/ProductsDetailsNav';
 import { CiHeart } from 'react-icons/ci';
 import Slider from '@/components/Images/Slider';
 import PageLoading from '@/components/Loading/PageLoading';
+import { GetStars } from '@/components/reviews/GetStars';
+
+interface Review {
+  rating: number;
+  feedback: string;
+}
 
 const Details = () => {
   const dispatch = useAppDispatch();
@@ -21,14 +29,52 @@ const Details = () => {
   const productId = searchParams.get('productId');
 
   const [quantity, setQuantity] = useState<number>(1);
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [userReview, setUserReview] = useState<Review>({
+    rating: 0,
+    feedback: ''
+  });
 
-  const { selectedProduct, loading, error } = useSelector(
+  const { selectedProduct, loading } = useSelector(
     (state: RootState) => state.products
   );
 
   useEffect(() => {
-    productId && dispatch(getProductDetails(productId));
+    const fetchReviews = async () => {
+      try {
+        if (productId) {
+          const response = await fetch(`/api/reviews?productId=${productId}`);
+          if (response.ok) {
+            const data = await response.json();
+            setReviews(data.reviews);
+          } else {
+            console.error('Failed to fetch reviews');
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching reviews:', error);
+      }
+    };
+
+    if (productId) {
+      dispatch(getProductDetails(productId));
+      fetchReviews();
+    }
   }, [productId, dispatch]);
+
+  const handleRatingChange = (key: keyof Review, value: any) => {
+    setUserReview({
+      ...userReview,
+      [key]: value
+    });
+  };
+
+  const handleCommentChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    setUserReview({
+      ...userReview,
+      feedback: event.target.value
+    });
+  };
 
   const handleAdd = () => {
     setQuantity(prevQuantity => prevQuantity + 1);
@@ -36,6 +82,11 @@ const Details = () => {
 
   const handleRemove = () => {
     setQuantity(prevQuantity => (prevQuantity > 1 ? prevQuantity - 1 : 1));
+  };
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    // Add logic to handle form submission
   };
 
   return (
@@ -52,15 +103,14 @@ const Details = () => {
                   <Slider images={selectedProduct.product.images} />
                 </div>
                 <div className="w-full lg:w-1/3 p-0 pt-6 lg:p-4 flex flex-col items-start gap-4 text-black">
-                  <span className="flex justify-between border-b-1 border-b-main-300">
+                  <span className="flex justify-between border-b-2 border-gray-300">
                     <h2 className="text-2xl font-bold md:text-3xl">
                       {selectedProduct.product.name}
                     </h2>
                   </span>
                   <p className="text-3xl font-bold">
                     <span className="font-bold">
-                      {' '}
-                      ${' '}
+                      {'$'}
                       {(
                         selectedProduct.product.price * quantity
                       ).toLocaleString()}
@@ -79,7 +129,7 @@ const Details = () => {
                       {' '}
                       {selectedProduct.product.status
                         ? 'Available'
-                        : 'not Available'}
+                        : 'Not Available'}
                     </span>
                   </p>
                   <p className="text-lg font-normal gap-4 flex">
@@ -98,7 +148,7 @@ const Details = () => {
                       <input
                         value={quantity}
                         onChange={e => setQuantity(Number(e.target.value))}
-                        className="w-12 bg-transparent text-center h-full "
+                        className="w-12 bg-transparent text-center h-full"
                       />
                       <IoAdd
                         onClick={handleAdd}
@@ -107,7 +157,7 @@ const Details = () => {
                     </div>
                     <span className="h-full flex items-center gap-1 cursor-pointer font-thin hover:font-light truncate">
                       <CiHeart size={28} />
-                      Add to wish list
+                      Add to wishlist
                     </span>
                   </div>
                   <span className="xs:w-full lg:w-2/3">
@@ -118,6 +168,49 @@ const Details = () => {
                       loading={false}
                     />
                   </span>
+                </div>
+              </div>
+              <div className="m-20 w-1/3">
+                <div className="text-lg font-bold">Reviews & Ratings</div>
+                <form
+                  className="flex flex-col align-middle"
+                  onSubmit={handleSubmit}
+                >
+                  <div className="w-full mt-2 flex flex-col gap-1 animate__animated animate__fadeInDown">
+                    <Input
+                      label="Rating"
+                      placeholder="Add your rating here"
+                      type="number"
+                      value={userReview.rating}
+                      onChange={e =>
+                        handleRatingChange(
+                          'rating',
+                          parseInt(e.target.value, 6)
+                        )
+                      }
+                      valid={true} // Add validation logic if needed
+                    />
+                    <Input
+                      label="Review"
+                      placeholder="Add your review here"
+                      type="text"
+                      value={userReview.feedback}
+                      onChange={handleCommentChange}
+                      valid={false} // Add validation logic if needed
+                    />
+                  </div>
+                  <Button
+                    label="Submit"
+                    style={ButtonStyle.DARK}
+                    disabled={loading}
+                    loading={loading}
+                  />
+                </form>
+                <div>
+                  <div></div>
+                  <GetStars
+                    rating={selectedProduct.product.averageRatings || 0}
+                  />
                 </div>
               </div>
             </Suspense>

@@ -10,7 +10,9 @@ interface ButtonProps {
 
 export enum ButtonStyle {
   LIGHT = 'light',
-  DARK = 'dark'
+  DARK = 'dark',
+  DISABLED = 'DISABLED',
+  DELETE = 'DELETE'
 }
 
 export const Button = ({ loading, label, style, ...rest }: ButtonProps) => {
