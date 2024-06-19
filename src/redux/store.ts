@@ -6,15 +6,19 @@ import userReducer from './slices/userSlice';
 import productReducer from './slices/ProductSlice';
 import usersReducer from './slices/disableaccount';
 import profileReducer from './slices/profileSlice';
+import categoriesReducer from './slices/categoriesSlice';
+import itemReducer from './slices/itemSlice';
 
 export const rootReducer = combineReducers({
   otp: otpReducer,
+  categories: categoriesReducer,
   user: userReducer,
   products: productReducer,
   Resetpassword: resetpasswordReducer,
   forgotPassword: forgotPasswordReducer,
   registereUsers: usersReducer,
-  profile: profileReducer
+  profile: profileReducer,
+  product: itemReducer
 });
 
 export const store = configureStore({
