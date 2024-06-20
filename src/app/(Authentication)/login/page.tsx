@@ -22,6 +22,7 @@ import { ToastContainer } from 'react-toastify';
 import Google from '@/assets/images/Google.png';
 import Image from 'next/image';
 import PageLoading from '@/components/Loading/PageLoading';
+import { handleRedirect } from '@/utils/checkAuth';
 
 export interface FormDataInterface {
   email: string;
@@ -49,6 +50,10 @@ export default function Home() {
   const [formData, setFormData] =
     useState<FormDataInterface>(InitialFormValues);
   const [errors, setErrors] = useState<ErrorInterface[]>([]);
+
+  useEffect(() => {
+    handleRedirect(router);
+  }, [router]);
 
   const handleChange = (key: logInKeys, value: string) => {
     setErrors([]);
