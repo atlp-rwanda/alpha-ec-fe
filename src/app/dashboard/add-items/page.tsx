@@ -8,7 +8,6 @@ import { useAppDispatch, useAppSelector } from '../../../redux/hooks/hook';
 import { ErrorInterface, ProductFields, getErrorForField } from '@/utils';
 import { Button, ButtonStyle, Input } from '@/components/formElements';
 import useToast from '@/components/alerts/Alerts';
-import Layout from '../../dashboard/Layout';
 import { RegistrationKeys } from '../../(Authentication)/register/page';
 import CustomSelect from '../../../components/CustomSelect/CustomSelect';
 import { fetchCategories } from '@/redux/slices/categoriesSlice';
@@ -102,106 +101,104 @@ const Form = () => {
   };
 
   return (
-    <Layout>
-      <div className="md:flex md:justify-around sm:justify-around sm:flex lg:justify-around lg:flex bg-[#e7f6f2] p-8 rounded-lg shadow-lg w-full ">
-        <div className="mb-4 pr-2 w-[300px]">
-          <div className="flex justify-center items-center border-2 border-dashed border-[#395b64] rounded-lg h-56 w-72 bg-gray-50">
-            <div className="text-center text-black">
-              <p>Drag and drop your files here</p>
-              <p>or</p>
-              <input
-                type="file"
-                multiple
-                onChange={handleFileChange}
-                className="hidden"
-                id="file-upload"
-              />
-              <label
-                htmlFor="file-upload"
-                className="cursor-pointer bg-gray-200 px-3 py-1 rounded-md"
-              >
-                Browse files
-              </label>
-            </div>
-          </div>
-          <div className="mt-4 flex space-x-2 w-[100]">
-            {files.map((file, idx) => (
-              <div key={idx} className="relative border rounded p-1">
-                <Image
-                  src={URL.createObjectURL(file)}
-                  alt={`Thumbnail ${idx}`}
-                  width={50}
-                  height={50}
-                  className="object-cover"
-                />
-                <button
-                  type="button"
-                  onClick={() => handleRemoveImage(idx)}
-                  className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1"
-                >
-                  X
-                </button>
-              </div>
-            ))}
+    <div className="md:flex md:justify-around sm:justify-around sm:flex lg:justify-around lg:flex bg-[#e7f6f2] p-8 rounded-lg shadow-lg w-full ">
+      <div className="mb-4 pr-2 w-[300px]">
+        <div className="flex justify-center items-center border-2 border-dashed border-[#395b64] rounded-lg h-56 w-72 bg-gray-50">
+          <div className="text-center text-black">
+            <p>Drag and drop your files here</p>
+            <p>or</p>
+            <input
+              type="file"
+              multiple
+              onChange={handleFileChange}
+              className="hidden"
+              id="file-upload"
+            />
+            <label
+              htmlFor="file-upload"
+              className="cursor-pointer bg-gray-200 px-3 py-1 rounded-md"
+            >
+              Browse files
+            </label>
           </div>
         </div>
-        <form
-          className="space-y-4 sm:w-[550px] md:w-[550px]"
-          onSubmit={handleSubmit}
-        >
-          {ProductFields.map((field, i) => (
-            <div
-              className="w-full mt-2 flex flex-col gap-1 animate__animated animate__fadeInDown"
-              key={i}
-            >
-              <Input
-                label={field.label}
-                placeholder={field.placeholder}
-                type={field.type}
-                value={formData[field.key as ProductKeys] || ''}
-                onChange={(e: { target: { value: any } }) =>
-                  handleChange(field.key, e.target.value)
-                }
-                valid={getErrorForField(errors, field.key) ? false : true}
+        <div className="mt-4 flex space-x-2 w-[100]">
+          {files.map((file, idx) => (
+            <div key={idx} className="relative border rounded p-1">
+              <Image
+                src={URL.createObjectURL(file)}
+                alt={`Thumbnail ${idx}`}
+                width={50}
+                height={50}
+                className="object-cover"
               />
-              {getErrorForField(errors, field.key) && (
-                <span className="text-xs text-red-600 px-2 animate__animated animate__fadeInDown">
-                  {getErrorForField(errors, field.key)}
-                </span>
-              )}
+              <button
+                type="button"
+                onClick={() => handleRemoveImage(idx)}
+                className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1"
+              >
+                X
+              </button>
             </div>
           ))}
-
-          {categoriesData && (
-            <CustomSelect
-              options={categoriesData?.map(
-                (cat: { id: string; name: string }) => ({
-                  value: cat.id,
-                  label: cat.name
-                })
-              )}
-              selected={category}
-              onChange={setCategory}
-            />
-          )}
-          <input
-            type="text"
-            placeholder="Expiry Date"
-            value={expiryDate}
-            onChange={e => setExpiryDate(e.target.value)}
-            className="w-full px-4 py-2 border-b-2 border-black rounded"
-          />
-          <div className="sm:flex sm:justify-between md:flex md:justify-between lg:flex lg:justify-between">
-            <Button
-              label="Submit"
-              style={ButtonStyle.DARK}
-              disabled={status === 'loading'}
-              loading={status === 'loading'}
-            />
-          </div>
-        </form>
+        </div>
       </div>
-    </Layout>
+      <form
+        className="space-y-4 sm:w-[550px] md:w-[550px]"
+        onSubmit={handleSubmit}
+      >
+        {ProductFields.map((field, i) => (
+          <div
+            className="w-full mt-2 flex flex-col gap-1 animate__animated animate__fadeInDown"
+            key={i}
+          >
+            <Input
+              label={field.label}
+              placeholder={field.placeholder}
+              type={field.type}
+              value={formData[field.key as ProductKeys] || ''}
+              onChange={(e: { target: { value: any } }) =>
+                handleChange(field.key, e.target.value)
+              }
+              valid={getErrorForField(errors, field.key) ? false : true}
+            />
+            {getErrorForField(errors, field.key) && (
+              <span className="text-xs text-red-600 px-2 animate__animated animate__fadeInDown">
+                {getErrorForField(errors, field.key)}
+              </span>
+            )}
+          </div>
+        ))}
+
+        {categoriesData && (
+          <CustomSelect
+            options={categoriesData?.map(
+              (cat: { id: string; name: string }) => ({
+                value: cat.id,
+                label: cat.name
+              })
+            )}
+            selected={category}
+            onChange={setCategory}
+          />
+        )}
+        <input
+          type="text"
+          placeholder="Expiry Date"
+          value={expiryDate}
+          onChange={e => setExpiryDate(e.target.value)}
+          className="w-full px-4 py-2 border-b-2 border-black rounded"
+        />
+        <div className="sm:flex sm:justify-between md:flex md:justify-between lg:flex lg:justify-between">
+          <Button
+            label="Submit"
+            style={ButtonStyle.DARK}
+            disabled={status === 'loading'}
+            loading={status === 'loading'}
+          />
+        </div>
+      </form>
+    </div>
   );
 };
 

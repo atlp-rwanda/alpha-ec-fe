@@ -67,7 +67,7 @@ export const PRODUCT_ICONS: NavigationInterface[] = [
     title: 'account',
     label: 'ACCOUNT',
     access: 'all',
-    url: '/profile',
+    url: '/dashboard/profile',
     icon: VscAccount,
     subMenus: []
   }

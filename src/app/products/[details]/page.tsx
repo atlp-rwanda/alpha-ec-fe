@@ -8,11 +8,19 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { getProductDetails, showSideNav } from '@/redux/slices/ProductSlice';
 import { Button, ButtonStyle } from '@/components/formElements';
-import { useAppDispatch } from '@/redux/hooks/hook';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks/hook';
 import ProductsDetailsNav from '@/components/siteNavigation/ProductsDetailsNav';
 import { CiHeart } from 'react-icons/ci';
 import Slider from '@/components/Images/Slider';
 import PageLoading from '@/components/Loading/PageLoading';
+import { addWishlist, fetchWishes } from '@/redux/slices/wishlistSlice';
+import useToast from '@/components/alerts/Alerts';
+import { FormErrorInterface } from '@/utils';
+import { FaHeart } from 'react-icons/fa';
+import { addToCart } from '@/redux/slices/cartSlice';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
 const Details = () => {
   const dispatch = useAppDispatch();
@@ -20,10 +28,25 @@ const Details = () => {
   const searchParams = useSearchParams();
   const productId = searchParams.get('productId');
 
-  const [quantity, setQuantity] = useState<number>(1);
+  const [quantity2, setQuantity] = useState<number>(1);
 
   const { selectedProduct, loading, error } = useSelector(
     (state: RootState) => state.products
+  );
+  const wishlist = useAppSelector(
+    (state: RootState) => state.wishlist.wishlist?.rows || []
+  );
+  const wishStatus = useAppSelector(
+    (state: RootState) => state.wishlist.status
+  );
+  const cartStatus = useAppSelector((state: RootState) => state.cart.status);
+
+  useEffect(() => {
+    dispatch(fetchWishes());
+  }, [dispatch]);
+
+  const isInWishlist = wishlist.some(
+    wishlistItem => wishlistItem.id === productId
   );
 
   useEffect(() => {
@@ -39,6 +62,74 @@ const Details = () => {
     setQuantity(prevQuantity => (prevQuantity > 1 ? prevQuantity - 1 : 1));
   };
 
+  const toggleWishlist = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!productId) {
+      return (
+        <div className=" flex justify-center items-center w-full h-full text-grayborder-b-2 mb-4 border-gray text-[22px]">
+          No product id available
+        </div>
+      );
+    }
+    const result = await dispatch(addWishlist({ productId: productId }));
+
+    if (wishStatus === 'succeeded') {
+      const successMessage = result.payload.message;
+      toast.success(successMessage || `Product added to wishlist`, {
+        position: 'top-left',
+        style: {
+          marginTop: '60px'
+        },
+        autoClose: 2000
+      });
+    } else if (wishStatus === 'failed' && result.payload) {
+      const errorMessage =
+        (result.payload as FormErrorInterface).message || 'An error occurred';
+      toast.error(errorMessage || `Adding to wishlist failed!`, {
+        position: 'top-left',
+        style: {
+          marginTop: '60px'
+        },
+        autoClose: 2000
+      });
+    }
+  };
+
+  const addCart = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!productId) {
+      return (
+        <div className=" flex justify-center items-center w-full h-full text-grayborder-b-2 mb-4 border-gray text-[22px]">
+          No product id available
+        </div>
+      );
+    }
+    const quantity3 = quantity2.toString();
+    const result = await dispatch(
+      addToCart({ productId: productId, quantity: quantity3 })
+    );
+
+    if (cartStatus === 'succeeded') {
+      toast.success(`Product added to CART`, {
+        position: 'top-left',
+        style: {
+          marginTop: '60px'
+        },
+        autoClose: 2000
+      });
+    } else if (cartStatus === 'failed' && result.payload) {
+      const errorMessage =
+        (result.payload as FormErrorInterface).message || 'An error occurred';
+      toast.error(errorMessage || `Adding to cart failed!`, {
+        position: 'top-left',
+        style: {
+          marginTop: '60px'
+        },
+        autoClose: 2000
+      });
+    }
+  };
+
   return (
     <>
       {loading ? (
@@ -48,7 +139,7 @@ const Details = () => {
           <>
             <ProductsDetailsNav />
             <Suspense fallback={<div>Loading...</div>}>
-              <div className="flex w-full flex-col gap-4 lg:flex-row justify-between p-6 h-auto">
+              <div className="flex w-full flex-col gap-4 lg:flex-row justify-between p-6 h-auto pt-20">
                 <div className="w-full h-full lg:w-2/3 flex-col items-center justify-center gap-2 relative">
                   <Slider images={selectedProduct.product.images} />
                 </div>
@@ -63,7 +154,7 @@ const Details = () => {
                       {' '}
                       ${' '}
                       {(
-                        selectedProduct.product.price * quantity
+                        selectedProduct.product.price * quantity2
                       ).toLocaleString()}
                     </span>
                   </p>
@@ -97,7 +188,7 @@ const Details = () => {
                         className="w-12 hover:bg-black hover:text-white h-full p-2"
                       />
                       <input
-                        value={quantity}
+                        value={quantity2}
                         onChange={e => setQuantity(Number(e.target.value))}
                         className="w-12 bg-transparent text-center h-full "
                       />
@@ -106,18 +197,29 @@ const Details = () => {
                         className="w-12 hover:bg-black hover:text-white h-full p-2"
                       />
                     </div>
-                    <span className="h-full flex items-center gap-1 cursor-pointer font-thin hover:font-light truncate">
-                      <CiHeart size={28} />
+                    <span
+                      className="h-full flex items-center gap-1 cursor-pointer font-thin hover:font-light truncate"
+                      onClick={toggleWishlist}
+                    >
+                      {isInWishlist ? (
+                        <FaHeart size={28} className="text-main-300" />
+                      ) : (
+                        <CiHeart size={30} className="text-main-300" />
+                      )}{' '}
                       Add to wish list
                     </span>
                   </div>
-                  <span className="xs:w-full lg:w-2/3">
+                  <span
+                    onClick={e => {
+                      addCart(e);
+                    }}
+                    className="xs:w-full lg:w-2/3"
+                  >
                     <Button
-                      disabled={false}
+                      disabled={loading}
                       label={'Add to cart'}
                       style={ButtonStyle.DARK}
-                      loading={false}
-                      onClick={() => {}}
+                      loading={loading}
                     />
                   </span>
                 </div>
@@ -126,6 +228,7 @@ const Details = () => {
           </>
         )
       )}
+      <ToastContainer />
     </>
   );
 };

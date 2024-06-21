@@ -57,7 +57,7 @@ const ProductListing: React.FC<ProductListingProps> = ({ data }) => {
   return (
     <>
       <div className="flex justify-between  gap-4 min-w-screen  w-full z-0 pl-2">
-        <section className="w-full pt-0 flex flex-col gap-2 b ">
+        <section className="w-full flex flex-col gap-2 b pt-20">
           <div className="mt-2 flex justify-between w-full h-min py-2 px-2 fixed z-40 bg-main-100">
             <h2 className="text-base font-bold flex gap-2 items-center">
               <Link href={'/'}>
