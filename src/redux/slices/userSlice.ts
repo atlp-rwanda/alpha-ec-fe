@@ -10,6 +10,7 @@ export interface UserRegistrationInterface {
   password: string;
   phone: string;
   address: string;
+  createdAt: string;
 }
 
 export interface LogInInterface {

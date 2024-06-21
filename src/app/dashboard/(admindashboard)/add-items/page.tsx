@@ -4,13 +4,13 @@ import Image from 'next/image';
 import { useState, useEffect, FormEvent } from 'react';
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import { useAppDispatch, useAppSelector } from '../../../redux/hooks/hook';
-import Layout from '../../dashboard/Layout';
+import { useAppDispatch, useAppSelector } from '../../../../redux/hooks/hook';
+import Layout from '../layout';
 import { ErrorInterface, ProductFields, getErrorForField } from '@/utils';
 import { Button, ButtonStyle, Input } from '@/components/formElements';
 import useToast from '@/components/alerts/Alerts';
-import { RegistrationKeys } from '../../(Authentication)/register/page';
-import CustomSelect from '../../../components/CustomSelect/CustomSelect';
+import { RegistrationKeys } from '../../../(Authentication)/register/page';
+import CustomSelect from '../../../../components/CustomSelect/CustomSelect';
 import { fetchCategories } from '@/redux/slices/categoriesSlice';
 import { addProduct } from '@/redux/slices/itemSlice';
 
