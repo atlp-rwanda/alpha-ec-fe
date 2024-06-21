@@ -204,7 +204,6 @@ const UserSlice = createSlice({
         state.loading = false;
         state.error = action.payload as FormErrorInterface;
         state.success = false;
-        state.role = null;
       });
   }
 });
