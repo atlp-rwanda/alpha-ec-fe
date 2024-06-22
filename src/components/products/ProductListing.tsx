@@ -3,9 +3,12 @@
 import React, { useState } from 'react';
 import { MdOutlineAddchart } from 'react-icons/md';
 import ProductCard from './ProductCard';
-import { ToastContainer } from 'react-toastify';
 import Image from 'next/image';
-import { ProductDataInterface, getProducts } from '@/redux/slices/ProductSlice';
+import {
+  ProductDataInterface,
+  getProducts,
+  deleteProduct
+} from '@/redux/slices/ProductSlice';
 import Pagination from '../pagination/Pagination';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks/hook';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -15,6 +18,9 @@ import { GetStars } from '../reviews/GetStars';
 import { Button, ButtonStyle } from '../formElements';
 import { IoIosCloseCircle, IoIosCloseCircleOutline } from 'react-icons/io';
 import { CiEdit } from 'react-icons/ci';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 interface ProductListingProps {
   data: ProductDataInterface;
 }
@@ -52,21 +58,76 @@ const ProductListing: React.FC<ProductListingProps> = ({ data }) => {
 
   const loggedIn = userRole || role || 'buyer';
 
+  const [showModal, setShowModal] = useState(false);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [productList, setProductList] = useState(products);
+
+  const confirmDelete = async () => {
+    if (deleteId) {
+      const resultAction = await dispatch(deleteProduct(deleteId));
+      if (deleteProduct.fulfilled.match(resultAction)) {
+        setProductList(productList.filter(product => product.id !== deleteId));
+        toast.success('Product deleted successfully', {
+          onClose: () => {
+            setTimeout(() => {
+              window.location.reload();
+            }, 500); // Adjust the delay as needed
+          }
+        });
+      } else {
+        toast.error('Failed to delete product');
+      }
+      setShowModal(false);
+      setDeleteId(null);
+    }
+  };
+
+  const handleDeleteClick = (id: string) => {
+    setDeleteId(id);
+    setShowModal(true);
+  };
+
+  const handleCancel = () => {
+    setShowModal(false);
+    setDeleteId(null);
+  };
+
   return (
     <>
-      {/* <ProductNav /> */}
+      {showModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-4 rounded-lg">
+            <p>Are you sure you want to delete this product?</p>
+            <div className="flex justify-end gap-2 mt-4">
+              <button
+                onClick={handleCancel}
+                className="px-4 py-2 bg-gray-300 rounded-lg"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmDelete}
+                className="px-4 py-2 bg-red-500 text-white rounded-lg"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="flex justify-between m-0 gap-4 min-w-screen p-0 w-full z-0">
         <div className="min-h-screen bg-white hidden lg:flex flex-col lg:w-1/5"></div>
 
         <section className="sm:py-4 w-full p-2 flex flex-col gap-2 ">
-          <div className=" flex justify-between w-full h-min pt-20">
+          <div className="flex justify-between w-full h-min pt-20">
             <h2 className="text-xl font-bold flex gap-3 items-center pl-2">
               <MdOutlineAddchart />
               <span>All products</span>
             </h2>
           </div>
 
-          <div className=" w-full p-1 rounded-lg overflow-y-auto">
+          <div className="w-full p-1 rounded-lg overflow-y-auto">
             {loggedIn === USER_ROLE.SELLER ? (
               <table className="min-w-full text-sm text-left">
                 <thead>
@@ -106,10 +167,19 @@ const ProductListing: React.FC<ProductListingProps> = ({ data }) => {
                           $ {product.price.toLocaleString()}
                         </td>
                         <td className="p-2 truncate">{product.quantity}</td>
-                        <td className="hidden p-2 font-bold h-full gap-4 overflow-hidden items-center mt-1 md:flex">
-                          <CiEdit size={34} />
-
-                          <IoIosCloseCircle size={34} />
+                        <td className="hidden p-2 font-bold h-full gap-4 overflow-hidden items-center mt-1 md:flex ">
+                          <button>
+                            <CiEdit
+                              size={34}
+                              className="hover:bg-green-500 rounded-lg "
+                            />
+                          </button>
+                          <button onClick={() => handleDeleteClick(product.id)}>
+                            <IoIosCloseCircle
+                              size={34}
+                              className="hover:bg-red-500 rounded-lg "
+                            />
+                          </button>
                         </td>
                       </tr>
                     ))}
@@ -117,8 +187,8 @@ const ProductListing: React.FC<ProductListingProps> = ({ data }) => {
               </table>
             ) : (
               <div className="w-full grid xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 rounded-xl overflow-y-auto">
-                {products &&
-                  products.map(product => (
+                {productList &&
+                  productList.map(product => (
                     <ProductCard product={product} key={product.slug} />
                   ))}
               </div>
