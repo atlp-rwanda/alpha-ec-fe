@@ -8,11 +8,12 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { getProductDetails, showSideNav } from '@/redux/slices/ProductSlice';
 import { Button, ButtonStyle } from '@/components/formElements';
-import { useAppDispatch } from '@/redux/hooks/hook';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks/hook';
 import ProductsDetailsNav from '@/components/siteNavigation/ProductsDetailsNav';
 import { CiHeart } from 'react-icons/ci';
 import Slider from '@/components/Images/Slider';
 import PageLoading from '@/components/Loading/PageLoading';
+import { deleteProduct } from '@/redux/slices/ProductSlice';
 
 const Details = () => {
   const dispatch = useAppDispatch();
@@ -22,7 +23,7 @@ const Details = () => {
 
   const [quantity, setQuantity] = useState<number>(1);
 
-  const { selectedProduct, loading, error } = useSelector(
+  const { selectedProduct, loading, error, message } = useSelector(
     (state: RootState) => state.products
   );
 
@@ -30,6 +31,10 @@ const Details = () => {
     dispatch(showSideNav(false));
     productId && dispatch(getProductDetails(productId));
   }, [productId, dispatch]);
+
+  useEffect(() => {
+    productId && dispatch(deleteProduct(productId));
+  }, [dispatch, productId]);
 
   const handleAdd = () => {
     setQuantity(prevQuantity => prevQuantity + 1);
