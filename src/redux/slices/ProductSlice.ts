@@ -59,6 +59,7 @@ interface ProductState {
   error: FormErrorInterface | null;
   success: boolean;
   showSideNav: boolean;
+  message: String;
 }
 
 interface ProductsResponse {
@@ -81,7 +82,8 @@ const initialState: ProductState = {
   loading: false,
   error: null,
   success: false,
-  showSideNav: true
+  showSideNav: true,
+  message: ''
 };
 
 export const getProductDetails = createAsyncThunk(
@@ -104,7 +106,12 @@ export const deleteProduct = createAsyncThunk(
   'products/delete',
   async (productId: string, { rejectWithValue }) => {
     try {
-      const response = await axiosRequest('DELETE', `/products/${productId}`);
+      const response = await axiosRequest(
+        'DELETE',
+        `/products/${productId}`,
+        ' ',
+        true
+      );
       return response.data.data;
     } catch (err: unknown) {
       if (axios.isAxiosError(err) && err.response) {
@@ -185,6 +192,21 @@ const productSlice = createSlice({
       })
       .addCase(getProductDetails.rejected, (state, action) => {
         state.selectedProduct = null;
+        state.loading = false;
+        state.error = action.payload as FormErrorInterface;
+        state.success = false;
+      })
+      .addCase(deleteProduct.pending, state => {
+        state.loading = true;
+        state.error = null;
+        state.success = false;
+      })
+      .addCase(deleteProduct.fulfilled, (state, action) => {
+        state.loading = false;
+        state.message = action.payload;
+        state.error = null;
+      })
+      .addCase(deleteProduct.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as FormErrorInterface;
         state.success = false;
