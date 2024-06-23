@@ -13,7 +13,6 @@ import ProductsDetailsNav from '@/components/siteNavigation/ProductsDetailsNav';
 import { CiHeart } from 'react-icons/ci';
 import Slider from '@/components/Images/Slider';
 import PageLoading from '@/components/Loading/PageLoading';
-import { deleteProduct } from '@/redux/slices/ProductSlice';
 
 const Details = () => {
   const dispatch = useAppDispatch();
@@ -30,10 +29,6 @@ const Details = () => {
   useEffect(() => {
     productId && dispatch(getProductDetails(productId));
   }, [productId, dispatch]);
-
-  useEffect(() => {
-    productId && dispatch(deleteProduct(productId));
-  }, [dispatch, productId]);
 
   const handleAdd = () => {
     setQuantity(prevQuantity => prevQuantity + 1);

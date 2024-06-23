@@ -1,0 +1,129 @@
+[33m5a4b10c[m[33m ([m[1;36mHEAD -> [m[1;32mft-update-delete-product-#187300104[m[33m)[m HEAD@{0}: rebase (finish): returning to refs/heads/ft-update-delete-product-#187300104
+[33m5a4b10c[m[33m ([m[1;36mHEAD -> [m[1;32mft-update-delete-product-#187300104[m[33m)[m HEAD@{1}: rebase (continue): ft update and delete product-#187300104
+[33m9df7301[m HEAD@{2}: rebase (continue): ft-login-with-google-187300097
+[33m9615a2f[m HEAD@{3}: rebase (continue): feat(Login with Email and Password)
+[33mcdefcf3[m HEAD@{4}: rebase (continue): Feat(User Registration):Users should be able Signup/Register
+[33mc6f2ced[m HEAD@{5}: rebase (continue): ft update and delete product-#187300104
+[33m4f6d3a3[m HEAD@{6}: rebase (continue): ft-login-with-google-187300097
+[33m64c8df6[m HEAD@{7}: rebase (continue): feat(Login with Email and Password)
+[33ma97a3ea[m HEAD@{8}: rebase (continue): Feat(User Registration):Users should be able Signup/Register
+[33md7dd594[m[33m ([m[1;31morigin/develop[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mdevelop[m[33m)[m HEAD@{9}: rebase (start): checkout develop
+[33mc3938fc[m HEAD@{10}: checkout: moving from develop to ft-update-delete-product-#187300104
+[33md7dd594[m[33m ([m[1;31morigin/develop[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mdevelop[m[33m)[m HEAD@{11}: pull origin develop: Fast-forward
+[33m1f610cf[m HEAD@{12}: checkout: moving from ft-update-delete-product-#187300104 to develop
+[33mc3938fc[m HEAD@{13}: commit (amend): Merge branch 'ft-update-delete-product-#187300104' of https://github.com/atlp-rwanda/alpha-ec-fe into ft-update-delete-product-#187300104
+[33m0f5cdeb[m HEAD@{14}: commit (amend): Merge branch 'ft-update-delete-product-#187300104' of https://github.com/atlp-rwanda/alpha-ec-fe into ft-update-delete-product-#187300104
+[33mc0577c7[m[33m ([m[1;31morigin/ft-update-delete-product-#187300104[m[33m)[m HEAD@{15}: commit (amend): Merge branch 'ft-update-delete-product-#187300104' of https://github.com/atlp-rwanda/alpha-ec-fe into ft-update-delete-product-#187300104
+[33m702408b[m HEAD@{16}: commit (amend): Merge branch 'ft-update-delete-product-#187300104' of https://github.com/atlp-rwanda/alpha-ec-fe into ft-update-delete-product-#187300104
+[33m433ec3d[m HEAD@{17}: commit (amend): Merge branch 'ft-update-delete-product-#187300104' of https://github.com/atlp-rwanda/alpha-ec-fe into ft-update-delete-product-#187300104
+[33ma001aee[m HEAD@{18}: pull: Merge made by the 'ort' strategy.
+[33m9182012[m HEAD@{19}: rebase (finish): returning to refs/heads/ft-update-delete-product-#187300104
+[33m9182012[m HEAD@{20}: rebase (pick): ft update and delete product-#187300104
+[33m864598f[m HEAD@{21}: rebase (pick): ft-login-with-google-187300097
+[33m240164f[m HEAD@{22}: rebase (pick): feat(Login with Email and Password)
+[33mab6e144[m HEAD@{23}: rebase (pick): Feat(User Registration):Users should be able Signup/Register
+[33m1f610cf[m HEAD@{24}: rebase (start): checkout develop
+[33mda26627[m HEAD@{25}: checkout: moving from develop to ft-update-delete-product-#187300104
+[33m1f610cf[m HEAD@{26}: pull origin develop: Fast-forward
+[33m3f8f77d[m HEAD@{27}: checkout: moving from ft-update-delete-product-#187300104 to develop
+[33mda26627[m HEAD@{28}: commit (amend): ft update and delete product-#187300104
+[33mce1e5f1[m HEAD@{29}: commit: ft update and delete product-#187300104
+[33m0f249d6[m[33m ([m[1;32mfix--login-with-google[m[33m)[m HEAD@{30}: checkout: moving from fix--login-with-google to ft-update-delete-product-#187300104
+[33m0f249d6[m[33m ([m[1;32mfix--login-with-google[m[33m)[m HEAD@{31}: checkout: moving from develop to fix--login-with-google
+[33m3f8f77d[m HEAD@{32}: checkout: moving from fix--login-with-google to develop
+[33m0f249d6[m[33m ([m[1;32mfix--login-with-google[m[33m)[m HEAD@{33}: rebase (finish): returning to refs/heads/fix--login-with-google
+[33m0f249d6[m[33m ([m[1;32mfix--login-with-google[m[33m)[m HEAD@{34}: rebase (pick): ft-login-with-google-187300097
+[33m6e07533[m HEAD@{35}: rebase (pick): feat(Login with Email and Password)
+[33m8509433[m HEAD@{36}: rebase (pick): Feat(User Registration):Users should be able Signup/Register
+[33m3f8f77d[m HEAD@{37}: rebase (start): checkout develop
+[33m462968c[m HEAD@{38}: checkout: moving from develop to fix--login-with-google
+[33m3f8f77d[m HEAD@{39}: pull: Fast-forward
+[33m706aaae[m HEAD@{40}: checkout: moving from fix--login-with-google to develop
+[33m462968c[m HEAD@{41}: commit (amend): ft-login-with-google-187300097
+[33ma608bb0[m[33m ([m[1;31morigin/fix--login-with-google[m[33m)[m HEAD@{42}: commit (amend): ft-login-with-google-187300097
+[33m983c71d[m HEAD@{43}: rebase (finish): returning to refs/heads/fix--login-with-google
+[33m983c71d[m HEAD@{44}: rebase (pick): ft-login-with-google-187300097
+[33m393b3d1[m HEAD@{45}: rebase (pick): feat(Login with Email and Password)
+[33m3201d11[m HEAD@{46}: rebase (continue): Feat(User Registration):Users should be able Signup/Register
+[33m706aaae[m HEAD@{47}: rebase (start): checkout develop
+[33m66dd48a[m HEAD@{48}: checkout: moving from develop to fix--login-with-google
+[33m706aaae[m HEAD@{49}: pull: Fast-forward
+[33m312528f[m HEAD@{50}: checkout: moving from fix--login-with-google to develop
+[33m66dd48a[m HEAD@{51}: commit (amend): ft-login-with-google-187300097
+[33me5044ab[m HEAD@{52}: rebase (finish): returning to refs/heads/fix--login-with-google
+[33me5044ab[m HEAD@{53}: rebase (continue): ft-login-with-google-187300097
+[33m01865bc[m HEAD@{54}: rebase (continue): feat(Login with Email and Password)
+[33m39c7bbc[m HEAD@{55}: rebase (continue): Feat(User Registration):Users should be able Signup/Register
+[33m312528f[m HEAD@{56}: rebase (start): checkout develop
+[33md5945af[m HEAD@{57}: checkout: moving from develop to fix--login-with-google
+[33m312528f[m HEAD@{58}: pull: Fast-forward
+[33m1d39a2a[m HEAD@{59}: checkout: moving from fix--login-with-google to develop
+[33md5945af[m HEAD@{60}: commit (amend): ft-login-with-google-187300097
+[33maeeb533[m HEAD@{61}: rebase (finish): returning to refs/heads/fix--login-with-google
+[33maeeb533[m HEAD@{62}: rebase (pick): ft-login-with-google-187300097
+[33m6b5a915[m HEAD@{63}: rebase (continue): feat(Login with Email and Password)
+[33m5e46186[m HEAD@{64}: rebase (continue): Feat(User Registration):Users should be able Signup/Register
+[33m1d39a2a[m HEAD@{65}: rebase (start): checkout develop
+[33m05c38c3[m HEAD@{66}: checkout: moving from develop to fix--login-with-google
+[33m1d39a2a[m HEAD@{67}: pull: Fast-forward
+[33m3858781[m HEAD@{68}: checkout: moving from fix--login-with-google to develop
+[33m05c38c3[m HEAD@{69}: checkout: moving from develop to fix--login-with-google
+[33m3858781[m HEAD@{70}: checkout: moving from fix--login-with-google to develop
+[33m05c38c3[m HEAD@{71}: rebase (finish): returning to refs/heads/fix--login-with-google
+[33m05c38c3[m HEAD@{72}: rebase (continue): fixing login with google
+[33m49defd7[m HEAD@{73}: rebase (continue): ft-login-with-google-187300097
+[33mcea54a2[m HEAD@{74}: rebase (pick): feat(Login with Email and Password)
+[33m831ffea[m HEAD@{75}: rebase (continue): Feat(User Registration):Users should be able Signup/Register
+[33m3858781[m HEAD@{76}: rebase (start): checkout develop
+[33mad31f31[m HEAD@{77}: checkout: moving from develop to fix--login-with-google
+[33m3858781[m HEAD@{78}: pull: Fast-forward
+[33m380745e[m HEAD@{79}: checkout: moving from fix--login-with-google to develop
+[33mad31f31[m HEAD@{80}: commit (amend): fixing login with google
+[33m6caa88d[m HEAD@{81}: commit (amend): fixing login with google
+[33m7ae657a[m HEAD@{82}: commit (amend): fixing login with google
+[33m07490f2[m HEAD@{83}: commit (amend): fixing login with google
+[33me72765d[m HEAD@{84}: commit (amend): fixing login with google
+[33mc4cc0c7[m HEAD@{85}: commit (amend): fixing login with google
+[33m85676fe[m HEAD@{86}: rebase (finish): returning to refs/heads/fix--login-with-google
+[33m85676fe[m HEAD@{87}: rebase (pick): fixing login with google
+[33m04ace6a[m HEAD@{88}: rebase (continue): ft-login-with-google-187300097
+[33m9d77785[m HEAD@{89}: rebase (continue): feat(Login with Email and Password)
+[33m1cdbeb7[m HEAD@{90}: rebase (continue): Feat(User Registration):Users should be able Signup/Register
+[33m380745e[m HEAD@{91}: rebase (start): checkout develop
+[33mefe67fa[m HEAD@{92}: checkout: moving from develop to fix--login-with-google
+[33m380745e[m HEAD@{93}: pull: Fast-forward
+[33m02dab7c[m HEAD@{94}: checkout: moving from fix--login-with-google to develop
+[33mefe67fa[m HEAD@{95}: commit: fixing login with google
+[33m3609448[m[33m ([m[1;31morigin/ft-login-with-google-187300097[m[33m, [m[1;32mft-login-with-google-187300097[m[33m)[m HEAD@{96}: checkout: moving from ft-login-with-google-187300097 to fix--login-with-google
+[33m3609448[m[33m ([m[1;31morigin/ft-login-with-google-187300097[m[33m, [m[1;32mft-login-with-google-187300097[m[33m)[m HEAD@{97}: commit (amend): ft-login-with-google-187300097
+[33m1536b6f[m HEAD@{98}: commit (amend): ft-login-with-google-187300097
+[33m02055cb[m HEAD@{99}: commit (amend): ft-login-with-google-187300097
+[33m3744897[m HEAD@{100}: commit (amend): ft-login-with-google-187300097
+[33md62026d[m HEAD@{101}: commit (amend): ft-login-with-google-187300097
+[33ma4035b8[m HEAD@{102}: commit (amend): ft-login-with-google-187300097
+[33m8b2f902[m HEAD@{103}: rebase (finish): returning to refs/heads/ft-login-with-google-187300097
+[33m8b2f902[m HEAD@{104}: rebase (continue): ft-login-with-google-187300097
+[33m8008afa[m HEAD@{105}: rebase (continue): feat(Login with Email and Password)
+[33mc105dc8[m HEAD@{106}: rebase (continue): Feat(User Registration):Users should be able Signup/Register
+[33m02dab7c[m HEAD@{107}: rebase (start): checkout develop
+[33m3713360[m HEAD@{108}: commit (amend): ft-login-with-google-187300097
+[33mae64750[m HEAD@{109}: rebase (abort): returning to refs/heads/ft-login-with-google-187300097
+[33m02dab7c[m HEAD@{110}: rebase (start): checkout develop
+[33mae64750[m HEAD@{111}: rebase (abort): returning to refs/heads/ft-login-with-google-187300097
+[33m02dab7c[m HEAD@{112}: rebase (start): checkout develop
+[33mae64750[m HEAD@{113}: rebase (abort): returning to refs/heads/ft-login-with-google-187300097
+[33m02dab7c[m HEAD@{114}: rebase (start): checkout develop
+[33mae64750[m HEAD@{115}: rebase (abort): returning to refs/heads/ft-login-with-google-187300097
+[33m02dab7c[m HEAD@{116}: rebase (start): checkout develop
+[33mae64750[m HEAD@{117}: checkout: moving from develop to ft-login-with-google-187300097
+[33m02dab7c[m HEAD@{118}: pull: Fast-forward
+[33m58f9890[m HEAD@{119}: checkout: moving from ft-login-with-google-187300097 to develop
+[33mae64750[m HEAD@{120}: commit (amend): ft-login-with-google-187300097
+[33md7ec1ec[m HEAD@{121}: commit (amend): ft-login-with-google-187300097
+[33mbba5bdd[m HEAD@{122}: rebase (finish): returning to refs/heads/ft-login-with-google-187300097
+[33mbba5bdd[m HEAD@{123}: rebase (continue): ft-login-with-google-187300097
+[33m020db73[m HEAD@{124}: rebase (continue): feat(Login with Email and Password)
+[33m3165531[m HEAD@{125}: rebase (continue): Feat(User Registration):Users should be able Signup/Register
+[33m58f9890[m HEAD@{126}: rebase (start): checkout develop
+[33mce88713[m HEAD@{127}: checkout: moving from develop to ft-login-with-google-187300097
+[33m58f9890[m HEAD@{128}: clone: from https://github.com/atlp-rwanda/alpha-ec-fe.git

@@ -18,6 +18,7 @@ import { GetStars } from '../reviews/GetStars';
 import { Button, ButtonStyle } from '../formElements';
 import { IoIosCloseCircle, IoIosCloseCircleOutline } from 'react-icons/io';
 import { CiEdit } from 'react-icons/ci';
+import useToast from '@/components/alerts/Alerts';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -55,6 +56,7 @@ const ProductListing: React.FC<ProductListingProps> = ({ data }) => {
 
   const { role } = useAppSelector((state: RootState) => state.user);
   const { userRole } = useAppSelector((state: RootState) => state.otp);
+  const { showSuccess, showError } = useToast();
 
   const loggedIn = userRole || role || 'buyer';
 
@@ -62,18 +64,13 @@ const ProductListing: React.FC<ProductListingProps> = ({ data }) => {
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [productList, setProductList] = useState(products);
 
-  const confirmDelete = async () => {
+  const confirmDelete = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     if (deleteId) {
       const resultAction = await dispatch(deleteProduct(deleteId));
       if (deleteProduct.fulfilled.match(resultAction)) {
-        setProductList(productList.filter(product => product.id !== deleteId));
-        toast.success('Product deleted successfully', {
-          onClose: () => {
-            setTimeout(() => {
-              window.location.reload();
-            }, 500); // Adjust the delay as needed
-          }
-        });
+        await dispatch(getProducts({}));
+        toast.success('Product deleted successfully');
       } else {
         toast.error('Failed to delete product');
       }
@@ -82,6 +79,9 @@ const ProductListing: React.FC<ProductListingProps> = ({ data }) => {
     }
   };
 
+  const handleproduct = (e: React.MouseEvent, productId: string) => {
+    router.push(`/dashboard/update-item?productId=${productId}`);
+  };
   const handleDeleteClick = (id: string) => {
     setDeleteId(id);
     setShowModal(true);
@@ -106,7 +106,7 @@ const ProductListing: React.FC<ProductListingProps> = ({ data }) => {
                 Cancel
               </button>
               <button
-                onClick={confirmDelete}
+                onClick={e => confirmDelete(e)}
                 className="px-4 py-2 bg-red-500 text-white rounded-lg"
               >
                 Delete
@@ -168,7 +168,7 @@ const ProductListing: React.FC<ProductListingProps> = ({ data }) => {
                         </td>
                         <td className="p-2 truncate">{product.quantity}</td>
                         <td className="hidden p-2 font-bold h-full gap-4 overflow-hidden items-center mt-1 md:flex ">
-                          <button>
+                          <button onClick={e => handleproduct(e, product.id)}>
                             <CiEdit
                               size={34}
                               className="hover:bg-green-500 rounded-lg "
@@ -205,8 +205,8 @@ const ProductListing: React.FC<ProductListingProps> = ({ data }) => {
             </div>
           )}
         </section>
-        <ToastContainer />
       </div>
+      <ToastContainer />
     </>
   );
 };
