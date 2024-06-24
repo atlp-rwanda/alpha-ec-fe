@@ -43,13 +43,12 @@ const ProductCard: React.FC<ProductCard> = ({ product }) => {
               -{product.bonus}%
             </div>
           )}
-          <div className="h-3/4 overflow-hidden w-full flex items-end">
+          <div className="h-3/4 relative overflow-hidden w-full flex justify-center items-center">
             <Image
-              width={200}
-              height={200}
-              src={product.images[1]}
+              src={product.images[0]}
               alt="Product image"
-              className="w-auto object-cover justify-self-end transition-all duration-300 hover:scale-125 animate__animated animate__faster animate__fadeIn"
+              layout="fill"
+              className="object-cover transition-all duration-300 hover:scale-125 animate__animated animate__faster animate__fadeIn"
             />
           </div>
           <div className="w-full h-1/3 flex flex-col gap-0.5 p-3 animate__animated animate__faster animate__fadeIn">

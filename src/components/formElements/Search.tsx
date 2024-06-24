@@ -15,7 +15,7 @@ export const Search = ({ loading, onSubmit, ...rest }: SearchProps) => {
   return (
     <form
       onSubmit={onSubmit}
-      className="flex flex-row justify-between w-full mt-4 lg:mt-0 lg:w-1/2 marker:items-center relative rounded-md text-main-400 overflow-hidden"
+      className="flex flex-row bg-main-100 justify-between w-full mt-4 lg:mt-0 lg:w-1/2 marker:items-center relative rounded-md text-main-400 overflow-hidden"
     >
       <span className="absolute left-2 h-full items-center flex">
         <IoSearchSharp size={24} />
@@ -23,7 +23,7 @@ export const Search = ({ loading, onSubmit, ...rest }: SearchProps) => {
       <input
         {...rest}
         type="text"
-        className="border border-main-400 h-9 w-full px-2 bg-gray-100 rounded-md pl-6 md:pr-24 pr-4 lg:pr-64 "
+        className="border bg-main-100 border-main-400 h-9 w-full px-2 bg-gray-100 rounded-md pl-6 md:pr-24 pr-4 lg:pr-64 "
       />
       <button className="bg-main-400  h-9  text-main-100 font-normal text-sm absolute right-0 rounded-e-md hover:bg-main-300 animate__animated animate__faster ">
         {loading ? (

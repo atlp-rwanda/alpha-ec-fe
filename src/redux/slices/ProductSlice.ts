@@ -1,12 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { axiosRequest, FormErrorInterface } from '@/utils';
-
-export interface CategoryAttributes {
-  id: string;
-  name: string;
-  description: string;
-}
+import { CategoryAttributes } from './categorySlice';
 
 interface sellerInterface {
   id: string;
@@ -63,6 +58,7 @@ interface ProductState {
   loading: boolean;
   error: FormErrorInterface | null;
   success: boolean;
+  showSideNav: boolean;
 }
 
 interface ProductsResponse {
@@ -84,7 +80,8 @@ const initialState: ProductState = {
   selectedProduct: null,
   loading: false,
   error: null,
-  success: false
+  success: false,
+  showSideNav: true
 };
 
 export const getProductDetails = createAsyncThunk(
@@ -151,7 +148,11 @@ export const getProducts = createAsyncThunk(
 const productSlice = createSlice({
   name: 'product',
   initialState,
-  reducers: {},
+  reducers: {
+    showSideNav(state, action) {
+      state.showSideNav = action.payload;
+    }
+  },
   extraReducers: builder => {
     builder
       .addCase(getProductDetails.pending, state => {
@@ -192,3 +193,4 @@ const productSlice = createSlice({
 });
 
 export default productSlice.reducer;
+export const { showSideNav } = productSlice.actions;

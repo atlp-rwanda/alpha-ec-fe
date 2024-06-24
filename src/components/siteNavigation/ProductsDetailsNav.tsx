@@ -15,14 +15,14 @@ const ProductsDetailsNav: FC = () => {
       <nav className="w-full flex justify-between items-center py-0.5 shadow-sm px-4">
         <Link
           href="/products"
-          className="text-sm font-bold cursor-pointer border px-4 py-1 text-main-400 flex items-center justify-between gap-4 rounded-md"
+          className="text-sm font-bold cursor-pointer border mt-4 lg:mt-0 px-2 py-1 text-main-400 flex items-center justify-between gap-4 rounded-md"
         >
           <span className="flex">
             <IoArrowBackCircleOutline size={24} />
           </span>
-          BACK
+          <span className="hidden lg:block">BACK</span>
         </Link>
-        <div className="w-min flex flex-row justify-end gap-3">
+        <div className="hidden w-min lg:flex flex-row justify-end gap-3">
           <Link
             href="/cart"
             className="relative flex flex-col items-center justify-center cursor-pointer text-black p-1"

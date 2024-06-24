@@ -4,9 +4,10 @@ import resetpasswordReducer from './slices/ResetpasswordSlice';
 import forgotPasswordReducer from './slices/ForgotpasswordSlice';
 import userReducer from './slices/userSlice';
 import productReducer from './slices/ProductSlice';
+import categoriesReducer from './slices/categorySlice';
+import sellerReducer from './slices/sellerSlice';
 import usersReducer from './slices/disableaccount';
 import profileReducer from './slices/profileSlice';
-import categoriesReducer from './slices/categoriesSlice';
 import itemReducer from './slices/itemSlice';
 import updatePasswordReducer from './slices/updatePasswordSlice';
 
@@ -17,6 +18,7 @@ export const rootReducer = combineReducers({
   products: productReducer,
   Resetpassword: resetpasswordReducer,
   forgotPassword: forgotPasswordReducer,
+  sellers: sellerReducer,
   registereUsers: usersReducer,
   profile: profileReducer,
   product: itemReducer,
