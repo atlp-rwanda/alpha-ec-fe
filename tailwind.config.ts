@@ -32,6 +32,7 @@ const config: Config = {
         'gray-light': '#d3dce6',
         main: {
           100: '#E7F6F2',
+          150: '#E6EDED',
           200: '#A5C9CA',
           300: '#395B64',
           400: '#2C3333'

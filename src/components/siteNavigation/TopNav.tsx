@@ -22,7 +22,7 @@ const TopNav: FC = () => {
     if (tokenString) {
       const tokenData = JSON.parse(tokenString);
       const decoded = tokenData
-        ? (jwtDecode(tokenString) as DecodedInterface)
+        ? (jwtDecode(tokenData) as DecodedInterface)
         : null;
 
       if (decoded) {

@@ -35,6 +35,7 @@ export interface ProductInterface {
   createdAt: Date;
   updatedAt: Date;
   expired: boolean;
+  description: string;
 }
 
 export interface ProductDataInterface {
