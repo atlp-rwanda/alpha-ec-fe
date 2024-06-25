@@ -36,14 +36,14 @@ const TopNav: FC = () => {
   }, [dispatch]);
 
   return (
-    <nav className="bg-main-400 w-ful text-xs px-4 h-8 p-1 flex items-center justify-between text-gray-200">
+    <nav className="bg-main-400 w-ful text-xs px-4 h-full py-0.5 flex items-center justify-between text-gray-200">
       <div className="w-1/10 text-xxs  uppercase">
         <Link href="/">ALPHA MARKET</Link>
       </div>
       <div className="hidden md:w-max md:flex justify-between gap-6">
         <label>
           <span className="text-main-200 text-xxs  uppercase">Currency: </span>
-          RWF
+          USD
         </label>
         <label>
           <span className="text-main-200 text-xxs  uppercase">Language: </span>

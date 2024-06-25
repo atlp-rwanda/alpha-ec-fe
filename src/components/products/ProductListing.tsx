@@ -12,9 +12,11 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { RootState } from '@/redux/store';
 import { USER_ROLE } from '@/redux/slices/userSlice';
 import { GetStars } from '../reviews/GetStars';
-import { Button, ButtonStyle } from '../formElements';
-import { IoIosCloseCircle, IoIosCloseCircleOutline } from 'react-icons/io';
+import { IoIosCloseCircle } from 'react-icons/io';
 import { CiEdit } from 'react-icons/ci';
+import { HiOutlineHome } from 'react-icons/hi2';
+import Link from 'next/link';
+import NotFound from '../Loading/ProductNotFound';
 interface ProductListingProps {
   data: ProductDataInterface;
 }
@@ -54,21 +56,25 @@ const ProductListing: React.FC<ProductListingProps> = ({ data }) => {
 
   return (
     <>
-      {/* <ProductNav /> */}
-      <div className="flex justify-between m-0 gap-4 min-w-screen p-0 w-full z-0">
-        <div className="min-h-screen bg-white hidden lg:flex flex-col lg:w-1/5"></div>
-
-        <section className="sm:py-4 w-full p-2 flex flex-col gap-2 ">
-          <div className=" flex justify-between w-full h-min pt-20">
-            <h2 className="text-xl font-bold flex gap-3 items-center pl-2">
-              <MdOutlineAddchart />
-              <span>All products</span>
+      <div className="flex justify-between  gap-4 min-w-screen  w-full z-0 pl-2">
+        <section className="w-full pt-0 flex flex-col gap-2 b ">
+          <div className="mt-2 flex justify-between w-full h-min py-2 px-2 fixed z-40 bg-main-100">
+            <h2 className="text-base font-bold flex gap-2 items-center">
+              <Link href={'/'}>
+                <HiOutlineHome
+                  size={24}
+                  className="hover:underline cursor-pointer text-sm hover:text-main-200"
+                />
+              </Link>
+              <span>Products</span>
             </h2>
           </div>
 
-          <div className=" w-full p-1 rounded-lg overflow-y-auto">
-            {loggedIn === USER_ROLE.SELLER ? (
-              <table className="min-w-full text-sm text-left">
+          <div className=" w-full p-1 rounded-lg overflow-y-auto mt-10">
+            {products?.length == 0 ? (
+              <NotFound />
+            ) : loggedIn === USER_ROLE.SELLER ? (
+              <table className="min-w-full text-sm text-left mt-10">
                 <thead>
                   <tr>
                     <th className="p-2 w-min">Image</th>
@@ -116,7 +122,7 @@ const ProductListing: React.FC<ProductListingProps> = ({ data }) => {
                 </tbody>
               </table>
             ) : (
-              <div className="w-full grid xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 rounded-xl overflow-y-auto">
+              <div className="w-full grid gap-3 rounded-xl overflow-y-auto auto-fit-grid">
                 {products &&
                   products.map(product => (
                     <ProductCard product={product} key={product.slug} />

@@ -13,6 +13,9 @@ import { RegistrationKeys } from '../../(Authentication)/register/page';
 import CustomSelect from '../../../components/CustomSelect/CustomSelect';
 import { fetchCategories } from '@/redux/slices/categoriesSlice';
 import { addProduct } from '@/redux/slices/itemSlice';
+import { RootState } from '@/redux/store';
+import { useSelector } from 'react-redux';
+import { getCategories } from '@/redux/slices/categorySlice';
 
 export interface FormDataInterface {
   price: string;
@@ -28,8 +31,6 @@ export type ProductKeys = keyof FormDataInterface;
 
 const Form = () => {
   const dispatch = useAppDispatch();
-  const categories = useAppSelector(state => state.categories.categories);
-  const categoriesStatus = useAppSelector(state => state.categories.status);
   const { status, error } = useAppSelector(state => state.product);
   const [files, setFiles] = useState<File[]>([]);
   const [category, setCategory] = useState<string | null>(null);
@@ -46,8 +47,14 @@ const Form = () => {
   const [formData, setFormData] =
     useState<FormDataInterface>(InitialFormValues);
 
+  const { categoriesLoading, success, categoriesData } = useSelector(
+    (state: RootState) => state.categories
+  );
+
   useEffect(() => {
-    dispatch(fetchCategories());
+    if (categoriesData === null && !categoriesLoading && error === null) {
+      dispatch(getCategories());
+    }
   }, [dispatch]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -164,14 +171,19 @@ const Form = () => {
               )}
             </div>
           ))}
-          <CustomSelect
-            options={categories?.map((cat: { id: string; name: string }) => ({
-              value: cat.id,
-              label: cat.name
-            }))}
-            selected={category}
-            onChange={setCategory}
-          />
+
+          {categoriesData && (
+            <CustomSelect
+              options={categoriesData?.map(
+                (cat: { id: string; name: string }) => ({
+                  value: cat.id,
+                  label: cat.name
+                })
+              )}
+              selected={category}
+              onChange={setCategory}
+            />
+          )}
           <input
             type="text"
             placeholder="Expiry Date"
