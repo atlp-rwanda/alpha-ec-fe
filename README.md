@@ -13,7 +13,9 @@
 
 # alpha-ec-fe
 
-# Alpha E-Commerce --- Frontend
+# Alpha E-Com
+
+merce --- Frontend
 
 ## Different Badges will go here.
 

@@ -5,10 +5,10 @@ import { useState, useEffect, FormEvent } from 'react';
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks/hook';
-import Layout from '../../dashboard/Layout';
 import { ErrorInterface, ProductFields, getErrorForField } from '@/utils';
 import { Button, ButtonStyle, Input } from '@/components/formElements';
 import useToast from '@/components/alerts/Alerts';
+import Layout from '../../dashboard/Layout';
 import { RegistrationKeys } from '../../(Authentication)/register/page';
 import CustomSelect from '../../../components/CustomSelect/CustomSelect';
 import { fetchCategories } from '@/redux/slices/categoriesSlice';
@@ -191,7 +191,6 @@ const Form = () => {
             onChange={e => setExpiryDate(e.target.value)}
             className="w-full px-4 py-2 border-b-2 border-black rounded"
           />
-
           <div className="sm:flex sm:justify-between md:flex md:justify-between lg:flex lg:justify-between">
             <Button
               label="Submit"

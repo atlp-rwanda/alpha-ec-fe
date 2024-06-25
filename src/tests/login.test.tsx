@@ -1,7 +1,7 @@
 import { configureStore, AnyAction } from '@reduxjs/toolkit';
 import MockAdapter from 'axios-mock-adapter';
-import { logInUser, LogInInterface } from '../redux/slices/userSlice';
-import userReducer from '../redux/slices/userSlice';
+import { logInUser, LogInInterface } from '../redux/slices/userSlice.ts';
+import userReducer from '../redux/slices/userSlice.ts';
 import { ThunkDispatch } from 'redux-thunk';
 import { axiosInstance, URL } from '@/utils';
 
