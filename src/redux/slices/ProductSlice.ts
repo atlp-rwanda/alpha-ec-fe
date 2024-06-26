@@ -11,6 +11,7 @@ interface sellerInterface {
 }
 
 export interface ProductInterface {
+  description: string | undefined;
   id: string;
   name: string;
   slug: string;
@@ -18,7 +19,7 @@ export interface ProductInterface {
   categoryId: string;
   category?: CategoryAttributes;
   price: number;
-  expiryDate: Date;
+  expiryDate: string;
   bonus: string;
   status: boolean;
   quantity: number;
@@ -47,6 +48,15 @@ export interface SellerInterface {
 }
 
 export interface ProductDetailsInterface {
+  bonus: string;
+  status: string;
+  price: string;
+  quantity: string;
+  description: string;
+  categoryId: null;
+  expiryDate: string;
+  images: never[];
+  name: string;
   product: ProductInterface;
   relatedProducts: ProductInterface[];
   sellerInfo: SellerInterface;
@@ -109,7 +119,7 @@ export const deleteProduct = createAsyncThunk(
       const response = await axiosRequest(
         'DELETE',
         `/products/${productId}`,
-        ' ',
+        {},
         true
       );
       return response.data.data;
@@ -197,7 +207,7 @@ const productSlice = createSlice({
         state.success = false;
       })
       .addCase(deleteProduct.pending, state => {
-        state.loading = true;
+        state.loading = false;
         state.error = null;
         state.success = false;
       })
