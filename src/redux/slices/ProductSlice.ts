@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { axiosRequest, FormErrorInterface } from '@/utils';
 import { CategoryAttributes } from './categorySlice';
+import { ReactNode } from 'react';
 
 interface sellerInterface {
   id: string;
@@ -11,6 +12,7 @@ interface sellerInterface {
 }
 
 export interface ProductInterface {
+  description: ReactNode;
   id: string;
   name: string;
   slug: string;
@@ -53,6 +55,7 @@ export interface ProductDetailsInterface {
 }
 
 interface ProductState {
+  reviews: any;
   data: ProductDataInterface | null;
   selectedProduct: ProductDetailsInterface | null;
   loading: boolean;
@@ -81,7 +84,8 @@ const initialState: ProductState = {
   loading: false,
   error: null,
   success: false,
-  showSideNav: true
+  showSideNav: true,
+  reviews: undefined
 };
 
 export const getProductDetails = createAsyncThunk(

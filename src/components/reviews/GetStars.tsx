@@ -17,5 +17,5 @@ export const GetStars: React.FC<GetStarsProps> = ({ rating }) => {
     }
   }
 
-  return <span className="flex w-min gap-0.5 text-main-300">{stars}</span>;
+  return <span className="flex w-min gap-0.5 text-amber-400">{stars}</span>;
 };
