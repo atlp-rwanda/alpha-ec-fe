@@ -36,32 +36,32 @@ export const Button = ({
   ...rest
 }: ButtonProps) => {
   return (
-    <div className="relative w-full">
-      <button
-        type={'submit'}
-        {...rest}
-        className={`rounded-full max-w-full min-w-52 md:w-max justify-center ${size === ButtonSize.SMALL ? 'px-2 py-1 text-sm' : 'px-3 py-2 text-md'} text-sm hover:bg-main-300 hover:shadow-md flex items-center gap-2 cursor-pointer  lg:mt-8 mx-auto  ${
-          style === ButtonStyle.LIGHT
-            ? 'border-1 border-main-400  font-medium text-main-400 bg-main-100 bg-transparent'
-            : style === ButtonStyle.DARK
-              ? 'bg-main-400 text-main-100 font-medium'
-              : loading
-                ? 'animate-ping'
-                : ''
-        }`}
-      >
-        {loading ? (
-          <span className="flex items-center justify-center gap-2">
-            <AiOutlineLoading3Quarters className="text-base text-main-100 animate-spin" />
-            Loading...
-          </span>
-        ) : (
-          <span className=" flex gap-1 items-center">
-            {icon && React.createElement(icon, { size: 20 })}
-            {label}
-          </span>
-        )}
-      </button>
-    </div>
+    // <div className="relative w-full">
+    <button
+      type={'submit'}
+      {...rest}
+      className={`rounded-full max-w-full min-w-52 md:w-max justify-center ${size === ButtonSize.SMALL ? 'px-2 py-1 text-sm' : 'px-3 py-2 text-md'} text-sm hover:bg-main-300 hover:shadow-md flex items-center gap-2 cursor-pointer  lg:mt-8 mx-auto  ${
+        style === ButtonStyle.LIGHT
+          ? 'border-1 border-main-400  font-medium text-main-400 bg-main-100 bg-transparent'
+          : style === ButtonStyle.DARK
+            ? 'bg-main-400 text-main-100 font-medium'
+            : loading
+              ? 'animate-ping'
+              : ''
+      }`}
+    >
+      {loading ? (
+        <span className="flex items-center justify-center gap-2">
+          <AiOutlineLoading3Quarters className="text-base text-main-100 animate-spin" />
+          Loading...
+        </span>
+      ) : (
+        <span className=" flex gap-1 items-center">
+          {icon && React.createElement(icon, { size: 20 })}
+          {label}
+        </span>
+      )}
+    </button>
+    // </div>
   );
 };

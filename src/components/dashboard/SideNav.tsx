@@ -10,6 +10,7 @@ import { IoIosHelpCircleOutline } from 'react-icons/io';
 import { IoCalendarNumberOutline } from 'react-icons/io5';
 import { useRouter, usePathname } from 'next/navigation';
 import { FaKey, FaUserPlus } from 'react-icons/fa';
+import { IoChatbox } from 'react-icons/io5';
 
 type SidebarButtonProps = {
   paths?: string[];
