@@ -9,6 +9,8 @@ export interface CategoryAttributes {
 }
 
 interface CategoriesState {
+  categories: any;
+  status: any;
   categoriesData: CategoryAttributes[] | null;
   categoriesLoading: boolean;
   error: FormErrorInterface | null;

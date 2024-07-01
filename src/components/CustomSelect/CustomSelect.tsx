@@ -45,6 +45,7 @@ const CustomSelect: FC<CustomSelectProps> = ({
       >
         {selected ? (
           options.find(opt => opt.value === selected)?.label
+          
         ) : (
           <span className=" text-gray">Select a category</span>
         )}
