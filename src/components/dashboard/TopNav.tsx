@@ -4,8 +4,16 @@ import { FiSearch } from 'react-icons/fi';
 import { CiBrightnessDown } from 'react-icons/ci';
 import { IoIosNotificationsOutline } from 'react-icons/io';
 import { BiMenuAltLeft } from 'react-icons/bi';
+import { FaMessage } from 'react-icons/fa6';
 import SideNav from './SideNav';
 import Image from 'next/image';
+
+type topBar = {
+  paths?: string[];
+  icon?: React.ReactNode;
+  children?: React.ReactNode;
+  className?: React.ReactNode;
+};
 
 const TopNav = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -37,6 +45,10 @@ const TopNav = () => {
           </button>
           <button className="text-lg">
             <i className="fas fa-sun"></i>
+          </button>
+          <button className="text-lg">
+            <i className="fas fa-sun"></i>
+            <FaMessage />
           </button>
           <div className="flex gap-3">
             <IoIosNotificationsOutline className="text-4xl text-black py-1" />

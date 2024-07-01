@@ -1,6 +1,7 @@
 import { IconType } from 'react-icons';
 import { MdOutlineBookmarkBorder } from 'react-icons/md';
 import { VscAccount } from 'react-icons/vsc';
+import { FaRegMessage } from 'react-icons/fa6';
 
 export interface NavigationSubmenuInterface {
   title: string;
@@ -46,6 +47,14 @@ export const TOP_MENUS: NavigationInterface[] = [
 ];
 
 export const PRODUCT_ICONS: NavigationInterface[] = [
+  {
+    title: 'account',
+    label: 'CHAT',
+    access: 'all',
+    url: '/chat',
+    icon: FaRegMessage,
+    subMenus: []
+  },
   {
     title: 'orders',
     label: 'ORDERS',
