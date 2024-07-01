@@ -9,8 +9,10 @@ import { RiAccountCircleLine, RiLogoutBoxRLine } from 'react-icons/ri';
 import { IoIosHelpCircleOutline } from 'react-icons/io';
 import { IoCalendarNumberOutline } from 'react-icons/io5';
 import { useRouter, usePathname } from 'next/navigation';
-import { FaKey, FaUserPlus } from 'react-icons/fa';
 import { IoChatbox } from 'react-icons/io5';
+import { FaKey, FaHeart, FaUserPlus } from 'react-icons/fa';
+import { BsCart3 } from 'react-icons/bs';
+import { CiHeart } from 'react-icons/ci';
 
 type SidebarButtonProps = {
   paths?: string[];
@@ -68,20 +70,26 @@ const SideNav: React.FC<SideNavProps1> = ({ className }) => {
             <FiHome className="text-2xl" />
             <p>Dashboard</p>
           </SidebarButton>
-          <SidebarButton paths={['/profile', '/profile-edit']}>
+          <SidebarButton
+            paths={['/dashboard/profile', '/dashboard/profile-edit']}
+          >
             <MdOutlineManageAccounts className="text-2xl" />
             <p>Profile</p>
           </SidebarButton>
-          <SidebarButton paths={['/update-password']}>
+          <SidebarButton paths={['/dashboard/update-password']}>
             <FaKey className="text-2xl" />
             <p>Privacy</p>
           </SidebarButton>
         </div>
         <div className="mt-6 ">
           <h2 className="text-xl font-semibold">Activities</h2>
-          <SidebarButton paths={[]}>
-            <FcStatistics className="text-xl" />
-            <p className="text-nowrap">Statistics</p>
+          <SidebarButton paths={['/dashboard/cart']}>
+            <BsCart3 className="text-xl" />
+            <p className="text-nowrap">Cart</p>
+          </SidebarButton>
+          <SidebarButton paths={['/dashboard/wishlist']}>
+            <FaHeart className=" text-xl " />
+            <p className=" text-nowrap">Wishlist</p>
           </SidebarButton>
           <SidebarButton paths={['/assignrole']}>
             <FaUserPlus className="text-xl" />

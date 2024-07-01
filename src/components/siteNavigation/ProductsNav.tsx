@@ -21,6 +21,10 @@ import {
 import { VscMenu } from 'react-icons/vsc';
 import { GrClose } from 'react-icons/gr';
 import Filters from './Filter';
+import { CiHeart } from 'react-icons/ci';
+import { useAppSelector } from '@/redux/hooks/hook';
+import { fetchWishes } from '@/redux/slices/wishlistSlice';
+import { fetchCart } from '@/redux/slices/cartSlice';
 
 const initialCategory: CategoryAttributes = {
   id: '',
@@ -40,6 +44,20 @@ const ProductNav: FC = () => {
     (state: RootState) => state.categories
   );
 
+  const { wishlist, status } = useAppSelector(
+    (state: RootState) => state.wishlist
+  );
+  const { wishlist2 } = useAppSelector((state: RootState) => state.wishlist);
+  const { cart } = useAppSelector((state: RootState) => state.cart);
+
+  useEffect(() => {
+    dispatch(fetchWishes());
+  }, [dispatch]);
+  useEffect(() => {
+    dispatch(fetchCart());
+  }, [dispatch]);
+
+  // const { loading } = useSelector((state: RootState) => state.products);
   const [searchData, setSearchData] = useState<string>('');
   const handleNavigation = (url: string) => {
     router.push(url);
@@ -166,14 +184,24 @@ const ProductNav: FC = () => {
         </span>
         <div className="w-min hidden lg:flex lg:flex-row justify-end gap-3">
           <Link
-            href="/cart"
+            href="/dashboard/cart"
             className="relative flex flex-col items-center justify-center cursor-pointer text-black p-1"
           >
             <BsCart3 size={24} />
             <span className="absolute top-0 right-0 bg-main-400 text-sm text-main-100 font-bold p-0.5 px-1 rounded-full">
-              {0}
+              {cart?.produtcs?.length || 0}
             </span>
             <label className="text-xxs text-black">CART</label>
+          </Link>
+          <Link
+            href="/dashboard/wishlist"
+            className="relative flex flex-col items-center justify-center cursor-pointer text-black p-1"
+          >
+            <CiHeart size={32} />
+            <span className="absolute top-0 right-0 bg-main-400 text-sm text-main-100 font-bold p-0.5 px-1 rounded-full">
+              {wishlist?.count || wishlist2?.count || 0}
+            </span>
+            <label className="text-xxs text-black">WISHLIST</label>
           </Link>
           {PRODUCT_ICONS.map(
             item =>
@@ -205,14 +233,24 @@ const ProductNav: FC = () => {
             >
               <div className="w-full flex flex-row justify-center  gap-3">
                 <Link
-                  href="/cart"
+                  href="/dashboard/cart"
                   className="relative flex flex-col items-center justify-center cursor-pointer text-black p-1"
                 >
                   <BsCart3 size={24} />
                   <span className="absolute top-0 right-0 bg-main-400 text-sm text-main-100 font-bold p-0.5 px-1 rounded-full">
-                    {0}
+                    {cart?.produtcs?.length || 0}
                   </span>
                   <label className="text-xxs text-black">CART</label>
+                </Link>
+                <Link
+                  href="/dashboard/wishlist"
+                  className="relative flex flex-col items-center justify-center cursor-pointer text-black p-1"
+                >
+                  <CiHeart size={32} />
+                  <span className="absolute top-0 right-0 bg-main-400 text-sm text-main-100 font-bold p-0.5 px-1 rounded-full">
+                    {wishlist?.count || wishlist2?.count || 0}
+                  </span>
+                  <label className="text-xxs text-black">WISHLIST</label>
                 </Link>
                 {PRODUCT_ICONS.map(
                   item =>

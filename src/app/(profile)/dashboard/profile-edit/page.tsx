@@ -91,14 +91,14 @@ const ProfileEdit: React.FC = () => {
 
   if (!profile) {
     return (
-      <div className=" flex justify-center items-center w-full h-full text-grayborder-b-2 mb-4 mt-[100px] border-gray text-[22px]">
+      <div className=" flex justify-center items-center w-full h-full text-grayborder-b-2  border-gray text-[22px]">
         No profile data available.
       </div>
     );
   }
   if (!profile.data) {
     return (
-      <div className=" flex justify-center items-center w-full h-full text-grayborder-b-2 mb-4 mt-[100px] border-gray text-[22px]">
+      <div className=" flex justify-center items-center w-full h-full text-grayborder-b-2  border-gray text-[22px]">
         Unauthorized
       </div>
     );
@@ -128,7 +128,7 @@ const ProfileEdit: React.FC = () => {
     if (updateProfile.fulfilled.match(result)) {
       showSuccess('Profile updated successfully!');
       setTimeout(() => {
-        router.push('/profile');
+        router.push('/dashboard/profile');
       }, 2000);
     } else if (updateProfile.rejected.match(result) && result.payload) {
       const errorMessage =
@@ -139,7 +139,7 @@ const ProfileEdit: React.FC = () => {
 
   return (
     <div>
-      <div className="w-full flex align-middle mt-2 ">
+      <div className="w-full flex align-middle ">
         <div className="flex font-extrabold text-main-400 text-3xl md:text-4xl lg:text-4xl mb-4 mx-auto">
           My Profile
         </div>

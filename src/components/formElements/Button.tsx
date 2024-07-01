@@ -10,6 +10,7 @@ interface ButtonProps {
   size?: ButtonSize;
   icon?: IconType;
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  className?: string;
 }
 
 export enum ButtonSize {
@@ -33,6 +34,7 @@ export const Button = ({
   size,
   icon,
   onClick,
+  className,
   ...rest
 }: ButtonProps) => {
   return (

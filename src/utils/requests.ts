@@ -35,6 +35,26 @@ if (typeof window !== 'undefined') {
   }
 }
 
+export const axiosInstanceWithoutInterceptors: AxiosInstance = axios.create({
+  baseURL: `${URL}/api`,
+  headers: {
+    'Content-Type': 'application/json'
+  }
+});
+
+axiosInstanceWithoutInterceptors.interceptors.request.use(
+  (config: CustomAxiosRequestConfig) => {
+    if (config.authenticate && token) {
+      config.headers = config.headers || {};
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  error => {
+    return Promise.reject(error);
+  }
+);
+
 axiosInstance.interceptors.request.use(
   (config: CustomAxiosRequestConfig) => {
     if (config.authenticate && token) {
@@ -73,7 +93,8 @@ export const axiosRequest = async <TRequest = any, TResponse = any>(
   method: Method,
   url: string,
   data?: TRequest,
-  authenticate?: boolean
+  authenticate?: boolean,
+  bypassInterceptors?: boolean
 ): Promise<AxiosResponse<TResponse>> => {
   const headers: AxiosHeaders = new AxiosHeaders();
 
@@ -88,7 +109,11 @@ export const axiosRequest = async <TRequest = any, TResponse = any>(
     authenticate
   };
 
-  return axiosInstance.request<TResponse>(requestConfig);
+  const instance = bypassInterceptors
+    ? axiosInstanceWithoutInterceptors
+    : axiosInstance;
+
+  return instance.request<TResponse>(requestConfig);
 };
 
 export default axiosInstance;
