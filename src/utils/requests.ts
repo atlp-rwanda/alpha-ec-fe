@@ -23,6 +23,10 @@ interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
   authenticate?: boolean;
 }
 
+interface CustomAxiosConfig extends AxiosRequestConfig {
+  authenticate?: boolean;
+}
+
 export let token: string | null = null;
 if (typeof window !== 'undefined') {
   const tokenString = localStorage.getItem('token');
@@ -75,17 +79,17 @@ export const axiosRequest = async <TRequest = any, TResponse = any>(
   data?: TRequest,
   authenticate?: boolean
 ): Promise<AxiosResponse<TResponse>> => {
-  const headers: AxiosHeaders = new AxiosHeaders();
+  const headers = { ...axiosInstance.defaults.headers.common };
 
-  if (data instanceof FormData) {
-    headers.set('Content-Type', 'multipart/form-data');
+  if (authenticate && token) {
+    headers['Authorization'] = `Bearer ${token}`;
   }
-  const requestConfig: CustomAxiosRequestConfig = {
+
+  const requestConfig: CustomAxiosConfig = {
     method,
     url,
     data,
-    headers,
-    authenticate
+    headers
   };
 
   return axiosInstance.request<TResponse>(requestConfig);

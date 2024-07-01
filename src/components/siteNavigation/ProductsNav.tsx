@@ -75,7 +75,15 @@ const ProductNav: FC = () => {
     if (categoriesData === null && !categoriesLoading && error === null) {
       dispatch(getCategories());
     }
-  }, [router, dispatch, categoriesData, categoriesLoading, selectedCategory]);
+  }, [
+    router,
+    dispatch,
+    categoriesData,
+    categoriesLoading,
+    selectedCategory,
+    loading,
+    error
+  ]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
