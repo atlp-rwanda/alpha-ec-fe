@@ -13,6 +13,7 @@ import itemReducer from './slices/itemSlice';
 import updatePasswordReducer from './slices/updatePasswordSlice';
 import assignRoleReducer from './slices/assignroleSlice';
 import chatsReducer from './slices/chatSlice';
+import updateprofilereducer from './slices/updateproductSlice';
 
 export const rootReducer = combineReducers({
   otp: otpReducer,
@@ -29,7 +30,8 @@ export const rootReducer = combineReducers({
   product: itemReducer,
   updatePassword: updatePasswordReducer,
   users: userReducer,
-  chat: chatsReducer
+  chat: chatsReducer,
+  updateproduct: updateprofilereducer
 });
 
 export const store = configureStore({

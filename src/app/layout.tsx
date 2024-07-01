@@ -27,10 +27,10 @@ export default function RootLayout({
       </head>
       <body>
         <Providers>
-          <div className="flex min-h-screen flex-col justify-between min-w-screen bg-main-100 text-main-400 h-auto relative  px-0">
+          <div className="flex min-h-screen flex-col justify-between min-w-screen bg-main-100 text-main-400 h-auto relative p-20 px-0">
             <Suspense fallback={<PageLoading />}>
               {children}
-              <Footer />
+              {/* <Footer /> */}
             </Suspense>
           </div>
         </Providers>
