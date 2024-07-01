@@ -58,10 +58,7 @@ interface ProductState {
   loading: boolean;
   error: FormErrorInterface | null;
   success: boolean;
-<<<<<<< HEAD
   showSideNav: boolean;
-=======
->>>>>>> da26627 (ft update and delete product-#187300104)
   message: String;
 }
 
@@ -85,10 +82,7 @@ const initialState: ProductState = {
   loading: false,
   error: null,
   success: false,
-<<<<<<< HEAD
   showSideNav: true,
-=======
->>>>>>> da26627 (ft update and delete product-#187300104)
   message: ''
 };
 
