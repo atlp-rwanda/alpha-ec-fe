@@ -23,7 +23,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import { deleteProduct } from '@/redux/slices/ProductSlice';
 
-
 const Details = () => {
   const dispatch = useAppDispatch();
 
