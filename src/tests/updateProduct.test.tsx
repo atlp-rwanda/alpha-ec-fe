@@ -116,5 +116,4 @@ describe.only('updateProductSlice tests', () => {
     const state = store.getState().updateproduct;
     expect(state.loading).toBe(false);
   });
-
 });

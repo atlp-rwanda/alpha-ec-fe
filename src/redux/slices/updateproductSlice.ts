@@ -9,7 +9,7 @@ export interface productData {
   quantity: string;
   description: string;
   categoryId?: string;
-  expiryDate?: string;
+  expiryDate?: Date;
   images?: File[];
 }
 

@@ -11,7 +11,6 @@ import { Button, ButtonStyle, Input } from '@/components/formElements';
 import useToast from '@/components/alerts/Alerts';
 import { RegistrationKeys } from '../../(Authentication)/register/page';
 import { fetchCategories } from '@/redux/slices/categoriesSlice';
-import { addProduct } from '@/redux/slices/itemSlice';
 import { updateProduct } from '@/redux/slices/updateproductSlice';
 import { getProductDetails, getProducts } from '@/redux/slices/ProductSlice';
 import { useSelector } from 'react-redux';
@@ -19,6 +18,8 @@ import { RootState } from '@/redux/store';
 import { FormErrorInterface } from '@/utils';
 import { ToastContainer } from 'react-toastify';
 import { getCategories } from '@/redux/slices/categorySlice';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import CustomSelect from '@/components/CustomSelect/CustomSelect';
 
 export interface FormDataInterface {
@@ -28,7 +29,7 @@ export interface FormDataInterface {
   quantity?: number;
   description?: string;
   categoryId?: string;
-  expiryDate?: string;
+  expiryDate?: Date | null;
   images?: File[];
 }
 
@@ -38,7 +39,7 @@ export interface allData {
 }
 export type ProductKeys = keyof FormDataInterface;
 
-const UpdateForm = () => {
+const UpdateForm: React.FC = () => {
   const searchParams = useSearchParams();
   const productId = searchParams.get('productId');
 
@@ -61,7 +62,7 @@ const UpdateForm = () => {
   const [files, setFiles] = useState<File[]>([]);
   const [existingImages, setExistingImages] = useState<string[]>([]);
   const [category, setCategory] = useState<string | null>(null);
-  const [expiryDate, setExpiryDate] = useState<string>('');
+  const [expiryDate, setExpiryDate] = useState<Date | null>(null);
   const [errors, setErrors] = useState<ErrorInterface[]>([]);
   const router = useRouter();
   const { showSuccess, showError } = useToast();
@@ -87,7 +88,11 @@ const UpdateForm = () => {
         description: selectedProduct.product.description
       });
       setCategory(selectedProduct.product.category?.id || null);
-      setExpiryDate(selectedProduct.product.expiryDate || '');
+      setExpiryDate(
+        selectedProduct.product.expiryDate
+          ? new Date(selectedProduct.product.expiryDate)
+          : null
+      );
       setExistingImages(selectedProduct.product.images || []);
       changeImage();
     }
@@ -150,7 +155,7 @@ const UpdateForm = () => {
       quantity: formData.quantity,
       description: formData.description,
       categoryId: category || '',
-      expiryDate: expiryDate,
+      expiryDate: expiryDate || null,
       images: files
     };
 
@@ -173,28 +178,12 @@ const UpdateForm = () => {
       formDataToSend.append(`Images`, file);
     });
 
-    const updatedData = {
-      ...formData
-    };
-    const formData2 = new FormData();
-    for (const key in updatedData) {
-      if (
-        updatedData[key as keyof FormDataInterface] !== undefined &&
-        updatedData[key as keyof FormDataInterface] !== null
-      ) {
-        formData2.append(
-          key,
-          updatedData[key as keyof FormDataInterface] as Blob | string
-        );
-      }
-    }
-
     const data = { productId, productData };
 
     const result = await dispatch(updateProduct(data));
 
     if (status === 'succeeded') {
-      showSuccess('product updated successfully!');
+      showSuccess('Product updated successfully!');
       dispatch(getProducts({}));
       setTimeout(() => {
         router.push('/products');
@@ -206,6 +195,7 @@ const UpdateForm = () => {
       showError(errorMessage || `Updating product failed!`);
     }
   };
+
   const changeImage = async () => {
     const downloadedImage: string[] = [];
     const newFile: File[] = [];
@@ -227,14 +217,9 @@ const UpdateForm = () => {
         });
 
         const base64Image: any = await newImage;
-        //return base64Image;
-
         downloadedImage.push(base64Image);
       }
-      // localStorage.setItem('downloadedImage',JSON.stringify(downloadedImage))
       setFiles(newFile);
-      // setPictures(downloadedImage)
-      // setIsImageLoading(false)
     } catch (error) {
       console.error('Error fetching image:', error);
     }
@@ -286,7 +271,7 @@ const UpdateForm = () => {
         </div>
         <form
           className="space-y-4 sm:w-[550px] md:w-[550px]"
-          onSubmit={e => handleSubmit(e)}
+          onSubmit={handleSubmit}
         >
           {ProductFields.map((field, i) => (
             <div
@@ -301,7 +286,7 @@ const UpdateForm = () => {
                 onChange={(e: { target: { value: any } }) =>
                   handleChange(field.key, e.target.value)
                 }
-                valid={getErrorForField(errors, field.key) ? false : true}
+                valid={!getErrorForField(errors, field.key)}
               />
               {getErrorForField(errors, field.key) && (
                 <span className="text-xs text-red-600 px-2 animate__animated animate__fadeInDown">
@@ -322,17 +307,17 @@ const UpdateForm = () => {
               onChange={setCategory}
             />
           )}
-          <input
-            type="text"
-            placeholder="Expiry Date"
-            value={expiryDate}
-            onChange={e => setExpiryDate(e.target.value)}
+          <DatePicker
+            selected={expiryDate}
+            onChange={date => setExpiryDate(date)}
+            dateFormat="yyyy-MM-dd"
             className="w-full px-4 py-2 border-b-2 border-black rounded"
+            placeholderText="Expiry Date / yyyy-MM-dd"
           />
 
           <div className="sm:flex sm:justify-between md:flex md:justify-between lg:flex lg:justify-between">
             <Button
-              label="update"
+              label="Update"
               style={ButtonStyle.DARK}
               disabled={loading}
               loading={loading}
