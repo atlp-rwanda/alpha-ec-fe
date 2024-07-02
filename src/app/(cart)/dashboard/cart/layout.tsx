@@ -1,12 +1,6 @@
 import React from 'react';
-import type { Metadata } from 'next';
-import SideNav from '../../components/dashboard/SideNav';
-import TopNav from '../../components/dashboard/TopNav';
-
-export const metadata: Metadata = {
-  title: 'Profile',
-  description: 'Profile'
-};
+import SideNav from '../../../../components/dashboard/SideNav';
+import TopNav from '../../../../components/dashboard/TopNav';
 
 export default function RootLayout({
   children

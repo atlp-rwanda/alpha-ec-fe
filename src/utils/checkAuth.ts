@@ -2,6 +2,6 @@ export const handleRedirect = (router: any) => {
   const token = localStorage.getItem('token');
 
   if (token) {
-    router.push('/profile');
+    router.push('/dashboard/profile');
   }
 };

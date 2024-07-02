@@ -13,7 +13,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="w-full h-screen flex items-center overflow-hidden -mt-20 fixed">
+    <div className="w-full h-screen flex items-center overflow-hidden fixed">
       <div className="xs:w-full md:w-1/2 h-full angled-right flex flex-col items-center justify-center">
         {children}
       </div>

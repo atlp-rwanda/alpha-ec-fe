@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FC } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -11,10 +11,30 @@ import { BsCart3 } from 'react-icons/bs';
 import TopNav from './TopNav';
 import { boolean } from 'joi';
 import PageLoading from '../Loading/PageLoading';
+import { CiHeart } from 'react-icons/ci';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks/hook';
+import { RootState } from '@/redux/store';
+import { fetchWishes } from '@/redux/slices/wishlistSlice';
+import { fetchCart } from '@/redux/slices/cartSlice';
 
 const MainNav: FC = () => {
   const router = useRouter();
   const [pageLoading, setPageLoading] = useState<boolean>(false);
+
+  const dispatch = useAppDispatch();
+  const { wishlist, status } = useAppSelector(
+    (state: RootState) => state.wishlist
+  );
+  const { wishlist2 } = useAppSelector((state: RootState) => state.wishlist);
+
+  const { cart } = useAppSelector((state: RootState) => state.cart);
+
+  useEffect(() => {
+    dispatch(fetchWishes());
+  }, [dispatch]);
+  useEffect(() => {
+    dispatch(fetchCart());
+  }, [dispatch]);
 
   const handleNavigation = (url: string) => {
     setPageLoading(true);
@@ -57,14 +77,24 @@ const MainNav: FC = () => {
         </div>
         <div className="w-min flex flex-row justify-end gap-3">
           <Link
-            href="/cart"
+            href="/dashboard/cart"
             className="relative flex flex-col items-center justify-center cursor-pointer text-black p-1"
           >
             <BsCart3 size={32} />
             <span className="absolute top-0 right-0 bg-main-400 text-sm text-main-100 font-bold p-0.5 px-1 rounded-full">
-              {0}
+              {cart?.produtcs?.length || 0}
             </span>
             <label className="text-xxs text-black">CART</label>
+          </Link>
+          <Link
+            href="/dashboard/wishlist"
+            className="relative flex flex-col items-center justify-center cursor-pointer text-black p-1"
+          >
+            <CiHeart size={32} />
+            <span className="absolute top-0 right-0 bg-main-400 text-sm text-main-100 font-bold p-0.5 px-1 rounded-full">
+              {wishlist?.count || wishlist2?.count || 0}
+            </span>
+            <label className="text-xxs text-black">WISHLIST</label>
           </Link>
           {PRODUCT_ICONS.map(
             item =>
