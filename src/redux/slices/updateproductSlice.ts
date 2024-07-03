@@ -12,7 +12,6 @@ export interface productData {
   expiryDate?: Date;
   images?: File[];
 }
-
 export interface ProductResponse {
   status: string;
   data: productData;
