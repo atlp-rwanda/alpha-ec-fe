@@ -21,6 +21,7 @@ import { addToCart } from '@/redux/slices/cartSlice';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
+import { deleteProduct } from '@/redux/slices/ProductSlice';
 
 const Details = () => {
   const dispatch = useAppDispatch();
@@ -30,7 +31,7 @@ const Details = () => {
 
   const [quantity2, setQuantity] = useState<number>(1);
 
-  const { selectedProduct, loading, error } = useSelector(
+  const { selectedProduct, loading, error, message } = useSelector(
     (state: RootState) => state.products
   );
   const wishlist = useAppSelector(
@@ -53,6 +54,10 @@ const Details = () => {
     dispatch(showSideNav(false));
     productId && dispatch(getProductDetails(productId));
   }, [productId, dispatch]);
+
+  useEffect(() => {
+    productId && dispatch(deleteProduct(productId));
+  }, [dispatch, productId]);
 
   const handleAdd = () => {
     setQuantity(prevQuantity => prevQuantity + 1);

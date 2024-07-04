@@ -17,6 +17,7 @@ import wishlistReducer from './slices/wishlistSlice';
 import cartReducer from './slices/cartSlice';
 import ordersReducer from './slices/ordersSlice';
 import paymentReducer from './slices/payment';
+import updateprofilereducer from './slices/updateproductSlice';
 
 export const rootReducer = combineReducers({
   otp: otpReducer,
@@ -37,13 +38,13 @@ export const rootReducer = combineReducers({
   wishlist: wishlistReducer,
   cart: cartReducer,
   orders: ordersReducer,
-  payment: paymentReducer
+  payment: paymentReducer,
+  updateproduct: updateprofilereducer
 });
 
 export const store = configureStore({
   reducer: rootReducer
 });
-
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 export default store;
