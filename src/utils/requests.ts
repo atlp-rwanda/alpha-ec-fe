@@ -68,26 +68,26 @@ axiosInstance.interceptors.request.use(
   }
 );
 
-axiosInstance.interceptors.response.use(
-  response => {
-    return response;
-  },
-  (error: AxiosError) => {
-    if (error.response?.status === 401) {
-      localStorage.removeItem('token');
-      if (
-        typeof window !== 'undefined' &&
-        !window.location.pathname.includes('/login')
-      ) {
-        window.location.href = '/login';
-      }
-    }
-    if (error.response?.status === 403) {
-      window.location.href = '/';
-    }
-    return Promise.reject(error);
-  }
-);
+// axiosInstance.interceptors.response.use(
+//   response => {
+//     return response;
+//   },
+//   (error: AxiosError) => {
+//     if (error.response?.status === 401) {
+//       localStorage.removeItem('token');
+//       if (
+//         typeof window !== 'undefined' &&
+//         !window.location.pathname.includes('/login')
+//       ) {
+//         window.location.href = '/login';
+//       }
+//     }
+//     if (error.response?.status === 403) {
+//       window.location.href = '/';
+//     }
+//     return Promise.reject(error);
+//   }
+// );
 
 export const axiosRequest = async <TRequest = any, TResponse = any>(
   method: Method,

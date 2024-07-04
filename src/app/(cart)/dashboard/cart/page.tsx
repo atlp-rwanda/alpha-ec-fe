@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks/hook';
 import { RootState } from '@/redux/store';
-import { FormErrorInterface } from '@/utils';
+import { FormErrorInterface, axiosInstance, axiosRequest } from '@/utils';
 import useToast from '@/components/alerts/Alerts';
 import {
   cartFormData,
@@ -26,7 +26,6 @@ const Cart: React.FC = () => {
 
   const [loading, setLoading] = useState(false);
   const [quantity, setQuantity] = useState<number>(1);
-
   const { cart, status } = useAppSelector((state: RootState) => state.cart);
   useEffect(() => {
     setLoading(true);
@@ -38,6 +37,25 @@ const Cart: React.FC = () => {
   const { userRole } = useAppSelector((state: RootState) => state.otp);
 
   const loggedIn = userRole || role || 'buyer';
+  const checkoutNow = async () => {
+    try {
+      const response = (await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/payment`,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')?.replaceAll('"', '')}`
+          }
+        }
+      )) as any;
+
+      if (!response.ok) {
+        throw new Error('Payment failed');
+      }
+      const data = await response.json();
+      window.location.href = data.Success_url;
+    } catch (error) {}
+  };
 
   if (loading) {
     return (
@@ -197,7 +215,10 @@ const Cart: React.FC = () => {
               disabled={loading}
               loading={loading}
             /> */}
-            <button className="bg-main-400 text-main-100 font-medium py-2 px-4 rounded-full hover:bg-main-300 hover:shadow-md active:bg-slate-500 transition-all w-full">
+            <button
+              onClick={checkoutNow}
+              className="bg-main-400 text-main-100 font-medium py-2 px-4 rounded-full hover:bg-main-300 hover:shadow-md active:bg-slate-500 transition-all w-full"
+            >
               Checkout
             </button>
           </div>
