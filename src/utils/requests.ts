@@ -2,7 +2,6 @@
 
 import axios, {
   AxiosInstance,
-  AxiosRequestConfig,
   Method,
   AxiosResponse,
   AxiosError,

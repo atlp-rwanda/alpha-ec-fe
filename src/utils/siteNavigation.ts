@@ -59,7 +59,7 @@ export const PRODUCT_ICONS: NavigationInterface[] = [
     title: 'orders',
     label: 'ORDERS',
     access: 'all',
-    url: '/orders',
+    url: '/dashboard/orders',
     icon: MdOutlineBookmarkBorder,
     subMenus: []
   },
