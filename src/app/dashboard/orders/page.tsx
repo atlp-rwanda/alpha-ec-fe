@@ -1,4 +1,5 @@
 'use client';
+
 import React, { useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { axiosRequest } from '@/utils';
@@ -21,25 +22,30 @@ const Page: React.FC = () => {
       })
       .catch(err => {
         dispatch(setError(err.message));
+        dispatch(setLoading(false));
       });
   }, [dispatch]);
 
   const { error, loading, orders } = useAppSelector(({ orders }) => orders);
 
+  const status = params.get('status');
+
   return (
     <div className="container mx-auto p-4">
-      {params.get('status') === 'paid' && (
-        <h1 className="text-4xl font-bold text-center my-4">orders👍</h1>
+      {status === 'paid' && (
+        <h1 className="text-4xl font-bold text-center my-4">Orders 👍</h1>
       )}
 
       {loading && <PageLoading />}
-      {error && <h1>Error: {error}</h1>}
-      {!loading && !error && orders.length === 0 && <h1>No orders found.</h1>}
+      {error && <h1 className="text-red-500 text-center">Error: {error}</h1>}
+      {!loading && !error && orders.length === 0 && (
+        <h1 className="text-center">No orders found.</h1>
+      )}
 
       <div className="orders-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {orders.map(order => (
-          <OrderCard key={order.id} order={order} />
-        ))}
+        {!loading &&
+          !error &&
+          orders.map(order => <OrderCard key={order.id} order={order} />)}
       </div>
     </div>
   );

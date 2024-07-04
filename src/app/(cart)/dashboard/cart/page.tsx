@@ -11,6 +11,7 @@ import {
   updateCart,
   deleteCart
 } from '@/redux/slices/cartSlice';
+import { checkoutNow } from '@/redux/slices/payment';
 import { IoAdd } from 'react-icons/io5';
 import { HiMinusSmall } from 'react-icons/hi2';
 import Image from 'next/image';
@@ -27,6 +28,10 @@ const Cart: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [quantity, setQuantity] = useState<number>(1);
   const { cart, status } = useAppSelector((state: RootState) => state.cart);
+  const { loading: paymentLoading, error: paymentError } = useAppSelector(
+    (state: RootState) => state.payment
+  );
+
   useEffect(() => {
     setLoading(true);
     dispatch(fetchCart());
@@ -37,24 +42,9 @@ const Cart: React.FC = () => {
   const { userRole } = useAppSelector((state: RootState) => state.otp);
 
   const loggedIn = userRole || role || 'buyer';
-  const checkoutNow = async () => {
-    try {
-      const response = (await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/payment`,
-        {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')?.replaceAll('"', '')}`
-          }
-        }
-      )) as any;
 
-      if (!response.ok) {
-        throw new Error('Payment failed');
-      }
-      const data = await response.json();
-      window.location.href = data.Success_url;
-    } catch (error) {}
+  const handleCheckout = () => {
+    dispatch(checkoutNow());
   };
 
   if (loading) {
@@ -75,6 +65,7 @@ const Cart: React.FC = () => {
       </div>
     );
   }
+
   const removeOneCart = async (productId: string) => {
     const result = await dispatch(removeFromCart(productId));
 
@@ -216,11 +207,13 @@ const Cart: React.FC = () => {
               loading={loading}
             /> */}
             <button
-              onClick={checkoutNow}
+              onClick={handleCheckout}
               className="bg-main-400 text-main-100 font-medium py-2 px-4 rounded-full hover:bg-main-300 hover:shadow-md active:bg-slate-500 transition-all w-full"
+              disabled={paymentLoading}
             >
-              Checkout
+              {paymentLoading ? 'Processing...' : 'Checkout'}
             </button>
+            {paymentError && <p className="text-red-500">{paymentError}</p>}
           </div>
           <div className="bg-[#a5c9ca] rounded-md shadow-md p-4">
             <div className="font-extrabold text-main-400 text-xl">Pay with</div>

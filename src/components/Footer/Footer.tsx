@@ -37,8 +37,6 @@ const Footer: FC = () => {
     }
   }, [data, dispatch, loadingSellers, error]);
 
-  return undefined;
-
   return (
     <div className="w-full flex flex-col h-full gap-4 mt-0 z-40 bg-main-150 text-main-100 shadow-md border-t-main-400 border-t-1">
       <nav className="w-full bg-main-200 flex justify-end items-center p-4 gap-2">

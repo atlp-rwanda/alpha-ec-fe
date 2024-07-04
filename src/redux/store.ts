@@ -16,6 +16,7 @@ import chatsReducer from './slices/chatSlice';
 import wishlistReducer from './slices/wishlistSlice';
 import cartReducer from './slices/cartSlice';
 import ordersReducer from './slices/ordersSlice';
+import paymentReducer from './slices/payment';
 
 export const rootReducer = combineReducers({
   otp: otpReducer,
@@ -35,7 +36,8 @@ export const rootReducer = combineReducers({
   chat: chatsReducer,
   wishlist: wishlistReducer,
   cart: cartReducer,
-  orders: ordersReducer
+  orders: ordersReducer,
+  payment: paymentReducer
 });
 
 export const store = configureStore({
