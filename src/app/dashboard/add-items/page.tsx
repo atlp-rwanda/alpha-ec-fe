@@ -97,7 +97,7 @@ const Form = () => {
 
     dispatch(addProduct(productData));
 
-    router.push('/products');
+    router.push('/dashboard/products');
   };
 
   return (

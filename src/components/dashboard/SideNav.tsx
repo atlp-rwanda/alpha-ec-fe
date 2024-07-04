@@ -1,63 +1,93 @@
 'use client';
-import React from 'react';
+
+import React, { useState } from 'react';
 import Link from 'next/link';
-import { FiHome } from 'react-icons/fi';
-import { MdErrorOutline, MdOutlineManageAccounts } from 'react-icons/md';
+import { FiHome, FiChevronDown, FiChevronUp } from 'react-icons/fi';
+import { MdOutlineManageAccounts } from 'react-icons/md';
 import { FcStatistics } from 'react-icons/fc';
 import { AiOutlineProduct } from 'react-icons/ai';
 import { RiAccountCircleLine, RiLogoutBoxRLine } from 'react-icons/ri';
 import { IoIosHelpCircleOutline } from 'react-icons/io';
 import { IoCalendarNumberOutline } from 'react-icons/io5';
 import { useRouter, usePathname } from 'next/navigation';
-import { IoChatbox } from 'react-icons/io5';
-import { FaKey, FaHeart, FaUserPlus } from 'react-icons/fa';
+import { FaHeart, FaUserPlus } from 'react-icons/fa';
 import { BsCart3 } from 'react-icons/bs';
-import { CiHeart } from 'react-icons/ci';
+import { useAppSelector } from '@/redux/hooks/hook';
+import { RootState } from '@/redux/store';
 
 type SidebarButtonProps = {
-  paths?: string[];
+  paths: string[];
   icon?: React.ReactNode;
   children?: React.ReactNode;
-  className?: React.ReactNode;
+  className?: string;
+  onClick?: () => void;
 };
 interface SideNavProps1 {
   className?: string;
 }
 
-function SidebarButton({
+const SidebarButton = ({
   paths,
   icon,
   children,
-  className
-}: SidebarButtonProps) {
+  className,
+  onClick
+}: SidebarButtonProps) => {
   const router = useRouter();
   const pathname = usePathname();
-  if (!paths) {
-    return;
-  }
+
   const isActive = paths.includes(pathname);
 
   const handleClick = () => {
-    if (paths) {
-      router.push(paths[0] || '');
+    if (paths.length > 0) {
+      router.push(paths[0]);
+    }
+    if (onClick) {
+      onClick();
     }
   };
 
   return (
     <div
       onClick={handleClick}
-      className={`flex cursor-pointer items-center gap-2 ml-[-10px] p-2 ${isActive ? 'bg-[#40586A] text-white rounded' : 'text-black hover:bg-[#40586A]/50 hover:text-white hover:rounded active:bg-[#40586A]/70 transition duration-200 ease-in-out'}`}
+      className={`flex cursor-pointer items-center gap-2 ml-[-10px] p-2 ${
+        isActive
+          ? 'bg-[#40586A] text-white rounded'
+          : 'text-black hover:bg-[#40586A]/50 hover:text-white hover:rounded active:bg-[#40586A]/70 transition duration-200 ease-in-out'
+      }`}
     >
       {icon}
       {children}
     </div>
   );
-}
-
+};
 const SideNav: React.FC<SideNavProps1> = ({ className }) => {
+  type DropdownKeys = 'products' | 'settings' | 'roles';
+
+  const router = useRouter();
+  const { role } = useAppSelector((state: RootState) => state.user);
+  const { userRole } = useAppSelector((state: RootState) => state.otp);
+
+  const loggedInRole = userRole || role || 'buyer';
+
+  const [isDropdownOpen, setIsDropdownOpen] = useState<
+    Record<DropdownKeys, boolean>
+  >({
+    products: false,
+    settings: false,
+    roles: false
+  });
+
+  const toggleDropdown = (dropdown: DropdownKeys) => {
+    setIsDropdownOpen(prevState => ({
+      ...prevState,
+      [dropdown]: !prevState[dropdown]
+    }));
+  };
+
   return (
     <div
-      className={`bg-[#a5c9ca] h-full p-5 fixed sm:relative md:relative overflow-x-auto shadow-md ${className} `}
+      className={`bg-[#a5c9ca] h-full p-5 fixed sm:relative md:relative overflow-x-auto shadow-md`}
     >
       <div>
         <Link href="/">
@@ -70,46 +100,132 @@ const SideNav: React.FC<SideNavProps1> = ({ className }) => {
             <FiHome className="text-2xl" />
             <p>Dashboard</p>
           </SidebarButton>
-          <SidebarButton
-            paths={['/dashboard/profile', '/dashboard/profile-edit']}
-          >
-            <MdOutlineManageAccounts className="text-2xl" />
-            <p>Profile</p>
-          </SidebarButton>
-          <SidebarButton paths={['/dashboard/update-password']}>
-            <FaKey className="text-2xl" />
-            <p>Privacy</p>
-          </SidebarButton>
         </div>
+
         <div className="mt-6 ">
           <h2 className="text-xl font-semibold">Activities</h2>
-          <SidebarButton paths={['/dashboard/cart']}>
-            <BsCart3 className="text-xl" />
-            <p className="text-nowrap">Cart</p>
-          </SidebarButton>
-          <SidebarButton paths={['/dashboard/wishlist']}>
-            <FaHeart className=" text-xl " />
-            <p className=" text-nowrap">Wishlist</p>
-          </SidebarButton>
-          <SidebarButton paths={['/assignrole']}>
-            <FaUserPlus className="text-xl" />
-            <p className=" text-nowrap">Assign Role</p>
-          </SidebarButton>
-          <SidebarButton paths={['/dashboard/add-items']}>
-            <AiOutlineProduct className="text-xl" />
-            <p className=" text-nowrap">Products</p>
-          </SidebarButton>
+          {loggedInRole === 'buyer' && (
+            <>
+              <SidebarButton paths={['/dashboard/cart']}>
+                <BsCart3 className="text-xl" />
+                <p className="text-nowrap">Cart</p>
+              </SidebarButton>
+              <SidebarButton paths={['/dashboard/wishlist']}>
+                <FaHeart className="text-xl" />
+                <p className="text-nowrap">Wishlist</p>
+              </SidebarButton>
+              <SidebarButton paths={['']}>
+                <RiAccountCircleLine className="text-xl" />
+                <p className="text-nowrap">Orders</p>
+              </SidebarButton>
+              <SidebarButton paths={['/products']}>
+                <AiOutlineProduct className="text-xl" />
+                <p className="text-nowrap">Products</p>
+              </SidebarButton>
+            </>
+          )}
+          {loggedInRole === 'seller' && (
+            <>
+              <SidebarButton paths={[]}>
+                <FcStatistics className="text-xl" />
+                <p className="text-nowrap">Statistics</p>
+              </SidebarButton>
+              <SidebarButton paths={[]}>
+                <FaHeart className="text-xl" />
+                <p className="text-nowrap">Wishlist</p>
+              </SidebarButton>
+              <SidebarButton paths={['']}>
+                <RiAccountCircleLine className="text-xl" />
+                <p className="text-nowrap">Orders</p>
+              </SidebarButton>
+              <div className="relative">
+                <SidebarButton
+                  paths={[]}
+                  onClick={() => toggleDropdown('products')}
+                >
+                  <AiOutlineProduct className="text-xl" />
+                  <p className="text-nowrap">Products</p>
+                  {isDropdownOpen.products ? (
+                    <FiChevronUp className="ml-1" />
+                  ) : (
+                    <FiChevronDown className="ml-1" />
+                  )}
+                </SidebarButton>
+                {isDropdownOpen.products && (
+                  <div className="ml-4 mt-2 flex flex-col space-y-0">
+                    <SidebarButton paths={['/dashboard/add-items']}>
+                      <p>Add Product</p>
+                    </SidebarButton>
+                    <SidebarButton paths={['/dashboard/products']}>
+                      <p>View Products</p>
+                    </SidebarButton>
+                  </div>
+                )}
+              </div>
+            </>
+          )}
+          {loggedInRole === 'admin' && (
+            <>
+              <div className="relative">
+                <SidebarButton
+                  paths={[]}
+                  onClick={() => toggleDropdown('roles')}
+                >
+                  <FaUserPlus className="text-xl" />
+                  <p className="text-nowrap">Roles</p>
+                  {isDropdownOpen.roles ? (
+                    <FiChevronUp className="ml-1" />
+                  ) : (
+                    <FiChevronDown className="ml-1" />
+                  )}
+                </SidebarButton>
+                {isDropdownOpen.roles && (
+                  <div className="ml-4 mt-2 flex flex-col space-y-0">
+                    <SidebarButton paths={['']}>
+                      <p>View Role</p>
+                    </SidebarButton>
+                    <SidebarButton paths={['']}>
+                      <p>Create Role</p>
+                    </SidebarButton>
+                    <SidebarButton paths={['/dashboard/assignrole']}>
+                      <p>Assign Role</p>
+                    </SidebarButton>
+                  </div>
+                )}
+              </div>
+              <SidebarButton paths={['/dashboard/accountstatus']}>
+                <RiAccountCircleLine className="text-xl" />
+                <p className="text-nowrap">Users</p>
+              </SidebarButton>
+            </>
+          )}
         </div>
         <div>
           <h2 className="text-xl font-semibold">More Info</h2>
-          <SidebarButton paths={['/dashboard/accountstatus']}>
-            <RiAccountCircleLine className="text-xl" />
-            <p className=" text-nowrap">Account Status</p>
-          </SidebarButton>
-          <SidebarButton paths={[]}>
-            <IoIosHelpCircleOutline className="text-xl" />
-            <p className="text-nowrap">Help</p>
-          </SidebarButton>
+          <div className="relative">
+            <SidebarButton
+              paths={[]}
+              onClick={() => toggleDropdown('settings')}
+            >
+              <MdOutlineManageAccounts className="text-2xl" />
+              <p>Setting</p>
+              {isDropdownOpen.settings ? (
+                <FiChevronUp className="ml-1" />
+              ) : (
+                <FiChevronDown className="ml-1" />
+              )}
+            </SidebarButton>
+            {isDropdownOpen.settings && (
+              <div className="ml-4 mt-2 flex flex-col space-y-0">
+                <SidebarButton paths={['/dashboard/profile']}>
+                  <p>Profile</p>
+                </SidebarButton>
+                <SidebarButton paths={['/dashboard/update-password']}>
+                  <p>Update Password</p>
+                </SidebarButton>
+              </div>
+            )}
+          </div>
           <SidebarButton paths={[]}>
             <RiLogoutBoxRLine className="text-xl" />
             <p className="text-nowrap">Logout</p>
