@@ -13,7 +13,7 @@ import useToast from '@/components/alerts/Alerts';
 import { ToastContainer } from 'react-toastify';
 import { Button, ButtonStyle } from '@/components/formElements';
 import { AssignRoleFields, RoleKeys } from '@/utils/assingRoleFormField';
-import SideNav from '@/components/dashboard/SideNav';
+// import SideNav from '@/components/dashboard/SideNav';
 
 const AssignRoleForm: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -49,7 +49,7 @@ const AssignRoleForm: React.FC = () => {
 
   return (
     <div className="flex h-auto min-h-screen w-full text-black bg-gray-50">
-      <SideNav />
+      {/* <SideNav /> */}
       <div className="max-w-md mx-auto mt-10 p-6 bg-[#e3f2f1] shadow-lg rounded-lg">
         <h2 className="text-2xl font-bold mb-6 text-center text-[rgb(72,101,94)]">
           Assign role

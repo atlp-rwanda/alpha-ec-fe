@@ -103,7 +103,7 @@ export default function Home() {
         showSuccess('Login Successful!');
         setTimeout(() => {
           setPageLoading(true);
-          router.push('/');
+          router.push('/dashboard');
           setPageLoading(false);
         }, 1000);
       }

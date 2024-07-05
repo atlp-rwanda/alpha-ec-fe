@@ -70,7 +70,7 @@ export default function VerifyOtp() {
     if (success) {
       showSuccess('OTP Verified Successfully!');
       setTimeout(() => {
-        router.push('/');
+        router.push('/dashboard');
       }, 2000);
     } else if (error) {
       showError(error.message || 'Verification Failed!');
