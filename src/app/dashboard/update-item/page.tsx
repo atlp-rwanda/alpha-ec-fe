@@ -5,7 +5,6 @@ import { useState, useEffect, FormEvent } from 'react';
 import React from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks/hook';
-// import Layout from '../layout';
 import { ErrorInterface, ProductFields, getErrorForField } from '@/utils';
 import { Button, ButtonStyle, Input } from '@/components/formElements';
 import useToast from '@/components/alerts/Alerts';
@@ -227,25 +226,47 @@ const UpdateForm: React.FC = () => {
   );
 
   return (
-    <div className="md:flex md:justify-around sm:justify-around sm:flex lg:justify-around lg:flex bg-[#e7f6f2] p-8 rounded-lg shadow-lg w-full ">
-      <div className="mb-4 pr-2 w-[300px]">
-        <div className="flex justify-center items-center border-2 border-dashed border-[#395b64] rounded-lg h-56 w-72 bg-gray-50">
-          <div className="text-center text-black">
-            <p>Drag and drop your files here</p>
-            <p>or</p>
-            <input
-              type="file"
-              multiple
-              onChange={handleFileChange}
-              className="hidden"
-              id="file-upload"
-            />
-            <label
-              htmlFor="file-upload"
-              className="cursor-pointer bg-gray-200 px-3 py-1 rounded-md"
-            >
-              Browse files
-            </label>
+    <>
+      <div className="md:flex md:justify-around sm:justify-around sm:flex lg:justify-around lg:flex bg-[#e7f6f2] p-8 rounded-lg shadow-lg w-full ">
+        <div className="mb-4 pr-2 w-[300px]">
+          <div className="flex justify-center items-center border-2 border-dashed border-[#395b64] rounded-lg h-56 w-72 bg-gray-50">
+            <div className="text-center text-black">
+              <p>Drag and drop your files here</p>
+              <p>or</p>
+              <input
+                type="file"
+                multiple
+                onChange={handleFileChange}
+                className="hidden"
+                id="file-upload"
+              />
+              <label
+                htmlFor="file-upload"
+                className="cursor-pointer bg-gray-200 px-3 py-1 rounded-md"
+              >
+                Browse files
+              </label>
+            </div>
+          </div>
+          <div className="mt-4 flex space-x-2 w-[100]">
+            {files.map((file, idx) => (
+              <div key={idx} className="relative border rounded p-1">
+                <Image
+                  src={URL.createObjectURL(file)}
+                  alt={`Thumbnail ${idx}`}
+                  width={50}
+                  height={50}
+                  className="object-cover"
+                />
+                <button
+                  type="button"
+                  onClick={() => handleRemoveImage(idx)}
+                  className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1"
+                >
+                  X
+                </button>
+              </div>
+            ))}
           </div>
         </div>
         <div className="mt-4 flex space-x-2 w-[100]">
@@ -325,7 +346,7 @@ const UpdateForm: React.FC = () => {
         </div>
       </form>
       <ToastContainer />
-    </div>
+    </>
   );
 };
 

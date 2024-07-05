@@ -4,11 +4,11 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks/hook';
 import { fetchAllUsers, disableAccount } from '@/redux/slices/disableaccount';
 import Image from 'next/image';
 import unKnownImage from '@/assets/images/unknown.png';
-import ReasonModal from './ReasonModal';
-import ToggleSwitch from './ToggleSwitch';
 import useToast from '@/components/alerts/Alerts';
 import { ToastContainer } from 'react-toastify';
 import Pagination from '@/components/pagination/Pagination';
+import ReasonModal from './ReasonModal';
+import ToggleSwitch from './ToggleSwitch';
 
 interface EmptyDataType {
   message: string;
