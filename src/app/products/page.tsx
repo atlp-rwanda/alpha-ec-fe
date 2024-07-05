@@ -4,14 +4,17 @@ import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-import ProductListing from '@/components/products/ProductListing';
+import GridListing from '@/components/products/GridListing';
 import ProductLoading from '@/components/Loading/ProductsLoading';
-import { useAppDispatch } from '@/redux/hooks/hook';
-import { showSideNav } from '@/redux/slices/ProductSlice';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks/hook';
+import { getProducts, showSideNav } from '@/redux/slices/ProductSlice';
+import { getUserToken } from '@/redux/hooks/selectors';
+import { fetchCart } from '@/redux/slices/cartSlice';
+import { setAuthToken } from '@/redux/slices/userSlice';
+import { fetchWishes } from '@/redux/slices/wishlistSlice';
+import ProductsSideNav from '@/components/siteNavigation/ProductsSideNav';
 
 export default function Home() {
-  const router = useRouter();
-
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -22,7 +25,48 @@ export default function Home() {
     (state: RootState) => state.products
   );
 
-  if (loading) return <ProductLoading />;
-  if (error) return <div>Error: {error.message}</div>;
-  if (data) return <ProductListing data={data} />;
+  const userToken = useAppSelector(getUserToken);
+
+  useEffect(() => {
+    if (userToken !== null) {
+      const handler = setTimeout(() => {
+        dispatch(fetchWishes());
+        dispatch(fetchCart());
+      }, 1000);
+
+      return () => {
+        clearTimeout(handler);
+      };
+    }
+  }, [dispatch, userToken]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const tokenString = localStorage.getItem('token');
+      if (tokenString) {
+        try {
+          const token = JSON.parse(tokenString);
+          dispatch(setAuthToken(token));
+        } catch (error) {
+          console.error('Failed to parse token from localStorage', error);
+        }
+      }
+    }
+  }, [dispatch]);
+
+  if (loading)
+    return (
+      <div className="flex justify-between gap-4 min-w-screen p-0 w-full z-0">
+        <ProductsSideNav />
+        <ProductLoading />
+      </div>
+    );
+  if (error) return <div>Error: {error.message || ''}</div>;
+  if (data)
+    return (
+      <div className="flex justify-between gap-4 min-w-screen p-0 w-full z-0">
+        <ProductsSideNav />
+        <GridListing data={data} />
+      </div>
+    );
 }

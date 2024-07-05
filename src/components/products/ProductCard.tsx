@@ -3,52 +3,36 @@
 import { ProductInterface } from '@/redux/slices/ProductSlice';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { GetStars } from '../reviews/GetStars';
 import { FaCartPlus, FaHeart } from 'react-icons/fa';
 import { CiHeart } from 'react-icons/ci';
-import { imagePath } from '@/utils/Functions';
 import PageLoading from '../Loading/PageLoading';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks/hook';
 import { addWishlist, fetchWishes } from '@/redux/slices/wishlistSlice';
-import useToast from '@/components/alerts/Alerts';
 import { FormErrorInterface } from '@/utils';
-import { RootState } from '@/redux/store';
 import { addToCart, fetchCart, removeFromCart } from '@/redux/slices/cartSlice';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { getCartState, getWishlist } from '@/redux/hooks/selectors';
 
 interface ProductCard {
   product: ProductInterface;
+  styles?: string;
 }
 
-const ProductCard: React.FC<ProductCard> = ({ product }) => {
+const ProductCard: React.FC<ProductCard> = ({ product, styles }) => {
   const router = useRouter();
-
-  const { showSuccess, showError } = useToast();
 
   const dispatch = useAppDispatch();
 
-  const wishlist = useAppSelector(
-    (state: RootState) => state.wishlist.wishlist?.rows || []
-  );
-  const wishStatus = useAppSelector(
-    (state: RootState) => state.wishlist.status
-  );
+  const { wishlist, wishStatus } = useAppSelector(getWishlist);
 
-  useEffect(() => {
-    dispatch(fetchWishes());
-  }, [dispatch]);
-
-  useEffect(() => {
-    dispatch(fetchCart());
-  }, [dispatch]);
-
-  const isInWishlist = wishlist.some(
+  const isInWishlist = wishlist?.some(
     wishlistItem => wishlistItem.id === product.id
   );
-  const { cart } = useAppSelector((state: RootState) => state.cart);
-  const cartStatus = useAppSelector((state: RootState) => state.cart.status);
+
+  const { cart, cartStatus } = useAppSelector(getCartState);
 
   const [loading, setLoading] = useState(false);
 
@@ -60,7 +44,9 @@ const ProductCard: React.FC<ProductCard> = ({ product }) => {
       setLoading(false);
     }
   };
-  const isInCart = cart?.produtcs?.some(cartItem => cartItem.id === product.id);
+  const isInCart = cart?.produtcs?.some(
+    (cartItem: { id: string }) => cartItem.id === product.id
+  );
 
   const toggleWishlist = async (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -88,6 +74,7 @@ const ProductCard: React.FC<ProductCard> = ({ product }) => {
       });
     }
   };
+
   const addCart = async (e: React.MouseEvent) => {
     e.stopPropagation();
 
@@ -115,6 +102,7 @@ const ProductCard: React.FC<ProductCard> = ({ product }) => {
       });
     }
   };
+
   const removeOneCart = async (e: React.MouseEvent) => {
     e.stopPropagation();
 
@@ -145,7 +133,7 @@ const ProductCard: React.FC<ProductCard> = ({ product }) => {
 
   return (
     <article
-      className="relative w-full flex flex-col overflow-hidden border border-main-100 hover:shadow-md cursor-pointer bg-white rounded-xl shadow-sm group"
+      className={`relative w-full flex flex-col overflow-hidden ${styles} hover:shadow-md cursor-pointer bg-white rounded-xl shadow-sm min-w-52 max-w-60group`}
       key={product.id}
     >
       <div className="relative w-full" onClick={handleProductClick}>
@@ -161,7 +149,8 @@ const ProductCard: React.FC<ProductCard> = ({ product }) => {
             <Image
               src={product.images[0]}
               alt="Product image"
-              layout="fill"
+              fill
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
               className="object-cover transition-all duration-300 hover:scale-125 animate__animated animate__faster animate__fadeIn"
             />
           </div>
@@ -177,7 +166,7 @@ const ProductCard: React.FC<ProductCard> = ({ product }) => {
               )}
             </div>
             <div className="flex justify-between w-full items-center">
-              <p className="font-bold text-xs uppercase truncate">
+              <p className="font-bold text-xs uppercase truncate w-4/5">
                 {product.name}
               </p>
               <p className="font-thin text-xs"></p>
@@ -185,8 +174,8 @@ const ProductCard: React.FC<ProductCard> = ({ product }) => {
             <div>
               <GetStars rating={product.averageRatings || 0} />
             </div>
-            <div className="flex justify-between items-center">
-              <span className="font-black text-lg text-main-400 flex items-center gap-2">
+            <div className="flex justify-between items-center overflow-hidden">
+              <span className="font-black text-base text-main-400 flex items-center gap-2 truncate">
                 ${' '}
                 {product.bonus
                   ? (
@@ -195,7 +184,7 @@ const ProductCard: React.FC<ProductCard> = ({ product }) => {
                     ).toLocaleString()
                   : product.price.toLocaleString()}
                 {product.bonus && (
-                  <p className="font-thin text-sm line-through">
+                  <p className="font-thin text-xs line-through">
                     $ {product.price.toLocaleString()}
                   </p>
                 )}

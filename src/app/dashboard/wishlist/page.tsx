@@ -127,7 +127,8 @@ const Wishlist: React.FC = () => {
                 key={product.product.id}
                 className="bg-[#a5c9ca] p-3 rounded-lg flex flex-col md:flex-row items-start"
               >
-                <img
+                <Image
+                  fill
                   src={product.product.images[0]}
                   alt={product.product.name}
                   className="w-full md:w-1/3 object-cover mb-3 md:mb-0"
@@ -178,7 +179,8 @@ const Wishlist: React.FC = () => {
                 key={product.id}
                 className="bg-[#a5c9ca] p-3 rounded-lg flex flex-col md:flex-row items-start"
               >
-                <img
+                <Image
+                  fill
                   src={product.images[0]}
                   alt={product.name}
                   className="w-full md:w-1/3 object-cover mb-3 md:mb-0"

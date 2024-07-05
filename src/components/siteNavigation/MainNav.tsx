@@ -5,36 +5,35 @@ import { FC } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { PRODUCT_ICONS, TOP_MENUS } from '@/utils/siteNavigation';
-import { FaAngleDown } from 'react-icons/fa';
-import { IoMenuOutline, IoSearchSharp } from 'react-icons/io5';
 import { BsCart3 } from 'react-icons/bs';
 import TopNav from './TopNav';
-import { boolean } from 'joi';
 import PageLoading from '../Loading/PageLoading';
 import { CiHeart } from 'react-icons/ci';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks/hook';
 import { RootState } from '@/redux/store';
 import { fetchWishes } from '@/redux/slices/wishlistSlice';
 import { fetchCart } from '@/redux/slices/cartSlice';
+import { GrClose } from 'react-icons/gr';
+import { VscMenu } from 'react-icons/vsc';
 
 const MainNav: FC = () => {
+  const [showMenu, setShowMenu] = useState<boolean>(false);
   const router = useRouter();
   const [pageLoading, setPageLoading] = useState<boolean>(false);
+  const [selectedMenu, setSelectedMenu] = useState<string>('Home');
 
   const dispatch = useAppDispatch();
-  const { wishlist, status } = useAppSelector(
-    (state: RootState) => state.wishlist
-  );
+  const { wishlist } = useAppSelector((state: RootState) => state.wishlist);
   const { wishlist2 } = useAppSelector((state: RootState) => state.wishlist);
 
   const { cart } = useAppSelector((state: RootState) => state.cart);
 
-  useEffect(() => {
-    dispatch(fetchWishes());
-  }, [dispatch]);
-  useEffect(() => {
-    dispatch(fetchCart());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(fetchWishes());
+  // }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(fetchCart());
+  // }, [dispatch]);
 
   const handleNavigation = (url: string) => {
     setPageLoading(true);
@@ -45,42 +44,59 @@ const MainNav: FC = () => {
   if (pageLoading) return <PageLoading />;
 
   return (
-    <div className="w-full flex flex-col h-30 mt-0 z-30 bg-main-100 fixed top-0 left-0 text-main-100">
+    <div className="w-full flex flex-col h-30 mt-0 z-50 bg-main-100 fixed top-0 left-0 text-main-100">
       <TopNav />
-      <nav className="w-full flex justify-between items-center py-0.5 shadow-sm px-4">
+      <nav className="w-full flex justify-between items-center py-0.5 px-4">
         <span
-          className="text-sm font-bold cursor-pointer border px-4 py-1 text-main-400 flex items-center justify-between gap-4 rounded-md"
+          className="text-sm font-bold cursor-pointer px-4 py-1 text-main-400 flex items-center justify-between gap-4 rounded-md"
           onClick={() => handleNavigation('/')}
         >
-          <span className="flex">
-            <IoMenuOutline />
-          </span>
-          CATEGORIES
-          <FaAngleDown />
+          ALPHA
         </span>
-        <div className="flex justify-between w-min">
-          {TOP_MENUS.map((menu, index) => (
-            <div
-              key={index}
-              className={`block py-1 px-4 rounded transition-colors duration-200  text-gray-400 hover:bg-gray-100'}`}
-            >
-              <Link
-                href={menu.url}
-                passHref
-                className="text-main-400 hover:underline cursor-pointer"
+        <div className="hidden md:flex justify-between w-min">
+          {TOP_MENUS.map((menu, index) => {
+            const isSelected = selectedMenu === menu.title;
+            return (
+              <div
+                key={index}
+                className="block py-1 px-4 rounded text-gray-400 relative w-min group"
               >
-                {menu.icon && <menu.icon />}
-                <span>{menu.label}</span>
-              </Link>
-            </div>
-          ))}
+                <Link
+                  href={menu.url}
+                  passHref
+                  className={`relative block p-1 duration-200 transition-all ease-in-out text-main-400 cursor-pointer truncate ${isSelected ? 'font-semibold shadow-sm' : ''} group-hover:font-bold`}
+                >
+                  {menu.icon && <menu.icon />}
+                  <span>{menu.label}</span>
+                  <span className="absolute inset-0 bg-main-300 opacity-0 group-hover:opacity-80 transition-opacity duration-300 ease-in-out transform scale-x-0 group-hover:scale-x-100 origin-left"></span>
+                </Link>
+              </div>
+            );
+          })}
         </div>
-        <div className="w-min flex flex-row justify-end gap-3">
+
+        <span
+          onClick={e => {
+            e.stopPropagation();
+            setShowMenu(!showMenu);
+          }}
+          className="flex cursor-pointer lg:hidden z-40 max-w-12 min-w-12 text-main-400 h-9 items-center justify-center bg-main-100 shadow-md border p-2 rounded-md"
+        >
+          {!showMenu ? (
+            <VscMenu size={24} className="animate__animated  animate__faster" />
+          ) : (
+            <GrClose
+              size={24}
+              className="animate__animated animate__rotateIn animate__faster"
+            />
+          )}
+        </span>
+        <div className="w-min hidden lg:flex lg:flex-row justify-end gap-3">
           <Link
             href="/dashboard/cart"
             className="relative flex flex-col items-center justify-center cursor-pointer text-black p-1"
           >
-            <BsCart3 size={32} />
+            <BsCart3 size={24} />
             <span className="absolute top-0 right-0 bg-main-400 text-sm text-main-100 font-bold p-0.5 px-1 rounded-full">
               {cart?.produtcs?.length || 0}
             </span>
@@ -97,19 +113,66 @@ const MainNav: FC = () => {
             <label className="text-xxs text-black">WISHLIST</label>
           </Link>
           {PRODUCT_ICONS.map(
-            item =>
+            (item, index) =>
               item.access === 'all' && (
                 <Link
                   href={item.url}
-                  key={item.title}
+                  key={index + 10}
                   className="flex flex-col items-center justify-center cursor-pointer p-1 text-main-400"
                 >
-                  {item.icon && <item.icon size={32} />}
+                  {item.icon && <item.icon size={24} />}
                   <label className="text-xxs text-black">{item.label}</label>
                 </Link>
               )
           )}
         </div>
+        {showMenu === true && (
+          <div
+            onClick={e => {
+              e.stopPropagation();
+              setShowMenu(false);
+            }}
+            className="fixed z-30 mt-0.5 border-t-2 top-14 w-screen min-h-screen bg-black bg-opacity-50 shadow-lg lg:hidden right-0 flex justify-end"
+          >
+            <div
+              onClick={e => {
+                e.stopPropagation();
+              }}
+              className="border-2 gap-4 mt-0.5 p-4 animate__animated animate__fadeInRight animate__faster top-14 fixed z-50 min-w-72 right-0 min-h-screen bg-main-150 shadow-md"
+            >
+              <div className="w-full flex flex-row justify-center  gap-3">
+                <Link
+                  href="/cart"
+                  className="relative flex flex-col items-center justify-center cursor-pointer text-black p-1"
+                >
+                  <BsCart3 size={24} />
+                  <span className="absolute top-0 right-0 bg-main-400 text-sm text-main-100 font-bold p-0.5 px-1 rounded-full">
+                    {0}
+                  </span>
+                  <label className="text-xxs text-black">CART</label>
+                </Link>
+                {PRODUCT_ICONS.map(
+                  item =>
+                    item.access === 'all' && (
+                      <Link
+                        href={item.url}
+                        key={item.title}
+                        className="flex flex-col items-center justify-center cursor-pointer p-1 text-main-400"
+                      >
+                        {item.icon && <item.icon size={24} />}
+                        <label className="text-xxs text-black">
+                          {item.label}
+                        </label>
+                      </Link>
+                    )
+                )}
+              </div>
+              <div className="flex flex-col w-full h-full text-main-400">
+                {/* <Filters /> */}
+              </div>
+            </div>
+          </div>
+        )}
       </nav>
     </div>
   );

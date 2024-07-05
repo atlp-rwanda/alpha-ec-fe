@@ -63,6 +63,13 @@ export interface ProductDetailsInterface {
 }
 
 interface ProductState {
+  Grouped: {
+    [key: string]: {
+      data: ProductInterface[] | null;
+      error: FormErrorInterface | null;
+      loading: boolean;
+    };
+  };
   data: ProductDataInterface | null;
   selectedProduct: ProductDetailsInterface | null;
   loading: boolean;
@@ -76,6 +83,10 @@ interface ProductsResponse {
   data: ProductDataInterface;
 }
 
+interface OrderBy {
+  bonus: string;
+}
+
 export interface ProductQueryInterface {
   name?: string;
   limit?: string;
@@ -84,9 +95,12 @@ export interface ProductQueryInterface {
   categoryId?: string;
   priceLessThan?: number;
   priceGreaterThan?: number;
+  section?: string;
+  orderBy?: OrderBy;
 }
 
 const initialState: ProductState = {
+  Grouped: {},
   data: null,
   selectedProduct: null,
   loading: false,
@@ -177,6 +191,27 @@ export const getProducts = createAsyncThunk(
   }
 );
 
+export const getProductsByCategory = createAsyncThunk(
+  'products/getByCategory',
+  async (query: ProductQueryInterface, { rejectWithValue }) => {
+    try {
+      const Url =
+        query.section == 'bonus'
+          ? `/products?sort=bonus:asc&limit=10`
+          : `/products?categoryId=${query.categoryId}&limit=12`;
+      const response = await axiosRequest('GET', Url);
+
+      return { section: query.section, products: response.data.data.products };
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err) && err.response) {
+        return rejectWithValue(err.response.data || 'Failed to fetch products');
+      }
+      const error = err as Error;
+      return rejectWithValue({ message: error.message });
+    }
+  }
+);
+
 const productSlice = createSlice({
   name: 'product',
   initialState,
@@ -236,6 +271,42 @@ const productSlice = createSlice({
         state.loading = false;
         state.error = action.payload as FormErrorInterface;
         state.success = false;
+      })
+      .addCase(getProductsByCategory.pending, (state, action) => {
+        const section = action.meta.arg.section;
+        if (section) {
+          if (!state.Grouped[section]) {
+            state.Grouped[section] = { loading: true, error: null, data: null };
+          } else {
+            state.Grouped[section].loading = true;
+            state.Grouped[section].error = null;
+          }
+        }
+      })
+      .addCase(getProductsByCategory.fulfilled, (state, action) => {
+        const { section, products } = action.payload;
+        if (section) {
+          state.Grouped[section] = {
+            loading: false,
+            error: null,
+            data: products
+          };
+        }
+      })
+      .addCase(getProductsByCategory.rejected, (state, action) => {
+        const section = action.meta.arg.section;
+        if (section) {
+          if (!state.Grouped[section]) {
+            state.Grouped[section] = {
+              loading: false,
+              error: action.payload as FormErrorInterface,
+              data: null
+            };
+          } else {
+            state.Grouped[section].loading = false;
+            state.Grouped[section].error = action.payload as FormErrorInterface;
+          }
+        }
       });
   }
 });

@@ -1,5 +1,6 @@
 'use client';
 import React from 'react';
+import Image from 'next/image';
 
 interface OrderCardProps {
   order: {
@@ -37,7 +38,8 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
         </span>
       </div>
       <div className="order-content flex items-center mt-4 sm:gap-3 md:gap-3">
-        <img
+        <Image
+          fill
           src={productImage}
           alt={orderedProduct.name}
           className="w-20 h-20 mr-4"

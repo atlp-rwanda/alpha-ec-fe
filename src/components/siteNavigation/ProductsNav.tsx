@@ -25,6 +25,8 @@ import { CiHeart } from 'react-icons/ci';
 import { useAppSelector } from '@/redux/hooks/hook';
 import { fetchWishes } from '@/redux/slices/wishlistSlice';
 import { fetchCart } from '@/redux/slices/cartSlice';
+import { getCategoriesData } from '@/redux/hooks/selectors';
+import error from 'next/error';
 
 const initialCategory: CategoryAttributes = {
   id: '',
@@ -39,29 +41,16 @@ const ProductNav: FC = () => {
   const [showMenu, setShowMenu] = useState<boolean>(false);
   const [showCategories, setShowCategories] = useState<boolean>(false);
   const dispatch = useAppDispatch();
-  const { loading, data } = useSelector((state: RootState) => state.products);
-  const { categoriesLoading, error, success, categoriesData } = useSelector(
-    (state: RootState) => state.categories
-  );
 
-  const { wishlist, status } = useAppSelector(
-    (state: RootState) => state.wishlist
-  );
+  const categoriesData = useAppSelector(getCategoriesData);
+
+  const { wishlist } = useAppSelector((state: RootState) => state.wishlist);
   const { wishlist2 } = useAppSelector((state: RootState) => state.wishlist);
   const { cart } = useAppSelector((state: RootState) => state.cart);
 
-  useEffect(() => {
-    dispatch(fetchWishes());
-  }, [dispatch]);
-  useEffect(() => {
-    dispatch(fetchCart());
-  }, [dispatch]);
-
-  // const { loading } = useSelector((state: RootState) => state.products);
   const [searchData, setSearchData] = useState<string>('');
-  const handleNavigation = (url: string) => {
-    router.push(url);
-  };
+
+  const { loading, error } = useSelector((state: RootState) => state.products);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -69,14 +58,26 @@ const ProductNav: FC = () => {
   };
 
   useEffect(() => {
-    if (!loading && error === null) {
+    const currentParams = new URLSearchParams(window.location.search);
+    const categoryId = currentParams.get('categoryId');
+    if (categoriesData && categoryId && categoryId !== '') {
+      const selected = categoriesData?.find(category =>
+        category.id.toLowerCase().includes(categoryId)
+      );
+
+      selected && setSelectedCategory(selected);
+    }
+  }, [categoriesData]);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
       const currentParams = new URLSearchParams(window.location.search);
       const newParams = new URLSearchParams();
       currentParams.forEach((value, key) => newParams.append(key, value));
 
       if (selectedCategory !== initialCategory) {
         newParams.set('categoryId', selectedCategory.id);
-      } else {
+      } else if (currentParams.get('categoryId') === '') {
         newParams.delete('categoryId');
       }
 
@@ -88,12 +89,24 @@ const ProductNav: FC = () => {
 
       router.push(`?${queryString}`);
       dispatch(getProducts(queryParamsObject));
-    }
+    }, 2000);
 
-    if (categoriesData === null && !categoriesLoading && error === null) {
-      dispatch(getCategories());
-    }
-  }, [router, dispatch, categoriesData, categoriesLoading, selectedCategory]);
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [dispatch, selectedCategory]);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      if (categoriesData === null) {
+        dispatch(getCategories());
+      }
+    }, 500);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [dispatch, categoriesData]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -204,11 +217,11 @@ const ProductNav: FC = () => {
             <label className="text-xxs text-black">WISHLIST</label>
           </Link>
           {PRODUCT_ICONS.map(
-            item =>
+            (item, index) =>
               item.access === 'all' && (
                 <Link
                   href={item.url}
-                  key={item.title}
+                  key={index}
                   className="flex flex-col items-center justify-center cursor-pointer p-1 text-main-400"
                 >
                   {item.icon && <item.icon size={24} />}
@@ -253,11 +266,11 @@ const ProductNav: FC = () => {
                   <label className="text-xxs text-black">WISHLIST</label>
                 </Link>
                 {PRODUCT_ICONS.map(
-                  item =>
+                  (item, index) =>
                     item.access === 'all' && (
                       <Link
                         href={item.url}
-                        key={item.title}
+                        key={index}
                         className="flex flex-col items-center justify-center cursor-pointer p-1 text-main-400"
                       >
                         {item.icon && <item.icon size={24} />}
@@ -293,9 +306,9 @@ const ProductNav: FC = () => {
                         All
                       </li>
                       {categoriesData &&
-                        categoriesData.map(category => (
+                        categoriesData.map((category, index) => (
                           <li
-                            key={category.id}
+                            key={index}
                             onClick={() => {
                               setShowMenu(false);
                               setSelectedCategory(category);
@@ -310,7 +323,11 @@ const ProductNav: FC = () => {
                 )}
               </div>
               <div className="flex flex-col w-full h-full text-main-400">
-                <Filters onClick={() => setShowMenu(false)} />
+                <Filters
+                  onClick={() => {
+                    setShowMenu(false);
+                  }}
+                />
               </div>
             </div>
           </div>

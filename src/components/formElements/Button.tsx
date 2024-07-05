@@ -38,15 +38,14 @@ export const Button = ({
   ...rest
 }: ButtonProps) => {
   return (
-    // <div className="relative w-full">
     <button
       type={'submit'}
       {...rest}
-      className={`rounded-full max-w-full min-w-52 md:w-max justify-center ${size === ButtonSize.SMALL ? 'px-2 py-1 text-sm' : 'px-3 py-2 text-md'} text-sm hover:bg-main-300 hover:shadow-md flex items-center gap-2 cursor-pointer  lg:mt-8 mx-auto  ${
+      className={`rounded-full max-w-full min-w-52 md:w-max justify-center ${size === ButtonSize.SMALL ? 'px-2 py-1 text-sm' : 'px-3 py-2 text-md'} text-sm  flex items-center gap-2 cursor-pointer hover:scale-105 transition-transform transform lg:mt-2 mx-auto  ${
         style === ButtonStyle.LIGHT
-          ? 'border-1 border-main-400  font-medium text-main-400 bg-main-100 bg-transparent'
+          ? 'border border-main-400  font-medium text-main-400 bg-main-100 bg-transparent hover:bg-main-150 hover:border-1'
           : style === ButtonStyle.DARK
-            ? 'bg-main-400 text-main-100 font-medium'
+            ? 'bg-main-400 text-main-100 font-medium hover:bg-main-300 hover:shadow-md border border-white'
             : loading
               ? 'animate-ping'
               : ''
@@ -58,12 +57,15 @@ export const Button = ({
           Loading...
         </span>
       ) : (
-        <span className=" flex gap-1 items-center">
+        <span className=" flex gap-2 items-center text-main-200">
           {icon && React.createElement(icon, { size: 20 })}
-          {label}
+          <span
+            className={`${style === ButtonStyle.DARK ? 'text-main-100' : 'text-main-400'}`}
+          >
+            {label}
+          </span>
         </span>
       )}
     </button>
-    // </div>
   );
 };

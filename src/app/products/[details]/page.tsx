@@ -34,17 +34,20 @@ const Details = () => {
   const { selectedProduct, loading, error, message } = useSelector(
     (state: RootState) => state.products
   );
+
   const wishlist = useAppSelector(
     (state: RootState) => state.wishlist.wishlist?.rows || []
   );
+
   const wishStatus = useAppSelector(
     (state: RootState) => state.wishlist.status
   );
+
   const cartStatus = useAppSelector((state: RootState) => state.cart.status);
 
-  useEffect(() => {
-    dispatch(fetchWishes());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(fetchWishes());
+  // }, [dispatch]);
 
   const isInWishlist = wishlist.some(
     wishlistItem => wishlistItem.id === productId
@@ -55,9 +58,9 @@ const Details = () => {
     productId && dispatch(getProductDetails(productId));
   }, [productId, dispatch]);
 
-  useEffect(() => {
-    productId && dispatch(deleteProduct(productId));
-  }, [dispatch, productId]);
+  // useEffect(() => {
+  //   productId && dispatch(deleteProduct(productId));
+  // }, [dispatch, productId]);
 
   const handleAdd = () => {
     setQuantity(prevQuantity => prevQuantity + 1);

@@ -45,32 +45,40 @@ const Filters: FC<FiltersProps> = ({ onClick }) => {
   const { loading } = useSelector((state: RootState) => state.products);
 
   useEffect(() => {
-    const currentParams = new URLSearchParams(window.location.search);
-    const max = currentParams.get('priceLessThan');
-    const min = currentParams.get('priceGreaterThan');
-    const sellerId = currentParams.get('sellerId');
+    const handler = setTimeout(() => {
+      const currentParams = new URLSearchParams(window.location.search);
+      const max = currentParams.get('priceLessThan');
+      const min = currentParams.get('priceGreaterThan');
+      const sellerId = currentParams.get('sellerId');
 
-    if (filter.max === null) {
-      setValues([Number(min) || MIN, Number(max) || MAX]);
-      setFilter({ ...filter, max: Number(max) || null });
-    }
+      if (filter.max === null) {
+        setValues([Number(min) || MIN, Number(max) || MAX]);
+        setFilter({ ...filter, max: Number(max) || null });
+      }
 
-    if (filter.min === null) {
-      setValues([Number(min) || MIN, Number(max) || MAX]);
-      setFilter({ ...filter, min: Number(min) || null });
-    }
+      if (filter.min === null) {
+        setValues([Number(min) || MIN, Number(max) || MAX]);
+        setFilter({ ...filter, min: Number(min) || null });
+      }
 
-    if (filter.seller === null) {
-      setFilter({
-        ...filter,
-        seller: data?.find(itm => itm.id === sellerId) || null
-      });
-    }
+      if (filter.seller === null) {
+        setFilter({
+          ...filter,
+          seller:
+            data?.find((itm: { id: string | null }) => itm.id === sellerId) ||
+            null
+        });
+      }
 
-    if (data === null && !loadingSellers && error === null) {
-      dispatch(getSellers());
-    }
-  }, [data, dispatch, loadingSellers, error]);
+      if (data === null && !loadingSellers && error === null) {
+        dispatch(getSellers());
+      }
+    }, 300);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [data, dispatch, loadingSellers, error, filter]);
 
   const handlePriceChange = (newValues: number[]) => {
     if (newValues.length === 2) {
@@ -83,8 +91,7 @@ const Filters: FC<FiltersProps> = ({ onClick }) => {
     }
   };
 
-  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
+  const handleSubmit = () => {
     const newParams = new URLSearchParams();
 
     if (filter.min !== null) {
@@ -109,6 +116,7 @@ const Filters: FC<FiltersProps> = ({ onClick }) => {
     });
 
     router.push(`?${queryString}`);
+
     dispatch(getProducts(queryParamsObject));
     onClick();
   };
@@ -181,14 +189,15 @@ const Filters: FC<FiltersProps> = ({ onClick }) => {
           </div>
         </div>
       </div>
-      <Button
-        onClick={e => handleSubmit(e)}
-        label="Filter"
-        disabled={loading}
-        loading={loading}
-        style={ButtonStyle.DARK}
-        icon={IoFilterCircle}
-      />
+      <div onClick={() => handleSubmit()} className="w-full">
+        <Button
+          label="Filter"
+          disabled={loading}
+          loading={loading}
+          style={ButtonStyle.DARK}
+          icon={IoFilterCircle}
+        />
+      </div>
     </>
   );
 };

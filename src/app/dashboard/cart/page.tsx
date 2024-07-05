@@ -32,11 +32,11 @@ const Cart: React.FC = () => {
     (state: RootState) => state.payment
   );
 
-  useEffect(() => {
-    setLoading(true);
-    dispatch(fetchCart());
-    setLoading(false);
-  }, [dispatch]);
+  // useEffect(() => {
+  //   setLoading(true);
+  //   dispatch(fetchCart());
+  //   setLoading(false);
+  // }, [dispatch]);
 
   const { role } = useAppSelector((state: RootState) => state.user);
   const { userRole } = useAppSelector((state: RootState) => state.otp);
@@ -135,9 +135,10 @@ const Cart: React.FC = () => {
                 key={product.id}
                 className="bg-[#a5c9ca] rounded-md shadow-md p-3 pr-3 md:pr-0  lg:pr-0 flex flex-col md:flex-row items-start"
               >
-                <img
+                <Image
                   src={product.images[0]}
                   alt={product.name}
+                  fill
                   className="w-full md:w-1/3 object-cover mb-3 md:mb-0"
                 />
                 <div className="flex-grow pl-4">

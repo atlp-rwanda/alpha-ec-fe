@@ -1,14 +1,11 @@
 /* eslint-disable @next/next/no-page-custom-font */
 import './globals.css';
-import type { Metadata } from 'next';
-import React, { Suspense } from 'react';
+import { Metadata } from 'next';
+import React from 'react';
+import { Suspense } from 'react';
 import Providers from '@/redux/provider';
 import 'animate.css';
-import MainNav from '@/components/siteNavigation/MainNav';
 import PageLoading from '@/components/Loading/PageLoading';
-import { PiWhatsappLogoDuotone } from 'react-icons/pi';
-import Head from 'next/head';
-import Footer from '@/components/Footer/Footer';
 
 export const metadata: Metadata = {
   title: 'Alpha',
@@ -28,10 +25,7 @@ export default function RootLayout({
       <body>
         <Providers>
           <div className="flex min-h-screen flex-col justify-between min-w-screen bg-main-100 text-main-400 h-auto relative px-0">
-            <Suspense fallback={<PageLoading />}>
-              {children}
-              {/* <Footer /> */}
-            </Suspense>
+            <Suspense fallback={<PageLoading />}>{children}</Suspense>
           </div>
         </Providers>
       </body>

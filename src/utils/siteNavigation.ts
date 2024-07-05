@@ -30,17 +30,17 @@ export const TOP_MENUS: NavigationInterface[] = [
   },
   {
     icon: null,
-    title: 'shops',
-    label: 'Shops',
-    url: '/',
+    title: 'Products',
+    label: 'Products',
+    url: '/products',
     access: 'all',
     subMenus: []
   },
   {
     icon: null,
-    title: 'Products',
-    label: 'Products',
-    url: '/products',
+    title: 'Contact us',
+    label: 'Contact us',
+    url: '#',
     access: 'all',
     subMenus: []
   }

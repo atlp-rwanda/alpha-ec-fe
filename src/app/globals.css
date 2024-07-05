@@ -99,7 +99,7 @@ input {
 }
 
 .auto-fit-grid {
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
 }
 
 ::-webkit-scrollbar {
@@ -117,4 +117,28 @@ input {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
+}
+
+.title {
+  font-size: large;
+  font-weight: 600;
+}
+
+.gradient {
+  background: rgb(231, 246, 242);
+  background: linear-gradient(
+    0deg,
+    rgba(231, 246, 242, 1) 0%,
+    rgba(57, 91, 100, 1) 77%
+  );
+}
+
+.scroll-container {
+  overflow-x: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none !important;
+}
+
+.scroll-container::-webkit-scrollbar {
+  display: none !important;
 }
