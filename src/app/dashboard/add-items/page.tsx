@@ -54,7 +54,7 @@ const Form = () => {
     if (categoriesData === null && !categoriesLoading && error === null) {
       dispatch(getCategories());
     }
-  }, [dispatch]);
+  }, [dispatch, categoriesData, categoriesLoading, error]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {

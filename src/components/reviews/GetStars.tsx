@@ -11,11 +11,11 @@ export const GetStars: React.FC<GetStarsProps> = ({ rating }) => {
 
   for (let i = 0; i < 5; i++) {
     if (i < fullStars) {
-      stars.push(<FaStar key={i} size={18} />);
+      stars.push(<FaStar key={i} size={18} className="text-star" />);
     } else {
-      stars.push(<FaRegStar key={i} size={18} />);
+      stars.push(<FaStar key={i} size={18} className="text-main-150" />);
     }
   }
 
-  return <span className="flex w-min gap-0.5 text-main-300">{stars}</span>;
+  return <span className="flex w-min gap-0.5">{stars}</span>;
 };

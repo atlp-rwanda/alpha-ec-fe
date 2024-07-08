@@ -1,18 +1,16 @@
 'use client';
 
 import React from 'react';
-import { MdOutlineAddchart } from 'react-icons/md';
 import { ToastContainer } from 'react-toastify';
 import LoadingCard from './LoadingCard';
 import { useSearchParams } from 'next/navigation';
-import ProductsSideNav from '../siteNavigation/ProductsSideNav';
 import { HiOutlineHome } from 'react-icons/hi2';
 
 interface ProductLoadingProps {}
 
 const ProductLoading: React.FC<ProductLoadingProps> = () => {
   const searchParams = useSearchParams();
-  const limit = parseInt(searchParams.get('limit') || '10');
+  const limit = parseInt(searchParams.get('limit') || '50');
   return (
     <>
       <div className="flex justify-between m-0 gap-4 min-w-screen p-0 w-full z-0">

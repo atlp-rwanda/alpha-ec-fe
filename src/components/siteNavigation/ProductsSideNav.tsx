@@ -18,9 +18,9 @@ const ProductsSideNav: FC = () => {
 
   return (
     <div
-      className={`min-h-screen px-4 pt-4 hidden lg:flex flex-col ${showSideNav ? 'lg:max-w-min lg:min-w-72' : 'hidden lg:hidden'}  bg-main-150`}
+      className={`min-h-screen px-4 pt-4 hidden relative overflow-hidden bg-main-150 lg:flex flex-col ${showSideNav ? 'lg:max-w-min lg:min-w-72' : 'hidden lg:hidden'}  `}
     >
-      <div className="fixed">
+      <div className="fixed bg-main-150">
         <Filters onClick={() => {}} />
       </div>
     </div>

@@ -21,12 +21,12 @@ const ProductsDetailsNav: FC = () => {
   );
   const { cart } = useAppSelector((state: RootState) => state.cart);
 
-  useEffect(() => {
-    dispatch(fetchWishes());
-  }, [dispatch]);
-  useEffect(() => {
-    dispatch(fetchCart());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(fetchWishes());
+  // }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(fetchCart());
+  // }, [dispatch]);
 
   return (
     <div className="w-full flex flex-col h-30 mt-0 z-50 bg-main-100 fixed top-0 left-0 text-main-100">

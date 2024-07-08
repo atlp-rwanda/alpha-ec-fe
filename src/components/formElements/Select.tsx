@@ -32,6 +32,12 @@ export const Select = <T extends Item>({
     );
   };
 
+  const handleOptionClick = (item: T | null) => {
+    setSelected(item);
+    setSearchData('');
+    setShowOptions(false);
+  };
+
   return (
     <div
       className="uppercase h-max min-w-40 relative text-xs font-bold cursor-pointer border-b-1 py-1 text-main-400 flex items-center justify-between"
@@ -46,10 +52,7 @@ export const Select = <T extends Item>({
         <div className="max-h-72 border shadow-sm bg-main-100 overflow-hidden rounded-b-md min-w-full z-30 absolute left-0 top-8 animate__animated animate__fadeInUp animate__faster">
           {search && (
             <div
-              onClick={e => {
-                e.stopPropagation();
-                setShowOptions(true);
-              }}
+              onClick={e => e.stopPropagation()}
               className="px-0 pt-0 h-12 relative"
             >
               <span className="absolute left-1 top-1 h-full flex">
@@ -67,7 +70,10 @@ export const Select = <T extends Item>({
           )}
           <ul className="bg-main-100 max-h-48 pb-3 text-left overflow-y-auto min-w-full z-30 left-0 top-7 animate__animated animate__fadeInUp animate__faster">
             <li
-              onClick={() => setSelected(null)}
+              onClick={e => {
+                e.stopPropagation();
+                handleOptionClick(null);
+              }}
               className={`w-full p-1 px-1 border-x-transparent ${
                 selected === null ? 'bg-main-200 font-bold' : ''
               } hover:bg-main-200 uppercase`}
@@ -77,9 +83,9 @@ export const Select = <T extends Item>({
             {filtered().map(itm => (
               <li
                 key={itm.id}
-                onClick={() => {
-                  setSelected(itm);
-                  setSearchData('');
+                onClick={e => {
+                  e.stopPropagation();
+                  handleOptionClick(itm);
                 }}
                 className={`w-full p-1 px-1 border-x-transparent ${
                   selected === itm ? 'bg-main-200 font-bold' : ''

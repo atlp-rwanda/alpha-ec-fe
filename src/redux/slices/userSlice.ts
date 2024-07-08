@@ -40,6 +40,7 @@ interface UserState {
   loading: boolean;
   error: FormErrorInterface | null;
   success: boolean;
+  token: string | null;
 }
 
 const initialState: UserState = {
@@ -47,7 +48,8 @@ const initialState: UserState = {
   role: null,
   loading: false,
   error: null,
-  success: false
+  success: false,
+  token: null
 };
 
 export interface DecodedInterface {
@@ -139,6 +141,9 @@ const UserSlice = createSlice({
   reducers: {
     updateUserRole(state, action) {
       state.role = action.payload;
+    },
+    setAuthToken(state, action) {
+      state.token = action.payload;
     }
   },
   extraReducers: builder => {
@@ -149,18 +154,21 @@ const UserSlice = createSlice({
         state.userInfo = {};
         state.error = null;
         state.success = false;
+        state.token = null;
       })
       .addCase(registerUser.fulfilled, state => {
         state.loading = false;
         state.role = null;
         state.error = null;
         state.success = true;
+        state.token = null;
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.loading = false;
         state.role = null;
         state.error = action.payload as FormErrorInterface;
         state.success = false;
+        state.token = null;
       })
       .addCase(logInUser.pending, state => {
         state.loading = true;
@@ -168,6 +176,7 @@ const UserSlice = createSlice({
         state.userInfo = {};
         state.error = null;
         state.success = false;
+        state.token = null;
       })
       .addCase(logInUser.fulfilled, (state, action) => {
         state.loading = false;
@@ -180,6 +189,7 @@ const UserSlice = createSlice({
         state.error = action.payload as FormErrorInterface;
         state.success = false;
         state.role = null;
+        state.token = null;
       })
       .addCase(getUserProfile.pending, state => {
         state.loading = true;
@@ -209,4 +219,4 @@ const UserSlice = createSlice({
 });
 
 export default UserSlice.reducer;
-export const { updateUserRole } = UserSlice.actions;
+export const { updateUserRole, setAuthToken } = UserSlice.actions;

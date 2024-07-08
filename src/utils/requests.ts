@@ -23,6 +23,7 @@ interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
 }
 
 export let token: string | null = null;
+
 if (typeof window !== 'undefined') {
   const tokenString = localStorage.getItem('token');
   if (tokenString) {
@@ -47,6 +48,7 @@ axiosInstanceWithoutInterceptors.interceptors.request.use(
       config.headers = config.headers || {};
       config.headers.Authorization = `Bearer ${token}`;
     }
+
     return config;
   },
   error => {
@@ -60,6 +62,7 @@ axiosInstance.interceptors.request.use(
       config.headers = config.headers || {};
       config.headers.Authorization = `Bearer ${token}`;
     }
+
     return config;
   },
   error => {

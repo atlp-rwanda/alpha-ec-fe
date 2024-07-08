@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { HashLoader, ScaleLoader } from 'react-spinners';
+import { ScaleLoader } from 'react-spinners';
 
 const PageLoading: React.FC = () => {
   return (

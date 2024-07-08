@@ -68,6 +68,16 @@ const Pagination: React.FC<PaginationProps> = ({
       );
     }
 
+    if (endNumber < totalPages) {
+      pageNumbers.push(
+        <span
+          className={`mx-1 flex items-center text-center rounded-full h-full text-lg hover:bg-main-300 hover:text-main-100 cursor-pointer ${'bg-main-100 text-main-400'}`}
+        >
+          ...
+        </span>
+      );
+    }
+
     return pageNumbers;
   };
 
@@ -82,8 +92,8 @@ const Pagination: React.FC<PaginationProps> = ({
         }`}
         disabled={currentPage === 1}
       >
-        <GrFormPreviousLink />
         Previous
+        <GrFormPreviousLink />
       </button>
       {renderPageNumbers()}
       <button

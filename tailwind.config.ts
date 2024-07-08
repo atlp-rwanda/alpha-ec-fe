@@ -30,6 +30,7 @@ const config: Config = {
         'gray-dark': '#273444',
         gray: '#8492a6',
         'gray-light': '#d3dce6',
+        star: '#EBC351',
         main: {
           100: '#E7F6F2',
           150: '#E6EDED',
@@ -59,6 +60,21 @@ const config: Config = {
       },
       maxHeight: {
         120: '30rem'
+      },
+      keyframes: {
+        zoomIn: {
+          '0%': {
+            transform: 'scale(0.95)',
+            opacity: '0'
+          },
+          '100%': {
+            transform: 'scale(1)',
+            opacity: '1'
+          }
+        }
+      },
+      animation: {
+        zoomIn: 'zoomIn 0.3s ease-in-out'
       }
     }
   },
