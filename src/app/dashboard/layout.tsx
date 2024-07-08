@@ -1,8 +1,8 @@
 'use client';
 
 import React from 'react';
-import SideNav from '../../components/dashboard/SideNav';
-import TopNav from '../../components/dashboard/TopNav';
+import SideNav from '@/components/dashboard/SideNav';
+import TopNav from '@/components/dashboard/TopNav';
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
