@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { FiHome, FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import { MdOutlineManageAccounts } from 'react-icons/md';
@@ -14,6 +14,7 @@ import { FaHeart, FaUserPlus } from 'react-icons/fa';
 import { BsCart3 } from 'react-icons/bs';
 import { useAppSelector } from '@/redux/hooks/hook';
 import { RootState } from '@/redux/store';
+import useLogout from '@/app/(Authentication)/logout/page';
 
 type SidebarButtonProps = {
   paths: string[];
@@ -22,17 +23,18 @@ type SidebarButtonProps = {
   className?: string;
   onClick?: () => void;
 };
+
 interface SideNavProps1 {
   className?: string;
 }
 
-const SidebarButton = ({
+const SidebarButton: React.FC<SidebarButtonProps> = ({
   paths,
   icon,
   children,
   className,
   onClick
-}: SidebarButtonProps) => {
+}) => {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -61,14 +63,13 @@ const SidebarButton = ({
     </div>
   );
 };
+
 const SideNav: React.FC<SideNavProps1> = ({ className }) => {
   type DropdownKeys = 'products' | 'settings' | 'roles';
 
   const router = useRouter();
   const { role } = useAppSelector((state: RootState) => state.user);
   const { userRole } = useAppSelector((state: RootState) => state.otp);
-
-  const loggedInRole = userRole || role || 'buyer';
 
   const [isDropdownOpen, setIsDropdownOpen] = useState<
     Record<DropdownKeys, boolean>
@@ -78,6 +79,24 @@ const SideNav: React.FC<SideNavProps1> = ({ className }) => {
     roles: false
   });
 
+  const [loggedInRole, setLoggedInRole] = useState<string | null>(null);
+  const logout = useLogout();
+
+  useEffect(() => {
+    const storedRole = localStorage.getItem('userRole');
+    if (storedRole) {
+      setLoggedInRole(storedRole);
+    } else if (userRole || role) {
+      const roleToStore = userRole || role;
+      if (roleToStore) {
+        setLoggedInRole(roleToStore);
+        localStorage.setItem('userRole', roleToStore);
+      }
+    } else {
+      setLoggedInRole('buyer');
+    }
+  }, [role, userRole]);
+
   const toggleDropdown = (dropdown: DropdownKeys) => {
     setIsDropdownOpen(prevState => ({
       ...prevState,
@@ -85,9 +104,13 @@ const SideNav: React.FC<SideNavProps1> = ({ className }) => {
     }));
   };
 
+  if (!loggedInRole) {
+    return null;
+  }
+
   return (
     <div
-      className={`bg-[#a5c9ca] h-full p-5 fixed sm:relative md:relative overflow-x-auto shadow-md`}
+      className={`bg-[#a5c9ca] h-full p-5 fixed sm:relative md:relative overflow-x-auto shadow-md ${className}`}
     >
       <div>
         <Link href="/">
@@ -102,7 +125,7 @@ const SideNav: React.FC<SideNavProps1> = ({ className }) => {
           </SidebarButton>
         </div>
 
-        <div className="mt-6 ">
+        <div className="mt-6">
           <h2 className="text-xl font-semibold">Activities</h2>
           {loggedInRole === 'buyer' && (
             <>
@@ -114,7 +137,7 @@ const SideNav: React.FC<SideNavProps1> = ({ className }) => {
                 <FaHeart className="text-xl" />
                 <p className="text-nowrap">Wishlist</p>
               </SidebarButton>
-              <SidebarButton paths={['']}>
+              <SidebarButton paths={['/dashboard/orders']}>
                 <RiAccountCircleLine className="text-xl" />
                 <p className="text-nowrap">Orders</p>
               </SidebarButton>
@@ -226,7 +249,7 @@ const SideNav: React.FC<SideNavProps1> = ({ className }) => {
               </div>
             )}
           </div>
-          <SidebarButton paths={[]}>
+          <SidebarButton paths={[]} onClick={logout}>
             <RiLogoutBoxRLine className="text-xl" />
             <p className="text-nowrap">Logout</p>
           </SidebarButton>

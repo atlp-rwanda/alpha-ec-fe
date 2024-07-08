@@ -135,6 +135,27 @@ export const verifyOtp = createAsyncThunk(
   }
 );
 
+export const logoutUser = createAsyncThunk(
+  'authentication/logoutUser',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axiosRequest('POST', '/users/logout', {}, true);
+
+      if (response.status === 200) {
+        localStorage.clear();
+        sessionStorage.clear();
+        return true;
+      }
+    } catch (err: unknown) {
+      const errorMessage =
+        axios.isAxiosError(err) && err.response
+          ? err.response.data || 'Logout failed'
+          : (err as Error).message;
+      return rejectWithValue({ message: errorMessage });
+    }
+  }
+);
+
 const UserSlice = createSlice({
   name: 'user',
   initialState,
@@ -183,6 +204,8 @@ const UserSlice = createSlice({
         state.error = null;
         state.success = true;
         state.role = (jwtDecode(action.payload.data) as DecodedInterface).role;
+        const decodedToken = jwtDecode(action.payload.data) as DecodedInterface;
+        state.role = decodedToken.role;
       })
       .addCase(logInUser.rejected, (state, action) => {
         state.loading = false;
@@ -211,6 +234,22 @@ const UserSlice = createSlice({
         state.success = true;
       })
       .addCase(getUserProfile.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as FormErrorInterface;
+        state.success = false;
+      })
+      .addCase(logoutUser.pending, state => {
+        state.loading = true;
+      })
+      .addCase(logoutUser.fulfilled, state => {
+        state.loading = false;
+        state.error = null;
+        state.success = true;
+        state.userInfo = null;
+        state.role = null;
+        state.token = null;
+      })
+      .addCase(logoutUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as FormErrorInterface;
         state.success = false;
