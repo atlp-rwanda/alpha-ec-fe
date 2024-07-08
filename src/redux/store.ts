@@ -19,6 +19,7 @@ import ordersReducer from './slices/ordersSlice';
 import paymentReducer from './slices/payment';
 import updateprofilereducer from './slices/updateproductSlice';
 import notificationsReducer from './slices/notificationSlice';
+import updateorderstatusreducer from './slices/updateorderstatusSlice';
 
 export const rootReducer = combineReducers({
   otp: otpReducer,
@@ -41,7 +42,8 @@ export const rootReducer = combineReducers({
   orders: ordersReducer,
   payment: paymentReducer,
   updateproduct: updateprofilereducer,
-  notifications: notificationsReducer
+  notifications: notificationsReducer,
+  updateorderstatus: updateorderstatusreducer
 });
 
 export const store = configureStore({
