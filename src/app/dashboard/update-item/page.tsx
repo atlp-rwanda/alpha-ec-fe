@@ -5,7 +5,7 @@ import { useState, useEffect, FormEvent } from 'react';
 import React from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks/hook';
-import Layout from '../Layout';
+import Layout from '../layout';
 import { ErrorInterface, ProductFields, getErrorForField } from '@/utils';
 import { Button, ButtonStyle, Input } from '@/components/formElements';
 import useToast from '@/components/alerts/Alerts';

@@ -174,6 +174,8 @@ const UserSlice = createSlice({
         state.error = null;
         state.success = true;
         state.role = (jwtDecode(action.payload.data) as DecodedInterface).role;
+        const decodedToken = jwtDecode(action.payload.data) as DecodedInterface;
+        state.role = decodedToken.role;
       })
       .addCase(logInUser.rejected, (state, action) => {
         state.loading = false;

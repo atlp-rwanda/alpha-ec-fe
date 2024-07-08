@@ -9,11 +9,9 @@ export default function RootLayout({
 }>) {
   return (
     <div className="flex h-screen w-full">
-      <div className="hidden sm:flex md:flex lg:flex">
-        <SideNav />
-      </div>
+      <div className="hidden sm:flex md:flex lg:flex">{/* <SideNav /> */}</div>
       <div className="flex flex-col w-full">
-        <TopNav />
+        {/* <TopNav /> */}
         <main className="flex-1  sm:p-8 md:p-8 lg:p-8 p-2 overflow-y-auto">
           {children}
         </main>
