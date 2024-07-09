@@ -28,13 +28,6 @@ const MainNav: FC = () => {
 
   const { cart } = useAppSelector((state: RootState) => state.cart);
 
-  // useEffect(() => {
-  //   dispatch(fetchWishes());
-  // }, [dispatch]);
-  // useEffect(() => {
-  //   dispatch(fetchCart());
-  // }, [dispatch]);
-
   const handleNavigation = (url: string) => {
     setPageLoading(true);
     router.push(url);
@@ -98,7 +91,7 @@ const MainNav: FC = () => {
           >
             <BsCart3 size={24} />
             <span className="absolute top-0 right-0 bg-main-400 text-sm text-main-100 font-bold p-0.5 px-1 rounded-full">
-              {cart?.produtcs?.length || 0}
+              {cart?.products?.length || 0}
             </span>
             <label className="text-xxs text-black">CART</label>
           </Link>
@@ -142,14 +135,24 @@ const MainNav: FC = () => {
             >
               <div className="w-full flex flex-row justify-center  gap-3">
                 <Link
-                  href="/cart"
+                  href="/dashboard/cart"
                   className="relative flex flex-col items-center justify-center cursor-pointer text-black p-1"
                 >
                   <BsCart3 size={24} />
                   <span className="absolute top-0 right-0 bg-main-400 text-sm text-main-100 font-bold p-0.5 px-1 rounded-full">
-                    {0}
+                    {cart?.products?.length || 0}
                   </span>
                   <label className="text-xxs text-black">CART</label>
+                </Link>
+                <Link
+                  href="/dashboard/wishlist"
+                  className="relative flex flex-col items-center justify-center cursor-pointer text-black p-1"
+                >
+                  <CiHeart size={32} />
+                  <span className="absolute top-0 right-0 bg-main-400 text-sm text-main-100 font-bold p-0.5 px-1 rounded-full">
+                    {wishlist?.count || wishlist2?.count || 0}
+                  </span>
+                  <label className="text-xxs text-black">WISHLIST</label>
                 </Link>
                 {PRODUCT_ICONS.map(
                   item =>

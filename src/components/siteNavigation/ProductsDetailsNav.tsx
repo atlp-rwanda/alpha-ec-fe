@@ -48,7 +48,7 @@ const ProductsDetailsNav: FC = () => {
           >
             <BsCart3 size={32} />
             <span className="absolute top-0 right-0 bg-main-400 text-sm text-main-100 font-bold p-0.5 px-1 rounded-full">
-              {cart?.produtcs?.length || 0}
+              {cart?.products?.length || 0}
             </span>
             <label className="text-xxs text-black">CART</label>
           </Link>

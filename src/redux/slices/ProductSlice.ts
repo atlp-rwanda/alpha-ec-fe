@@ -177,7 +177,8 @@ export const getProducts = createAsyncThunk(
       const response = await axiosRequest<null, ProductsResponse>(
         'GET',
         url,
-        null
+        null,
+        true
       );
 
       return response.data.data;

@@ -13,15 +13,13 @@ import ProductsDetailsNav from '@/components/siteNavigation/ProductsDetailsNav';
 import { CiHeart } from 'react-icons/ci';
 import Slider from '@/components/Images/Slider';
 import PageLoading from '@/components/Loading/PageLoading';
-import { addWishlist, fetchWishes } from '@/redux/slices/wishlistSlice';
-import useToast from '@/components/alerts/Alerts';
+import { addWishlist } from '@/redux/slices/wishlistSlice';
 import { FormErrorInterface } from '@/utils';
 import { FaHeart } from 'react-icons/fa';
 import { addToCart } from '@/redux/slices/cartSlice';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
-import { deleteProduct } from '@/redux/slices/ProductSlice';
 
 const Details = () => {
   const dispatch = useAppDispatch();
@@ -45,10 +43,6 @@ const Details = () => {
 
   const cartStatus = useAppSelector((state: RootState) => state.cart.status);
 
-  // useEffect(() => {
-  //   dispatch(fetchWishes());
-  // }, [dispatch]);
-
   const isInWishlist = wishlist.some(
     wishlistItem => wishlistItem.id === productId
   );
@@ -57,10 +51,6 @@ const Details = () => {
     dispatch(showSideNav(false));
     productId && dispatch(getProductDetails(productId));
   }, [productId, dispatch]);
-
-  // useEffect(() => {
-  //   productId && dispatch(deleteProduct(productId));
-  // }, [dispatch, productId]);
 
   const handleAdd = () => {
     setQuantity(prevQuantity => prevQuantity + 1);

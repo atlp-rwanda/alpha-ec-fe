@@ -134,9 +134,14 @@ const wishlistSlice = createSlice({
       .addCase(addWishlist.fulfilled, (state, action) => {
         state.status = 'succeeded';
         if (action.payload.message === 'Product added to wishlist') {
-          state.wishlist!.count += 1;
+          if (!state.wishlist) {
+            state.wishlist = { count: 0, rows: [] };
+          }
+          state.wishlist.count += 1;
           state.wishlist?.rows.push(action.payload.data.product);
-        } else if (action.payload.message === 'Wishlist deleted successfully') {
+        } else if (
+          action.payload.message === 'Wishlist item deleted successfully'
+        ) {
           if (state.wishlist && state.wishlist.count > 0) {
             state.wishlist.count -= 1;
             state.wishlist!.rows = state.wishlist!.rows.filter(
