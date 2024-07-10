@@ -16,7 +16,7 @@ export interface ProductsInCart {
 
 export interface cartDataResponse {
   id: string;
-  produtcs: ProductsInCart[];
+  products: ProductsInCart[];
   totalprice: number;
 }
 
