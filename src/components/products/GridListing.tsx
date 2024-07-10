@@ -94,7 +94,8 @@ const GridListing: React.FC<GridListingProps> = ({ data }) => {
                       >
                         <td className="hidden md:table-cell p-2 font-bold h-full overflow-hidden items-center">
                           <Image
-                            fill
+                            width={120}
+                            height={120}
                             src={product.images[0]}
                             alt="Product image"
                             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"

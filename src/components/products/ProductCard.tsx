@@ -44,7 +44,7 @@ const ProductCard: React.FC<ProductCard> = ({ product, styles }) => {
       setLoading(false);
     }
   };
-  const isInCart = cart?.produtcs?.some(
+  const isInCart = cart?.products?.some(
     (cartItem: { id: string }) => cartItem.id === product.id
   );
 

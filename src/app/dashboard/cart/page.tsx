@@ -6,7 +6,6 @@ import { FormErrorInterface, axiosInstance, axiosRequest } from '@/utils';
 import useToast from '@/components/alerts/Alerts';
 import {
   cartFormData,
-  fetchCart,
   removeFromCart,
   updateCart,
   deleteCart
@@ -32,17 +31,6 @@ const Cart: React.FC = () => {
     (state: RootState) => state.payment
   );
 
-  // useEffect(() => {
-  //   setLoading(true);
-  //   dispatch(fetchCart());
-  //   setLoading(false);
-  // }, [dispatch]);
-
-  const { role } = useAppSelector((state: RootState) => state.user);
-  const { userRole } = useAppSelector((state: RootState) => state.otp);
-
-  const loggedIn = userRole || role || 'buyer';
-
   const handleCheckout = () => {
     dispatch(checkoutNow());
   };
@@ -55,7 +43,7 @@ const Cart: React.FC = () => {
     );
   }
 
-  if (!cart || !cart.produtcs) {
+  if (!cart || !cart.products) {
     return (
       <div className=" flex justify-center items-center w-full h-full text-grayborder-b-2 gap-5  border-gray text-[22px]">
         <div>
@@ -130,15 +118,14 @@ const Cart: React.FC = () => {
       <div className="flex flex-col md:flex-row flex-start gap-4 ">
         <div className="w-full md:w-8/12 space-y-4 p-0 ">
           <div className="flex flex-col space-y-3">
-            {cart.produtcs.map(product => (
+            {cart.products.map(product => (
               <div
                 key={product.id}
                 className="bg-[#a5c9ca] rounded-md shadow-md p-3 pr-3 md:pr-0  lg:pr-0 flex flex-col md:flex-row items-start"
               >
-                <Image
+                <img
                   src={product.images[0]}
                   alt={product.name}
-                  fill
                   className="w-full md:w-1/3 object-cover mb-3 md:mb-0"
                 />
                 <div className="flex-grow pl-4">
@@ -153,7 +140,6 @@ const Cart: React.FC = () => {
                   <button
                     onClick={() => removeOneCart(product.id)}
                     className=" text-[#BB1616] underline hover:text-main-300 active:text-blue transition-all w-full sm:w-auto"
-                    // disabled={loading}
                   >
                     {loading ? 'Loading...' : 'Remove'}
                   </button>
@@ -201,12 +187,6 @@ const Cart: React.FC = () => {
                 ${cart?.totalprice.toLocaleString() || 0}
               </span>
             </div>
-            {/* <Button
-              label="Checkout"
-              style={ButtonStyle.DARK}
-              disabled={loading}
-              loading={loading}
-            /> */}
             <button
               onClick={handleCheckout}
               className="bg-main-400 text-main-100 font-medium py-2 px-4 rounded-full hover:bg-main-300 hover:shadow-md active:bg-slate-500 transition-all w-full"
