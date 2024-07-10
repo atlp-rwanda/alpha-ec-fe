@@ -1,10 +1,9 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks/hook';
 import { RootState } from '@/redux/store';
-import { axiosRequest } from '@/utils';
 import useToast from '@/components/alerts/Alerts';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import { updateProductOrderStatus } from '@/redux/slices/updateorderstatusSlice';
 
 interface OrderCardProps {
@@ -53,7 +52,7 @@ const StatusUpdateModal: React.FC<StatusUpdateModalProps> = ({
   const [newStatus, setNewStatus] = useState(currentStatus);
   const { showSuccess, showError } = useToast();
   const dispatch = useAppDispatch();
-  const { loading } = useAppSelector(
+  const { loading,success,error } = useAppSelector(
     (state: RootState) => state.updateorderstatus
   );
 
@@ -63,9 +62,6 @@ const StatusUpdateModal: React.FC<StatusUpdateModalProps> = ({
         if (response.payload) {
           onUpdate(newStatus);
           onClose();
-          showSuccess('Product status updated successfully!');
-        } else {
-          showError(`Updating status failed!`);
         }
       })
       .catch(error => {
@@ -74,6 +70,15 @@ const StatusUpdateModal: React.FC<StatusUpdateModalProps> = ({
         toast.error('Error updating status');
       });
   };
+
+  if(success){
+    showSuccess('Status updated successfully!');
+    
+  }else if(error){
+      showError(`Updating status failed!`);
+  }
+ 
+  
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
@@ -147,6 +152,23 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [orderStatus, setOrderStatus] = useState(status);
 
+  const [loggedInRole, setLoggedInRole] = useState<string | null>(null);
+
+  useEffect(() => {
+    const storedRole = localStorage.getItem('userRole');
+    if (storedRole) {
+      setLoggedInRole(storedRole);
+    } else if (userRole || role) {
+      const roleToStore = userRole || role;
+      if (roleToStore) {
+        setLoggedInRole(roleToStore);
+        localStorage.setItem('userRole', roleToStore);
+      }
+    } else {
+      setLoggedInRole('buyer');
+    }
+  }, [role, userRole]);
+
   const handleCardClick = () => {
     setIsModalOpen(true);
   };
@@ -161,42 +183,124 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
 
   return (
     <div>
-      <div
-        className="order-card border rounded-lg p-4 m-[4px]"
-        onClick={handleCardClick}
-      >
-        <div className="order-header flex justify-between gap-2">
-          <span className="order-id font-normal text-[10px]">
-            Order ID # {id}
-          </span>
-          <span
-            className={`order-status ${
-              orderStatus.trim() === 'accepted'
-                ? 'bg-green-200'
-                : orderStatus.trim() === 'pending'
-                  ? 'bg-yellow-200'
-                  : orderStatus.trim() === 'rejected'
-                    ? 'bg-red-300 '
-                    : ''
-            } px-2 rounded`}
-          >
-            {orderStatus.trim()}
-          </span>
-        </div>
-        <div className="order-content flex items-center mt-4 sm:gap-3 md:gap-3">
-          <img
-            src={productImage}
-            alt={orderedProduct.name}
-            className="w-20 h-20 mr-4"
-          />
-          <div className="order-details">
-            <h2 className="font-bold">{orderedProduct.name}</h2>
-            <p>Price: ${orderedProduct.price}</p>
-            <p>Quantity: {quantity}</p>
-            <p className="text-sm">Buyer: {orderBuyer.name}</p>
+      {loggedInRole === 'seller' && (
+        <div
+          className="order-card border rounded-lg p-4 m-[4px]"
+          onClick={handleCardClick}
+        >
+          <div className="order-header flex justify-between gap-2">
+            <span className="order-id font-normal text-[10px]">
+              Order ID # {id}
+            </span>
+            <span
+              className={`order-status ${
+                orderStatus.trim() === 'accepted'
+                  ? 'bg-green-200'
+                  : orderStatus.trim() === 'pending'
+                    ? 'bg-yellow-200'
+                    : orderStatus.trim() === 'rejected'
+                      ? 'bg-red-300 '
+                      : ''
+              } px-2 rounded`}
+            >
+              {orderStatus.trim()}
+            </span>
+          </div>
+          <div className="order-content flex items-center mt-4 sm:gap-3 md:gap-3">
+            <img
+              width={150}
+              height={180}
+              src={productImage}
+              alt={orderedProduct.name}
+              className="w-20 h-20 mr-4"
+            />
+            <div className="order-details">
+              <h2 className="font-bold">{orderedProduct.name}</h2>
+              <p>Price: ${orderedProduct.price}</p>
+              <p>Quantity: {quantity}</p>
+              <p className="text-sm">Buyer: {orderBuyer.name}</p>
+            </div>
           </div>
         </div>
-      </div>
+      )}
+      {loggedInRole === 'admin' && (
+        <div
+          className="order-card border rounded-lg p-4 m-[4px]"
+          onClick={handleCardClick}
+        >
+          <div className="order-header flex justify-between gap-2">
+            <span className="order-id font-normal text-[10px]">
+              Order ID # {id}
+            </span>
+            <span
+              className={`order-status ${
+                orderStatus.trim() === 'accepted'
+                  ? 'bg-green-200'
+                  : orderStatus.trim() === 'pending'
+                    ? 'bg-yellow-200'
+                    : orderStatus.trim() === 'rejected'
+                      ? 'bg-red-300 '
+                      : ''
+              } px-2 rounded`}
+            >
+              {orderStatus.trim()}
+            </span>
+          </div>
+          <div className="order-content flex items-center mt-4 sm:gap-3 md:gap-3">
+            <img
+              width={150}
+              height={180}
+              src={productImage}
+              alt={orderedProduct.name}
+              className="w-20 h-20 mr-4"
+            />
+            <div className="order-details">
+              <h2 className="font-bold">{orderedProduct.name}</h2>
+              <p>Price: ${orderedProduct.price}</p>
+              <p>Quantity: {quantity}</p>
+              <p className="text-sm">Buyer: {orderBuyer.name}</p>
+            </div>
+          </div>
+        </div>
+      )}
+      {loggedInRole === 'buyer' && (
+        <div className="order-card border rounded-lg p-4 m-[4px]">
+          <div className="order-header flex justify-between gap-2">
+            <span className="order-id font-normal text-[10px]">
+              Order ID # {id}
+            </span>
+            <span
+              className={`order-status ${
+                orderStatus.trim() === 'accepted'
+                  ? 'bg-green-200'
+                  : orderStatus.trim() === 'pending'
+                    ? 'bg-yellow-200'
+                    : orderStatus.trim() === 'rejected'
+                      ? 'bg-red-300 '
+                      : ''
+              } px-2 rounded`}
+            >
+              {orderStatus.trim()}
+            </span>
+          </div>
+          <div className="order-content flex items-center mt-4 sm:gap-3 md:gap-3">
+            <img
+              width={150}
+              height={180}
+              src={productImage}
+              alt={orderedProduct.name}
+              className="w-20 h-20 mr-4"
+            />
+            <div className="order-details">
+              <h2 className="font-bold">{orderedProduct.name}</h2>
+              <p>Price: ${orderedProduct.price}</p>
+              <p>Quantity: {quantity}</p>
+              <p className="text-sm">Buyer: {orderBuyer.name}</p>
+            </div>
+          </div>
+        </div>
+      )}
+
       {isModalOpen && (
         <StatusUpdateModal
           orderId={id}
@@ -208,6 +312,7 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
           productName={orderedProduct.name}
         />
       )}
+        <ToastContainer />
     </div>
   );
 };

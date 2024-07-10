@@ -28,12 +28,14 @@ interface ProductOrderState {
   productOrder: ProductOrderData | null;
   error: FormErrorInterface | null;
   loading: boolean;
+  success: boolean;
 }
 
 const initialState: ProductOrderState = {
   productOrder: null,
   error: null,
-  loading: false
+  loading: false,
+  success: false,
 };
 
 export const updateProductOrderStatus = createAsyncThunk(
@@ -61,15 +63,18 @@ const updateProductOrderStatusSlice = createSlice({
     builder
       .addCase(updateProductOrderStatus.pending, state => {
         state.loading = true;
+        state.success = false;
       })
       .addCase(updateProductOrderStatus.fulfilled, (state, action) => {
         state.loading = false;
         state.productOrder = action.payload;
         state.error = null;
+        state.success = true;
       })
       .addCase(updateProductOrderStatus.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as FormErrorInterface;
+        state.success = false;
       });
   }
 });
