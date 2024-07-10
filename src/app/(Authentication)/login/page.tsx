@@ -110,13 +110,17 @@ export default function Home() {
           const decodedRole = (jwtDecode(token) as any).role;
 
           if (decodedRole === 'buyer') {
-            router.push('/products');
+            setTimeout(() => {
+              setPageLoading(true);
+              window.location.href = '/products';
+              setPageLoading(false);
+            }, 2030);
           } else {
             setTimeout(() => {
               setPageLoading(true);
-              router.push('/dashboard');
+              window.location.href = '/dashboard';
               setPageLoading(false);
-            }, 1000);
+            }, 2030);
           }
         }
       }

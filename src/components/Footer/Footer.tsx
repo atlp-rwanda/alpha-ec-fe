@@ -59,7 +59,7 @@ const Footer: FC = () => {
             </li>
             <li className="flex items-center gap-2">
               <MdOutlineEmail />
-              alpha@gmail.com
+              alphaatlpcohort29@gmail.com
             </li>
           </ul>
         </div>
