@@ -13,6 +13,8 @@ import { fetchCart } from '@/redux/slices/cartSlice';
 import { setAuthToken } from '@/redux/slices/userSlice';
 import { fetchWishes } from '@/redux/slices/wishlistSlice';
 import ProductsSideNav from '@/components/siteNavigation/ProductsSideNav';
+import NotFound from '@/components/Loading/ProductNotFound';
+import ProductNav from '@/components/siteNavigation/ProductsNav';
 
 export default function Home() {
   const dispatch = useAppDispatch();
@@ -54,19 +56,25 @@ export default function Home() {
     }
   }, [dispatch]);
 
-  if (loading)
+  if (data) {
     return (
-      <div className="flex justify-between gap-4 min-w-screen p-0 w-full z-0">
-        <ProductsSideNav />
-        <ProductLoading />
-      </div>
+      <>
+        <ProductNav />
+        <div className="flex justify-between gap-4 min-w-screen p-0 w-full z-0">
+          <ProductsSideNav />
+          <GridListing data={data} />
+        </div>
+      </>
     );
-  if (error) return <div>Error: {error.message || ''}</div>;
-  if (data)
+  } else {
     return (
-      <div className="flex justify-between gap-4 min-w-screen p-0 w-full z-0">
-        <ProductsSideNav />
-        <GridListing data={data} />
-      </div>
+      <>
+        <ProductNav />
+        <div className="flex justify-between gap-4 min-w-screen p-0 w-full z-0">
+          <ProductsSideNav />
+          <ProductLoading />
+        </div>
+      </>
     );
+  }
 }

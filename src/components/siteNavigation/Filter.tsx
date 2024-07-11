@@ -123,7 +123,7 @@ const Filters: FC<FiltersProps> = ({ onClick }) => {
 
   return (
     <>
-      <div className="mb-4 mt-6 flex items-center gap-4 justify-between">
+      <div className="mb-4 mt-2 flex items-center gap-4 justify-between">
         <label className="block text-sm font-medium text-gray-700">
           Seller:
         </label>
@@ -131,9 +131,26 @@ const Filters: FC<FiltersProps> = ({ onClick }) => {
           placeholder="Select Seller"
           selected={filter.seller}
           loading={false}
-          setSelected={(selected: SellerInterface | null) =>
-            setFilter({ ...filter, seller: selected })
-          }
+          setSelected={(selected: SellerInterface | null) => {
+            const currentParams = new URLSearchParams(window.location.search);
+
+            const newParams = new URLSearchParams();
+            currentParams.forEach((value, key) => newParams.append(key, value));
+            if (currentParams.get('sellerId')) {
+              newParams.delete('sellerId');
+            }
+
+            const queryString = newParams.toString();
+            const queryParamsObject: Record<string, string> = {};
+            newParams.forEach((value, key) => {
+              queryParamsObject[key] = value;
+            });
+
+            router.push(`?${queryString}`);
+            dispatch(getProducts(queryParamsObject));
+
+            setFilter({ ...filter, seller: selected });
+          }}
           data={data || []}
         />
       </div>

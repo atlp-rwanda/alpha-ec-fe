@@ -83,8 +83,7 @@ const UpdateForm: React.FC = () => {
         name: selectedProduct.product.name,
         bonus: Number(selectedProduct.product.bonus),
         price: selectedProduct.product.price,
-        quantity: selectedProduct.product.quantity,
-        description: selectedProduct.product.description
+        quantity: selectedProduct.product.quantity
       });
       setCategory(selectedProduct.product.category?.id || null);
       setExpiryDate(

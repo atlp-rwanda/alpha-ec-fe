@@ -43,14 +43,14 @@ const TopNav: FC = () => {
         <Link href="/">ALPHA MARKET</Link>
       </div>
       <div className="hidden md:w-max md:flex justify-between gap-6">
-        <label>
+        {/* <label>
           <span className="text-main-200 text-xxs  uppercase">Currency: </span>
           USD
         </label>
         <label>
           <span className="text-main-200 text-xxs  uppercase">Language: </span>
           English
-        </label>
+        </label> */}
         <span className="w-max flex justify-between items-center space-x-4 bg-base-yellow-700 px-2 text-main-200 font-bold rounded-lg cursor-pointer hover:bg-opacity-80">
           {authenticated ? (
             <span onClick={logout}>Logout</span>

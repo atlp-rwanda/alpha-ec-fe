@@ -2,6 +2,8 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { axiosRequest, FormErrorInterface } from '@/utils';
 import { CategoryAttributes } from './categorySlice';
+import { ReactNode } from 'react';
+import { ReviewInterface } from './itemSlice';
 
 interface sellerInterface {
   id: string;
@@ -11,7 +13,7 @@ interface sellerInterface {
 }
 
 export interface ProductInterface {
-  description: string | undefined;
+  description: ReactNode;
   id: string;
   name: string;
   slug: string;
@@ -70,6 +72,7 @@ interface ProductState {
       loading: boolean;
     };
   };
+  reviews: any;
   data: ProductDataInterface | null;
   selectedProduct: ProductDetailsInterface | null;
   loading: boolean;
@@ -77,6 +80,16 @@ interface ProductState {
   success: boolean;
   showSideNav: boolean;
   message: String;
+}
+export interface ReviewAttributes {
+  id: string;
+  productId: string;
+  userId: string;
+  rating: number;
+  feedback: string;
+  repliesCount?: number;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 interface ProductsResponse {
@@ -107,7 +120,8 @@ const initialState: ProductState = {
   error: null,
   success: false,
   showSideNav: true,
-  message: ''
+  message: '',
+  reviews: undefined
 };
 
 export const getProductDetails = createAsyncThunk(
@@ -191,6 +205,14 @@ export const getProducts = createAsyncThunk(
     }
   }
 );
+export const getAverage = (reviews: ReviewInterface[]): number => {
+  if (!Array.isArray(reviews) || reviews.length === 0) {
+    return 0;
+  }
+
+  const totalRatings = reviews.reduce((acc, rev) => acc + rev.rating, 0);
+  return totalRatings / reviews.length;
+};
 
 export const getProductsByCategory = createAsyncThunk(
   'products/getByCategory',

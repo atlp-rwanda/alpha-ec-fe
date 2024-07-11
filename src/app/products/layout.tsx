@@ -16,8 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <div className="gap-0 flex-col relative">
-      <ProductNav />
-      <div className="flex justify-between mt-16 gap-4 min-w-screen p-0 w-full z-0">
+      <div className="flex flex-col justify-between mt-16 gap-4 min-w-screen p-0 w-full z-0">
         {children}
       </div>
       <Footer />
