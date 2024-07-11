@@ -52,7 +52,7 @@ const StatusUpdateModal: React.FC<StatusUpdateModalProps> = ({
   const [newStatus, setNewStatus] = useState(currentStatus);
   const { showSuccess, showError } = useToast();
   const dispatch = useAppDispatch();
-  const { loading,success,error } = useAppSelector(
+  const { loading, success, error } = useAppSelector(
     (state: RootState) => state.updateorderstatus
   );
 
@@ -71,14 +71,11 @@ const StatusUpdateModal: React.FC<StatusUpdateModalProps> = ({
       });
   };
 
-  if(success){
+  if (success) {
     showSuccess('Status updated successfully!');
-    
-  }else if(error){
-      showError(`Updating status failed!`);
+  } else if (error) {
+    showError(`Updating status failed!`);
   }
- 
-  
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
@@ -312,7 +309,7 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
           productName={orderedProduct.name}
         />
       )}
-        {/* <ToastContainer /> */}
+      {/* <ToastContainer /> */}
     </div>
   );
 };

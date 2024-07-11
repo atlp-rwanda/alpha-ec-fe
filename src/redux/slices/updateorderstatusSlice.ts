@@ -35,7 +35,7 @@ const initialState: ProductOrderState = {
   productOrder: null,
   error: null,
   loading: false,
-  success: false,
+  success: false
 };
 
 export const updateProductOrderStatus = createAsyncThunk(
