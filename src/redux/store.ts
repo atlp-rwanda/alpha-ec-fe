@@ -19,7 +19,6 @@ import ordersReducer from './slices/ordersSlice';
 import paymentReducer from './slices/payment';
 import updateprofilereducer from './slices/updateproductSlice';
 import notificationsReducer from './slices/notificationSlice';
-
 export const rootReducer = combineReducers({
   otp: otpReducer,
   products: productReducer,

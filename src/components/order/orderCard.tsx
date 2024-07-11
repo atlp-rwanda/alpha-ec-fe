@@ -39,7 +39,8 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
       </div>
       <div className="order-content flex items-center mt-4 sm:gap-3 md:gap-3">
         <Image
-          fill
+          width={100}
+          height={120}
           src={productImage}
           alt={orderedProduct.name}
           className="w-20 h-20 mr-4"
