@@ -9,10 +9,8 @@ import { BsCart3 } from 'react-icons/bs';
 import TopNav from './TopNav';
 import { CiHeart } from 'react-icons/ci';
 import { useAppSelector } from '@/redux/hooks/hook';
-import { fetchWishes } from '@/redux/slices/wishlistSlice';
 import { useAppDispatch } from '@/redux/hooks/hook';
 import { RootState } from '@/redux/store';
-import { fetchCart } from '@/redux/slices/cartSlice';
 
 const ProductsDetailsNav: FC = () => {
   const dispatch = useAppDispatch();
@@ -20,13 +18,6 @@ const ProductsDetailsNav: FC = () => {
     (state: RootState) => state.wishlist
   );
   const { cart } = useAppSelector((state: RootState) => state.cart);
-
-  // useEffect(() => {
-  //   dispatch(fetchWishes());
-  // }, [dispatch]);
-  // useEffect(() => {
-  //   dispatch(fetchCart());
-  // }, [dispatch]);
 
   return (
     <div className="w-full flex flex-col h-30 mt-0 z-50 bg-main-100 fixed top-0 left-0 text-main-100">

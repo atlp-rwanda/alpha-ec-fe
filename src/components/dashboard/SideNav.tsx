@@ -12,9 +12,15 @@ import { IoCalendarNumberOutline } from 'react-icons/io5';
 import { useRouter, usePathname } from 'next/navigation';
 import { FaHeart, FaUserPlus } from 'react-icons/fa';
 import { BsCart3 } from 'react-icons/bs';
-import { useAppSelector } from '@/redux/hooks/hook';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks/hook';
 import { RootState } from '@/redux/store';
 import useLogout from '@/app/(Authentication)/logout/page';
+import { jwtDecode } from 'jwt-decode';
+import {
+  DecodedInterface,
+  updateUserRole,
+  USER_ROLE
+} from '@/redux/slices/userSlice';
 
 type SidebarButtonProps = {
   paths: string[];
@@ -67,7 +73,22 @@ const SidebarButton: React.FC<SidebarButtonProps> = ({
 const SideNav: React.FC<SideNavProps1> = ({ className }) => {
   type DropdownKeys = 'products' | 'settings' | 'roles';
 
-  const router = useRouter();
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const tokenString = localStorage.getItem('token');
+    if (tokenString) {
+      const tokenData = JSON.parse(tokenString);
+      const decoded = tokenData
+        ? (jwtDecode(tokenData) as DecodedInterface)
+        : null;
+
+      if (decoded && decoded.role === USER_ROLE.ADMIN) {
+        dispatch(updateUserRole(USER_ROLE.ADMIN));
+      }
+    }
+  }, [dispatch]);
+
   const { role } = useAppSelector((state: RootState) => state.user);
   const { userRole } = useAppSelector((state: RootState) => state.otp);
 
@@ -153,11 +174,11 @@ const SideNav: React.FC<SideNavProps1> = ({ className }) => {
                 <FcStatistics className="text-xl" />
                 <p className="text-nowrap">Statistics</p>
               </SidebarButton>
-              <SidebarButton paths={[]}>
+              <SidebarButton paths={['/dashboard/wishlist']}>
                 <FaHeart className="text-xl" />
                 <p className="text-nowrap">Wishlist</p>
               </SidebarButton>
-              <SidebarButton paths={['']}>
+              <SidebarButton paths={['/dashboard/orders']}>
                 <RiAccountCircleLine className="text-xl" />
                 <p className="text-nowrap">Orders</p>
               </SidebarButton>
@@ -189,34 +210,7 @@ const SideNav: React.FC<SideNavProps1> = ({ className }) => {
           )}
           {loggedInRole === 'admin' && (
             <>
-              <div className="relative">
-                <SidebarButton
-                  paths={[]}
-                  onClick={() => toggleDropdown('roles')}
-                >
-                  <FaUserPlus className="text-xl" />
-                  <p className="text-nowrap">Roles</p>
-                  {isDropdownOpen.roles ? (
-                    <FiChevronUp className="ml-1" />
-                  ) : (
-                    <FiChevronDown className="ml-1" />
-                  )}
-                </SidebarButton>
-                {isDropdownOpen.roles && (
-                  <div className="ml-4 mt-2 flex flex-col space-y-0">
-                    <SidebarButton paths={['']}>
-                      <p>View Role</p>
-                    </SidebarButton>
-                    <SidebarButton paths={['']}>
-                      <p>Create Role</p>
-                    </SidebarButton>
-                    <SidebarButton paths={['/dashboard/assignrole']}>
-                      <p>Assign Role</p>
-                    </SidebarButton>
-                  </div>
-                )}
-              </div>
-              <SidebarButton paths={['/dashboard/accountstatus']}>
+              <SidebarButton paths={['/dashboard/users']}>
                 <RiAccountCircleLine className="text-xl" />
                 <p className="text-nowrap">Users</p>
               </SidebarButton>
