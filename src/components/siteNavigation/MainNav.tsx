@@ -11,8 +11,6 @@ import PageLoading from '../Loading/PageLoading';
 import { CiHeart } from 'react-icons/ci';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks/hook';
 import { RootState } from '@/redux/store';
-import { fetchWishes } from '@/redux/slices/wishlistSlice';
-import { fetchCart } from '@/redux/slices/cartSlice';
 import { GrClose } from 'react-icons/gr';
 import { VscMenu } from 'react-icons/vsc';
 
@@ -22,7 +20,6 @@ const MainNav: FC = () => {
   const [pageLoading, setPageLoading] = useState<boolean>(false);
   const [selectedMenu, setSelectedMenu] = useState<string>('Home');
 
-  const dispatch = useAppDispatch();
   const { wishlist } = useAppSelector((state: RootState) => state.wishlist);
   const { wishlist2 } = useAppSelector((state: RootState) => state.wishlist);
 
@@ -40,28 +37,32 @@ const MainNav: FC = () => {
     <div className="w-full flex flex-col h-30 mt-0 z-50 bg-main-100 fixed top-0 left-0 text-main-100">
       <TopNav />
       <nav className="w-full flex justify-between items-center py-0.5 px-4">
-        <span
+        <Link
           className="text-sm font-bold cursor-pointer px-4 py-1 text-main-400 flex items-center justify-between gap-4 rounded-md"
-          onClick={() => handleNavigation('/')}
+          href="/"
         >
           ALPHA
-        </span>
+        </Link>
         <div className="hidden md:flex justify-between w-min">
           {TOP_MENUS.map((menu, index) => {
-            const isSelected = selectedMenu === menu.title;
             return (
               <div
                 key={index}
-                className="block py-1 px-4 rounded text-gray-400 relative w-min group"
+                onClick={e => {
+                  e.preventDefault();
+                  if (menu.url === '#') {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }
+                }}
+                className="block rounded text-gray-400 relative w-min group px-4"
               >
                 <Link
                   href={menu.url}
                   passHref
-                  className={`relative block p-1 duration-200 transition-all ease-in-out text-main-400 cursor-pointer truncate ${isSelected ? 'font-semibold shadow-sm' : ''} group-hover:font-bold`}
+                  className={`cursor:pointer relative block duration-200 transition-all ease-in-out text-main-400 cursor-pointer truncate `}
                 >
                   {menu.icon && <menu.icon />}
-                  <span>{menu.label}</span>
-                  <span className="absolute inset-0 bg-main-300 opacity-0 group-hover:opacity-80 transition-opacity duration-300 ease-in-out transform scale-x-0 group-hover:scale-x-100 origin-left"></span>
+                  <span className="hover:underline">{menu.label}</span>
                 </Link>
               </div>
             );
@@ -170,8 +171,30 @@ const MainNav: FC = () => {
                     )
                 )}
               </div>
-              <div className="flex flex-col w-full h-full text-main-400">
-                {/* <Filters /> */}
+              <div className="flex flex-col gap-2 w-full h-full text-main-400">
+                {TOP_MENUS.map((menu, index) => {
+                  return (
+                    <div
+                      key={index}
+                      onClick={e => {
+                        e.preventDefault();
+                        if (menu.url === '#') {
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }
+                      }}
+                      className="block rounded text-gray-400 relative w-min group"
+                    >
+                      <Link
+                        href={menu.url}
+                        passHref
+                        className={`cursor:pointer relative block duration-200 transition-all ease-in-out text-main-400 cursor-pointer truncate `}
+                      >
+                        {menu.icon && <menu.icon />}
+                        <span className="hover:underline">{menu.label}</span>
+                      </Link>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>
