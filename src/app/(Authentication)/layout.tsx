@@ -1,6 +1,7 @@
 import React from 'react';
 import type { Metadata } from 'next';
 import { SlUserFollow } from 'react-icons/sl';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Authentication',
@@ -14,6 +15,12 @@ export default function RootLayout({
 }>) {
   return (
     <div className="w-full h-screen flex items-center overflow-hidden fixed">
+      <Link
+        href="/"
+        className="text-gray text-xs fixed mt-[-550px] ml-6 hover:scale-105"
+      >
+        Home
+      </Link>
       <div className="xs:w-full md:w-1/2 h-full angled-right flex flex-col items-center justify-center">
         {children}
       </div>

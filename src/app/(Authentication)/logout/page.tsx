@@ -11,7 +11,7 @@ const useLogout = () => {
 
   const logout = async () => {
     await dispatch(logoutUser()).unwrap();
-    router.push('/login');
+    window.location.href = '/';
   };
 
   return logout;
