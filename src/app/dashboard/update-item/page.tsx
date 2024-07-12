@@ -184,7 +184,7 @@ const UpdateForm: React.FC = () => {
       showSuccess('Product updated successfully!');
       dispatch(getProducts({}));
       setTimeout(() => {
-        router.push('/products');
+        router.push('/dashboard/products');
         setTempNewImages([]);
       }, 2000);
     } else if (status === 'failed' && result.payload) {
