@@ -181,52 +181,12 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
     <div>
       {loggedInRole === 'seller' && (
         <div
-          className="order-card border min-w-3 rounded-lg p-4 m-[4px]"
+          className="order-card border rounded-lg p-4 m-[4px]"
           onClick={handleCardClick}
         >
           <div className="order-header flex justify-between gap-2">
-            <span className="order-id font-normal text-[10px] uppercase">
-              Order ID # {id.slice(0, 5)}
-            </span>
-            <span
-              className={`order-status cursor-pointer ${
-                orderStatus.trim() === 'accepted'
-                  ? 'bg-green-200'
-                  : orderStatus.trim() === 'pending'
-                    ? 'bg-yellow-200'
-                    : orderStatus.trim() === 'rejected'
-                      ? 'bg-red-300 '
-                      : ''
-              } px-2 rounded`}
-            >
-              {orderStatus.trim()}
-            </span>
-          </div>
-          <div className="order-content flex items-center mt-4 sm:gap-3 md:gap-3">
-            <img
-              width={150}
-              height={180}
-              src={productImage}
-              alt={orderedProduct.name}
-              className="w-20 h-20 mr-4"
-            />
-            <div className="order-details">
-              <h2 className="font-bold truncate">{orderedProduct.name}</h2>
-              <p>Price: ${orderedProduct.price}</p>
-              <p>Quantity: {quantity}</p>
-              <p className="text-sm">Name: {orderBuyer.name}</p>
-            </div>
-          </div>
-        </div>
-      )}
-      {loggedInRole === 'admin' && (
-        <div
-          className="order-card border rounded-lg p-4 m-[4px] "
-          onClick={handleCardClick}
-        >
-          <div className="order-header flex justify-between gap-2">
-            <span className="order-id font-normal text-[10px] uppercase">
-              Order ID # {id.slice(0, 5)}
+            <span className="order-id font-normal text-[10px]">
+              Order ID # {id}
             </span>
             <span
               className={`order-status ${
@@ -251,7 +211,47 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
               className="w-20 h-20 mr-4"
             />
             <div className="order-details">
-              <h2 className="font-bold truncate">{orderedProduct.name}</h2>
+              <h2 className="font-bold">{orderedProduct.name}</h2>
+              <p>Price: ${orderedProduct.price}</p>
+              <p>Quantity: {quantity}</p>
+              <p className="text-sm">Buyer: {orderBuyer.name}</p>
+            </div>
+          </div>
+        </div>
+      )}
+      {loggedInRole === 'admin' && (
+        <div
+          className="order-card border rounded-lg p-4 m-[4px]"
+          onClick={handleCardClick}
+        >
+          <div className="order-header flex justify-between gap-2">
+            <span className="order-id font-normal text-[10px]">
+              Order ID # {id}
+            </span>
+            <span
+              className={`order-status ${
+                orderStatus.trim() === 'accepted'
+                  ? 'bg-green-200'
+                  : orderStatus.trim() === 'pending'
+                    ? 'bg-yellow-200'
+                    : orderStatus.trim() === 'rejected'
+                      ? 'bg-red-300 '
+                      : ''
+              } px-2 rounded`}
+            >
+              {orderStatus.trim()}
+            </span>
+          </div>
+          <div className="order-content flex items-center mt-4 sm:gap-3 md:gap-3">
+            <img
+              width={150}
+              height={180}
+              src={productImage}
+              alt={orderedProduct.name}
+              className="w-20 h-20 mr-4"
+            />
+            <div className="order-details">
+              <h2 className="font-bold">{orderedProduct.name}</h2>
               <p>Price: ${orderedProduct.price}</p>
               <p>Quantity: {quantity}</p>
               <p className="text-sm">Buyer: {orderBuyer.name}</p>
@@ -262,8 +262,8 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
       {loggedInRole === 'buyer' && (
         <div className="order-card border rounded-lg p-4 m-[4px]">
           <div className="order-header flex justify-between gap-2">
-            <span className="order-id font-normal text-[10px] uppercase">
-              Order ID # {id.slice(0, 5)}
+            <span className="order-id font-normal text-[10px]">
+              Order ID # {id}
             </span>
             <span
               className={`order-status ${
@@ -288,7 +288,7 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
               className="w-20 h-20 mr-4"
             />
             <div className="order-details">
-              <h2 className="font-bold truncate">{orderedProduct.name}</h2>
+              <h2 className="font-bold">{orderedProduct.name}</h2>
               <p>Price: ${orderedProduct.price}</p>
               <p>Quantity: {quantity}</p>
               <p className="text-sm">Buyer: {orderBuyer.name}</p>

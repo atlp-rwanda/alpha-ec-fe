@@ -44,19 +44,10 @@ const UpdateForm: React.FC = () => {
 
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    productId && dispatch(getProductDetails(productId));
-    changeImage();
-  }, [productId, dispatch]);
-
-  const { status, loading } = useAppSelector(
-    (state: RootState) => state.updateproduct
-  );
-
   const { selectedProduct } = useSelector((state: RootState) => state.products);
 
-  const categories = useAppSelector(state => state.categories);
-  const categoriesStatus = useAppSelector(state => state.categories);
+  // const categories = useAppSelector(state => state.categories);
+  // const categoriesStatus = useAppSelector(state => state.categories);
   const { error } = useAppSelector(state => state.product);
   const [files, setFiles] = useState<File[]>([]);
   const [existingImages, setExistingImages] = useState<string[]>([]);
@@ -76,6 +67,35 @@ const UpdateForm: React.FC = () => {
   };
   const [formData, setFormData] =
     useState<FormDataInterface>(InitialFormValues);
+
+  const changeImage = async () => {
+    const downloadedImage: string[] = [];
+    const newFile: File[] = [];
+    try {
+      for (const cloudinaryImage of existingImages) {
+        const response = await fetch(cloudinaryImage);
+        const blob = await response.blob();
+        const file = new File([blob], 'fileName' + Date.now(), {
+          type: blob.type,
+          lastModified: Date.now()
+        });
+
+        newFile.push(file);
+        const newImage = new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onloadend = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(blob);
+        });
+
+        const base64Image: any = await newImage;
+        downloadedImage.push(base64Image);
+      }
+      setFiles(newFile);
+    } catch (error) {
+      console.error('Error fetching image:', error);
+    }
+  };
 
   useEffect(() => {
     if (selectedProduct != null) {
@@ -97,9 +117,9 @@ const UpdateForm: React.FC = () => {
     }
   }, [dispatch, selectedProduct]);
 
-  useEffect(() => {
-    dispatch(fetchCategories());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(fetchCategories());
+  // }, [dispatch]);
 
   const { categoriesLoading, success, categoriesData } = useSelector(
     (state: RootState) => state.categories
@@ -109,7 +129,8 @@ const UpdateForm: React.FC = () => {
     if (categoriesData === null && !categoriesLoading && error === null) {
       dispatch(getCategories());
     }
-  }, [dispatch]);
+  }, [dispatch, categoriesData]);
+
   const [tempNewImages, setTempNewImages] = useState<File[]>([]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -195,55 +216,57 @@ const UpdateForm: React.FC = () => {
     }
   };
 
-  const changeImage = async () => {
-    const downloadedImage: string[] = [];
-    const newFile: File[] = [];
-    try {
-      for (const cloudinaryImage of existingImages) {
-        const response = await fetch(cloudinaryImage);
-        const blob = await response.blob();
-        const file = new File([blob], 'fileName' + Date.now(), {
-          type: blob.type,
-          lastModified: Date.now()
-        });
+  useEffect(() => {
+    productId && dispatch(getProductDetails(productId));
+    changeImage();
+  }, [productId, dispatch, changeImage]);
 
-        newFile.push(file);
-        const newImage = new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onloadend = () => resolve(reader.result);
-          reader.onerror = reject;
-          reader.readAsDataURL(blob);
-        });
-
-        const base64Image: any = await newImage;
-        downloadedImage.push(base64Image);
-      }
-      setFiles(newFile);
-    } catch (error) {
-      console.error('Error fetching image:', error);
-    }
-  };
+  const { status, loading } = useAppSelector(
+    (state: RootState) => state.updateproduct
+  );
 
   return (
-    <div className="md:flex md:justify-around sm:justify-around sm:flex lg:justify-around lg:flex bg-[#e7f6f2] p-8 rounded-lg shadow-lg w-full ">
-      <div className="mb-4 pr-2 w-[300px]">
-        <div className="flex justify-center items-center border-2 border-dashed border-[#395b64] rounded-lg h-56 w-72 bg-gray-50">
-          <div className="text-center text-black">
-            <p>Drag and drop your files here</p>
-            <p>or</p>
-            <input
-              type="file"
-              multiple
-              onChange={handleFileChange}
-              className="hidden"
-              id="file-upload"
-            />
-            <label
-              htmlFor="file-upload"
-              className="cursor-pointer bg-gray-200 px-3 py-1 rounded-md"
-            >
-              Browse files
-            </label>
+    <>
+      <div className="md:flex md:justify-around sm:justify-around sm:flex lg:justify-around lg:flex bg-[#e7f6f2] p-8 rounded-lg shadow-lg w-full ">
+        <div className="mb-4 pr-2 w-[300px]">
+          <div className="flex justify-center items-center border-2 border-dashed border-[#395b64] rounded-lg h-56 w-72 bg-gray-50">
+            <div className="text-center text-black">
+              <p>Drag and drop your files here</p>
+              <p>or</p>
+              <input
+                type="file"
+                multiple
+                onChange={handleFileChange}
+                className="hidden"
+                id="file-upload"
+              />
+              <label
+                htmlFor="file-upload"
+                className="cursor-pointer bg-gray-200 px-3 py-1 rounded-md"
+              >
+                Browse files
+              </label>
+            </div>
+          </div>
+          <div className="mt-4 flex space-x-2 w-[100]">
+            {files.map((file, idx) => (
+              <div key={idx} className="relative border rounded p-1">
+                <Image
+                  src={URL.createObjectURL(file)}
+                  alt={`Thumbnail ${idx}`}
+                  width={50}
+                  height={50}
+                  className="object-cover"
+                />
+                <button
+                  type="button"
+                  onClick={() => handleRemoveImage(idx)}
+                  className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1"
+                >
+                  X
+                </button>
+              </div>
+            ))}
           </div>
         </div>
         <div className="mt-4 flex space-x-2 w-[100]">
@@ -323,14 +346,8 @@ const UpdateForm: React.FC = () => {
         </div>
       </form>
       <ToastContainer />
-    </div>
+    </>
   );
 };
 
 export default UpdateForm;
-function showError(arg0: any) {
-  throw new Error('Function not implemented.');
-}
-function changeImage() {
-  throw new Error('Function not implemented.');
-}
