@@ -17,6 +17,7 @@ import { fetchWishes } from '@/redux/slices/wishlistSlice';
 import { getUserToken } from '@/redux/hooks/selectors';
 import { setAuthToken } from '@/redux/slices/userSlice';
 import { ToastContainer } from 'react-toastify';
+import AdsListing from '@/components/products/adsListing';
 
 const FeaturedListing = lazy(
   () => import('@/components/products/FeaturedListing')
@@ -129,12 +130,8 @@ const HomeContent = () => {
       <Suspense fallback={<FocusLoading title="Phones" bgColor={150} />}>
         <FocusListing title="Phones" bgColor={150} section={Section.PHONES} />
       </Suspense>
-      <Suspense fallback={<LineLoading title="Computers" bgColor={150} />}>
-        <LineListing
-          title="Motorcyles"
-          bgColor={100}
-          section={Section.MOTORCYCLES}
-        />
+      <Suspense fallback={<LineLoading title="ali express" bgColor={150} />}>
+        <AdsListing title="Aliexpress" bgColor={100} section={Section.ADS} />
       </Suspense>
       <Footer />
       <ToastContainer />

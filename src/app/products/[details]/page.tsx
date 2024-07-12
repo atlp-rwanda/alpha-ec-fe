@@ -41,6 +41,9 @@ import { setAuthToken } from '@/redux/slices/userSlice';
 import { getUserToken } from '@/redux/hooks/selectors';
 import NotFound from '@/components/Loading/ProductNotFound';
 import MainNav from '@/components/siteNavigation/MainNav';
+import AdsListing from '@/components/products/adsListing';
+import LineLoading from '@/components/Loading/LineLoading';
+import { Section } from '@/components/products/FashionListing';
 
 interface ReviewForm {
   rating?: number;
@@ -709,6 +712,15 @@ const Details = () => {
               </div>
             </div>
           </div>
+          <Suspense
+            fallback={<LineLoading title="ali express" bgColor={150} />}
+          >
+            <AdsListing
+              title="Aliexpress"
+              bgColor={100}
+              section={Section.ADS}
+            />
+          </Suspense>
         </>
       ) : (
         <PageLoading />

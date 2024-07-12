@@ -129,7 +129,7 @@ const GridListing: React.FC<GridListingProps> = ({ data }) => {
             {products?.length == 0 ? (
               <NotFound />
             ) : (
-              <div className="w-full grid gap-3 rounded-xl overflow-y-auto auto-fit-grid">
+              <div className="w-full grid gap-3 rounded-xl overflow-y-auto overflow-x-hidden auto-fit-grid">
                 {products &&
                   products.map((product, index) => (
                     <ProductCard product={product} key={index} />
