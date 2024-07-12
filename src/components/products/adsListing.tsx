@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import AdCard from './adsCard';
 import { getAds } from '@/redux/slices/adsSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks/hook';
@@ -17,7 +17,7 @@ interface LineListingProps {
 
 const AdsListing: React.FC<LineListingProps> = ({ title, bgColor }) => {
   const dispatch = useAppDispatch();
-  const { error, adsData } = useAppSelector(getAdsData);
+  const { error, adsData, adsLoading } = useAppSelector(getAdsData);
 
   useEffect(() => {
     if (error === null && adsData === null) {
@@ -26,11 +26,12 @@ const AdsListing: React.FC<LineListingProps> = ({ title, bgColor }) => {
   }, [error, adsData, dispatch]);
 
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
+  const [isScrolling, setIsScrolling] = useState(true);
 
   useEffect(() => {
     const continuousScroll = () => {
       const scrollContainer = scrollContainerRef.current;
-      if (scrollContainer) {
+      if (scrollContainer && isScrolling) {
         if (
           scrollContainer.scrollLeft + scrollContainer.clientWidth >=
           scrollContainer.scrollWidth
@@ -47,14 +48,22 @@ const AdsListing: React.FC<LineListingProps> = ({ title, bgColor }) => {
     return () => {
       clearInterval(scrollInterval);
     };
-  }, []);
+  }, [isScrolling]);
 
-  if (!adsData && !error) {
+  const handleMouseEnter = () => {
+    setIsScrolling(false);
+  };
+
+  const handleMouseLeave = () => {
+    setIsScrolling(true);
+  };
+
+  if (adsLoading) {
     return <LineLoading title={title} bgColor={bgColor} />;
   }
 
-  if (!adsData && error) {
-    return <div>Error: {error}</div>;
+  if (!adsData && !adsLoading) {
+    return <></>;
   }
 
   return (
@@ -68,6 +77,8 @@ const AdsListing: React.FC<LineListingProps> = ({ title, bgColor }) => {
       <div
         className="w-full p-1 rounded-lg overflow-x-auto relative scrollbar-hide"
         ref={scrollContainerRef}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
       >
         {!adsData ? (
           <div className="w-full flex justify-start gap-4 overflow-x-auto first-line:min-w-full relative">
@@ -76,10 +87,9 @@ const AdsListing: React.FC<LineListingProps> = ({ title, bgColor }) => {
             ))}
           </div>
         ) : (
-          <div className="w-full flex justify-start gap-4 overflow-x-auto first-line:min-w-full relative">
-            {adsData.map((ad, index) => (
-              <AdCard ad={ad} key={index} />
-            ))}
+          <div className="w-full flex justify-start gap-4 overflow-x-auto first-line:min-w-full relative scroll-container">
+            {adsData &&
+              adsData?.map((ad, index) => <AdCard ad={ad} key={index} />)}
           </div>
         )}
       </div>

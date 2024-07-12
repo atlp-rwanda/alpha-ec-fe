@@ -17,8 +17,15 @@ import { VscMenu } from 'react-icons/vsc';
 const MainNav: FC = () => {
   const [showMenu, setShowMenu] = useState<boolean>(false);
   const router = useRouter();
+  const [currentPath, setCurrentPath] = useState<string>('');
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setCurrentPath(window.location.pathname);
+    }
+  }, []);
+
   const [pageLoading, setPageLoading] = useState<boolean>(false);
-  const [selectedMenu, setSelectedMenu] = useState<string>('Home');
 
   const { wishlist } = useAppSelector((state: RootState) => state.wishlist);
   const { wishlist2 } = useAppSelector((state: RootState) => state.wishlist);
@@ -43,23 +50,23 @@ const MainNav: FC = () => {
         >
           ALPHA
         </Link>
-        <div className="hidden md:flex justify-between w-min">
+        <div className="hidden md:flex justify-between w-min gap-4">
           {TOP_MENUS.map((menu, index) => {
+            const isActive =
+              currentPath.includes('products') && menu.title === 'Products';
             return (
               <div
                 key={index}
-                onClick={e => {
-                  e.preventDefault();
-                  if (menu.url === '#') {
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }
-                }}
-                className="block rounded text-gray-400 relative w-min group px-4"
+                className="block rounded text-gray-400 relative w-min group px-1"
               >
                 <Link
                   href={menu.url}
                   passHref
-                  className={`cursor:pointer relative block duration-200 transition-all ease-in-out text-main-400 cursor-pointer truncate `}
+                  className={`cursor:pointer relative block duration-200 transition-all ease-in-out ${
+                    isActive
+                      ? 'font-bold text-main-400'
+                      : 'text-main-400 font-normal'
+                  } cursor-pointer truncate `}
                 >
                   {menu.icon && <menu.icon />}
                   <span className="hover:underline">{menu.label}</span>
@@ -171,23 +178,24 @@ const MainNav: FC = () => {
                     )
                 )}
               </div>
-              <div className="flex flex-col gap-2 w-full h-full text-main-400">
+              <div className="flex md:hidden mt-6 flex-col gap-2 w-full h-full text-main-400">
                 {TOP_MENUS.map((menu, index) => {
+                  const isActive =
+                    currentPath.includes('products') &&
+                    menu.title === 'Products';
                   return (
                     <div
                       key={index}
-                      onClick={e => {
-                        e.preventDefault();
-                        if (menu.url === '#') {
-                          window.scrollTo({ top: 0, behavior: 'smooth' });
-                        }
-                      }}
-                      className="block rounded text-gray-400 relative w-min group"
+                      className="block rounded text-gray-400 relative w-min group px-1"
                     >
                       <Link
                         href={menu.url}
                         passHref
-                        className={`cursor:pointer relative block duration-200 transition-all ease-in-out text-main-400 cursor-pointer truncate `}
+                        className={`cursor:pointer relative block duration-200 transition-all ease-in-out ${
+                          isActive
+                            ? 'font-bold text-main-400'
+                            : 'text-main-400 font-normal'
+                        } cursor-pointer truncate `}
                       >
                         {menu.icon && <menu.icon />}
                         <span className="hover:underline">{menu.label}</span>

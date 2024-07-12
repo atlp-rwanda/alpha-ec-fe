@@ -136,9 +136,22 @@ input {
 .scroll-container {
   overflow-x: auto;
   -ms-overflow-style: none;
-  scrollbar-width: none !important;
+  scrollbar-width: thin;
 }
 
 .scroll-container::-webkit-scrollbar {
-  display: none !important;
+  height: 8px !important;
+}
+
+.scroll-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+.scroll-container::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
