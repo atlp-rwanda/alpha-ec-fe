@@ -126,7 +126,7 @@ const Cart: React.FC = () => {
                 <img
                   src={product.images[0]}
                   alt={product.name}
-                  className="w-full md:w-1/3 object-cover mb-3 md:mb-0"
+                  className="w-full md:w-1/3 h-32 md:h-38 object-cover object-center mb-3 md:mb-0"
                 />
                 <div className="flex-grow pl-4">
                   <div className="font-bold md:text-lg sm:text-base">
@@ -177,7 +177,9 @@ const Cart: React.FC = () => {
         </div>
         <div className=" flex-row w-full md:w-4/12 space-y-3 rounded-lg p-0 ">
           <div className="bg-[#a5c9ca] rounded-md shadow-md space-y-2  p-4 py-2">
-            <div className="font-extrabold text-main-400 text-xl">Summary</div>
+            <div className="font-extrabold text-main-400 text-xl mb-3">
+              Summary
+            </div>
             <div className=" flex justify-between font-bold text-lg text-main-400">
               <span className="font-medium text-main-400">Total</span>
               <span

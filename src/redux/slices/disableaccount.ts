@@ -10,6 +10,7 @@ export interface User {
   birthdate: string;
   photoUrl: string;
   status: boolean;
+  roleId?: string;
 }
 
 export interface FetchedUsers {
@@ -61,6 +62,25 @@ export const disableAccount = createAsyncThunk(
     }
   }
 );
+export const assignRole = createAsyncThunk(
+  'roles/assignRole',
+  async (
+    { userId, roleId }: { userId: string; roleId: string },
+    { rejectWithValue }
+  ) => {
+    try {
+      const response = await axiosRequest(
+        'POST',
+        `/users/roles`,
+        { userId, roleId },
+        true
+      );
+      return response.data;
+    } catch (err: any) {
+      return rejectWithValue(err.response?.data);
+    }
+  }
+);
 
 const usersSlice = createSlice({
   name: 'registereUsers',
@@ -107,6 +127,33 @@ const usersSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || 'Failed to disable account';
         state.success = false;
+      })
+      .addCase(assignRole.pending, state => {
+        state.loading = true;
+        state.success = false;
+        state.error = null;
+      })
+      .addCase(assignRole.fulfilled, (state, action) => {
+        state.loading = false;
+        state.success = true;
+        state.error = null;
+        const { userId, roleId } = action.meta.arg;
+        const updatedUsers = state.users?.data.map(user => {
+          if (user.id === userId) {
+            return { ...user, roleId };
+          }
+          return user;
+        });
+        if (updatedUsers) {
+          state.users!.data = updatedUsers;
+        }
+      })
+      .addCase(assignRole.rejected, (state, action) => {
+        state.loading = false;
+        state.success = false;
+        state.error = action.payload
+          ? (action.payload as any).message
+          : 'Unknown error';
       });
   }
 });

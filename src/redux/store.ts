@@ -1,6 +1,5 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import userReducer from './slices/userSlice';
-import fetchReducer from './slices/fetchSlice';
 import otpReducer from './slices/otpSlice';
 import resetpasswordReducer from './slices/ResetpasswordSlice';
 import forgotPasswordReducer from './slices/ForgotpasswordSlice';
@@ -11,7 +10,6 @@ import usersReducer from './slices/disableaccount';
 import profileReducer from './slices/profileSlice';
 import itemReducer from './slices/itemSlice';
 import updatePasswordReducer from './slices/updatePasswordSlice';
-import assignRoleReducer from './slices/assignroleSlice';
 import chatsReducer from './slices/chatSlice';
 import wishlistReducer from './slices/wishlistSlice';
 import cartReducer from './slices/cartSlice';
@@ -29,9 +27,7 @@ export const rootReducer = combineReducers({
   Resetpassword: resetpasswordReducer,
   forgotPassword: forgotPasswordReducer,
   sellers: sellerReducer,
-  fetch: fetchReducer,
   user: userReducer,
-  assignRole: assignRoleReducer,
   registereUsers: usersReducer,
   profile: profileReducer,
   product: itemReducer,
