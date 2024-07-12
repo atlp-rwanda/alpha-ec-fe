@@ -1,6 +1,9 @@
 import { configureStore, AnyAction } from '@reduxjs/toolkit';
 import MockAdapter from 'axios-mock-adapter';
-import productReducer, { getProducts } from '../redux/slices/ProductSlice';
+import productReducer, {
+  getProducts,
+  updateProductStatus
+} from '../redux/slices/ProductSlice';
 import { ThunkDispatch } from 'redux-thunk';
 import { axiosInstance, URL } from '@/utils';
 
@@ -173,5 +176,37 @@ describe('Products thunk', () => {
 
     const state = store.getState() as RootState;
     expect(state.product.loading).toBe(false);
+  });
+  // it('should dispatch fulfilled when product status updated successfully', async () => {
+  //   const productId = '1';
+  //   const response = {
+  //     data: { id: productId },
+  //     message: 'Product status updated successfully'
+  //   };
+
+  //   mock.onPatch(`${URL}/api/products/${productId}/status`).reply(200, response);
+
+  //   await (store.dispatch as AppDispatch)(updateProductStatus(productId));
+
+  //   const state = store.getState() as RootState;
+  //   expect(state.product.loading).toBe(false);
+  // });
+
+  it('should dispatch rejected when product status update fails', async () => {
+    const productId = '1';
+    const errorResponse = {
+      status: 'Error!',
+      message: 'Failed to update product status'
+    };
+
+    mock
+      .onPatch(`${URL}/api/products/${productId}/status`)
+      .reply(400, errorResponse);
+
+    await (store.dispatch as AppDispatch)(updateProductStatus(productId));
+
+    const state = store.getState() as RootState;
+    expect(state.product.loading).toBe(false);
+    expect(state.product.error).toEqual(errorResponse);
   });
 });

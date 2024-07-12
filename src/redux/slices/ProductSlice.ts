@@ -213,6 +213,28 @@ export const getProductsByCategory = createAsyncThunk(
   }
 );
 
+export const updateProductStatus = createAsyncThunk(
+  'products/updateStatus',
+  async (productId: string, { rejectWithValue }) => {
+    try {
+      const response = await axiosRequest(
+        'PATCH',
+        `/products/${productId}/status`,
+        {},
+        true
+      );
+      return response.data.data;
+    } catch (err) {
+      if (axios.isAxiosError(err) && err.response) {
+        return rejectWithValue(
+          err.response.data || 'Failed to update product status'
+        );
+      }
+      return rejectWithValue({ message: (err as Error).message });
+    }
+  }
+);
+
 const productSlice = createSlice({
   name: 'product',
   initialState,
@@ -308,6 +330,28 @@ const productSlice = createSlice({
             state.Grouped[section].error = action.payload as FormErrorInterface;
           }
         }
+      })
+      .addCase(updateProductStatus.pending, state => {
+        state.loading = true;
+        state.error = null;
+        state.success = false;
+      })
+      .addCase(updateProductStatus.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.success = true;
+        if (state.data) {
+          state.data.products = state.data.products.map(product =>
+            product.id === action.payload.id
+              ? { ...product, status: action.payload.status }
+              : product
+          );
+        }
+      })
+      .addCase(updateProductStatus.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as FormErrorInterface;
+        state.success = false;
       });
   }
 });

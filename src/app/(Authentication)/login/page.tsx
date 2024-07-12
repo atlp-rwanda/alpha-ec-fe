@@ -106,10 +106,14 @@ export default function Home() {
       } else {
         showSuccess('Login Successful!');
         const token = localStorage.getItem('token');
-        if (token) {
-          const decodedRole = (jwtDecode(token) as any).role;
 
-          if (decodedRole === 'buyer') {
+        if (token) {
+          const decodedToken = jwtDecode(token) as any;
+          const userRole = decodedToken.role;
+
+          localStorage.setItem('userRole', userRole);
+
+          if (userRole === 'buyer') {
             setTimeout(() => {
               setPageLoading(true);
               window.location.href = '/products';
