@@ -78,12 +78,14 @@ const StatusUpdateModal: React.FC<StatusUpdateModalProps> = ({
   }
 
   return (
+
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
       <div className="bg-white p-4 rounded-lg w-80">
         <h2 className="text-lg font-extrabold mb-4 text-center px-5">
           Update Status
         </h2>
         <img
+
           src={productImage}
           alt={productName}
           className="w-60 h-40 mb-4 ml-3 rounded"
