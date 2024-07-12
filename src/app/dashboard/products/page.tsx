@@ -1,11 +1,15 @@
 'use client';
 
-import React, { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { useAppDispatch } from '@/redux/hooks/hook';
-import { showSideNav, getProducts } from '@/redux/slices/ProductSlice';
+import {
+  showSideNav,
+  getProducts,
+  updateProductStatus
+} from '@/redux/slices/ProductSlice';
 import { USER_ROLE } from '@/redux/slices/userSlice';
 import ProductLoading from '@/components/Loading/ProductsLoading';
 import Image from 'next/image';
@@ -14,10 +18,14 @@ import { CiEdit } from 'react-icons/ci';
 import { IoIosCloseCircle } from 'react-icons/io';
 import NotFound from '@/components/Loading/ProductNotFound';
 import Pagination from '@/components/pagination/Pagination';
+import StatusModal from './StatusModal';
 
 const Home: React.FC = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const dispatch = useAppDispatch();
+  const [showModal, setShowModal] = useState(false);
+  const [newStatus, setNewStatus] = useState<boolean>(false);
 
   useEffect(() => {
     dispatch(showSideNav(true));
@@ -49,10 +57,29 @@ const Home: React.FC = () => {
     return;
   };
 
-  if (loading) return <ProductLoading />;
+  const handleStatusClick = async (
+    productId: string,
+    currentStatus: boolean
+  ) => {
+    await router.push(`/dashboard/products/?productId=${productId}`);
+    setNewStatus(!currentStatus);
+    setShowModal(true);
+  };
+
+  const handleStatusChange = () => {
+    const productId = searchParams.get('productId');
+    if (productId !== null) {
+      dispatch(updateProductStatus(productId)).then(() => {
+        setShowModal(false);
+        router.push('/dashboard/products');
+      });
+    }
+  };
+
+  // if (loading) return <ProductLoading />;
   if (error) return <div>Error: {error.message}</div>;
 
-  if (data && loggedIn === USER_ROLE.SELLER) {
+  if (data) {
     const { products, totalItems, totalPages, from } = data;
     const items = Math.ceil(totalItems / totalPages);
     const currentPage =
@@ -74,6 +101,7 @@ const Home: React.FC = () => {
                     <th className="hidden md:table-cell p-2 truncate">Name</th>
                     <th className="p-2 truncate">Price</th>
                     <th className="p-2 truncate">Quantity</th>
+                    <th className="p-2 truncate">Status</th>
                     <th className="hidden md:table-cell p-2 truncate">
                       Action
                     </th>
@@ -105,6 +133,19 @@ const Home: React.FC = () => {
                           $ {product.price.toLocaleString()}
                         </td>
                         <td className="p-2 truncate">{product.quantity}</td>
+                        <td
+                          className="p-1 truncate cursor-pointer"
+                          onClick={() =>
+                            handleStatusClick(product.id, product.status)
+                          }
+                        >
+                          <span
+                            className={`p-1 rounded-lg ${product.status ? 'bg-green-600' : 'bg-red-600'} text-white`}
+                          >
+                            {product.status ? 'True' : 'False'}
+                          </span>
+                        </td>
+
                         <td className="hidden p-2 font-bold h-full gap-4 overflow-hidden items-center mt-1 md:flex">
                           <CiEdit size={34} />
                           <IoIosCloseCircle size={34} />
@@ -126,11 +167,18 @@ const Home: React.FC = () => {
             </div>
           )}
         </section>
+        {showModal && (
+          <StatusModal
+            onClose={() => setShowModal(false)}
+            onConfirm={handleStatusChange}
+            status={newStatus}
+          />
+        )}
       </div>
     );
   }
 
-  return <div>No products found.</div>;
+  return <div>No product found.</div>;
 };
 
 export default Home;
