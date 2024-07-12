@@ -122,6 +122,35 @@ const GridListing: React.FC<GridListingProps> = ({ data }) => {
     setShowModal(false);
     setDeleteId(null);
   };
+
+  const confirmDelete = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    if (deleteId) {
+      const resultAction = await dispatch(deleteProduct(deleteId));
+      if (success) {
+        await dispatch(getProducts({}));
+        toast.success('Product deleted successfully');
+      } else {
+        toast.error('Failed to delete product');
+      }
+      setShowModal(false);
+      setDeleteId(null);
+    }
+  };
+
+  const handleproduct = (e: React.MouseEvent, productId: string) => {
+    router.push(`/dashboard/update-item?productId=${productId}`);
+  };
+
+  const handleDeleteClick = (id: string) => {
+    setDeleteId(id);
+    setShowModal(true);
+  };
+
+  const handleCancel = () => {
+    setShowModal(false);
+    setDeleteId(null);
+  };
   return (
     <>
       {showModal && (
