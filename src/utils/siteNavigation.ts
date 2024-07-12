@@ -35,15 +35,15 @@ export const TOP_MENUS: NavigationInterface[] = [
     url: '/products',
     access: 'all',
     subMenus: []
-  },
-  {
-    icon: null,
-    title: 'Contact us',
-    label: 'Contact us',
-    url: '#',
-    access: 'all',
-    subMenus: []
   }
+  // {
+  //   icon: null,
+  //   title: 'Contact us',
+  //   label: 'Contact us',
+  //   url: '#',
+  //   access: 'all',
+  //   subMenus: []
+  // }
 ];
 
 export const PRODUCT_ICONS: NavigationInterface[] = [
@@ -55,14 +55,14 @@ export const PRODUCT_ICONS: NavigationInterface[] = [
     icon: FaRegMessage,
     subMenus: []
   },
-  {
-    title: 'orders',
-    label: 'ORDERS',
-    access: 'all',
-    url: '/dashboard/orders',
-    icon: MdOutlineBookmarkBorder,
-    subMenus: []
-  },
+  // {
+  //   title: 'orders',
+  //   label: 'ORDERS',
+  //   access: 'all',
+  //   url: '/dashboard/orders',
+  //   icon: MdOutlineBookmarkBorder,
+  //   subMenus: []
+  // },
   {
     title: 'account',
     label: 'ACCOUNT',

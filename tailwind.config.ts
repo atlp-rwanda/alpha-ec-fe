@@ -56,10 +56,12 @@ const config: Config = {
         '2xs': '0.4rem'
       },
       height: {
-        120: '30rem'
+        120: '30rem',
+        150: '36rem'
       },
       maxHeight: {
-        120: '30rem'
+        120: '30rem',
+        150: '36rem'
       },
       keyframes: {
         zoomIn: {

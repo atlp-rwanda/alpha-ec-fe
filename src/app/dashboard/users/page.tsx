@@ -86,6 +86,8 @@ const Users: React.FC = () => {
           ...prevToggles,
           [userId]: previousState
         }));
+      } else {
+        dispatch(fetchAllUsers());
       }
     }
   };
