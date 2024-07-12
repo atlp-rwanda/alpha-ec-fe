@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
@@ -15,6 +15,9 @@ import { fetchWishes } from '@/redux/slices/wishlistSlice';
 import ProductsSideNav from '@/components/siteNavigation/ProductsSideNav';
 import NotFound from '@/components/Loading/ProductNotFound';
 import ProductNav from '@/components/siteNavigation/ProductsNav';
+import AdsListing from '@/components/products/adsListing';
+import LineLoading from '@/components/Loading/LineLoading';
+import { Section } from '@/components/products/FashionListing';
 
 export default function Home() {
   const dispatch = useAppDispatch();
@@ -64,6 +67,9 @@ export default function Home() {
           <ProductsSideNav />
           <GridListing data={data} />
         </div>
+        <Suspense fallback={<LineLoading title="ali express" bgColor={150} />}>
+          <AdsListing title="Aliexpress" bgColor={100} section={Section.ADS} />
+        </Suspense>
       </>
     );
   } else {

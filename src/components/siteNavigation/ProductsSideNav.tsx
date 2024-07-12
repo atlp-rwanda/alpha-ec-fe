@@ -94,7 +94,7 @@ const ProductsSideNav: FC = () => {
     <div
       className={`min-h-screen px-4 pt-4 hidden relative overflow-hidden bg-main-150 lg:flex flex-col ${showSideNav ? 'lg:max-w-min lg:min-w-72' : 'hidden lg:hidden'}  `}
     >
-      <div className="fixed bg-main-150">
+      <div className="bg-main-150">
         <div
           className="hidden mt-4 uppercase min-w-56 relative text-xs font-bold cursor-pointer border px-4 py-1 text-main-400 lg:flex items-center justify-between  rounded-md"
           onClick={() => setShowCategories(!showCategories)}
