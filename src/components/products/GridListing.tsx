@@ -27,30 +27,24 @@ import NotFound from '../Loading/ProductNotFound';
 interface GridListingProps {
   data: ProductDataInterface;
 }
-
 const GridListing: React.FC<GridListingProps> = ({ data }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { products, totalItems, totalPages, from } = data;
-
   const items = Math.ceil(totalItems / totalPages);
   const currentPage =
     parseInt(searchParams.get('page') || '1') || Math.ceil(from / items);
-
   const dispatch = useAppDispatch();
-
   const setNewPage = (page: number) => {
     const currentParams = new URLSearchParams(window.location.search);
     const newParams = new URLSearchParams();
     currentParams.forEach((value, key) => newParams.append(key, value));
     newParams.set('page', page.toString());
-
     const queryString = newParams.toString();
     const queryParamsObject: Record<string, string> = {};
     newParams.forEach((value, key) => {
       queryParamsObject[key] = value;
     });
-
     router.push(`?${queryString}`);
     dispatch(getProducts(queryParamsObject));
     return;
@@ -64,64 +58,6 @@ const GridListing: React.FC<GridListingProps> = ({ data }) => {
   const [showModal, setShowModal] = useState(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [productList, setProductList] = useState(products);
-
-  const confirmDelete = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    if (deleteId) {
-      const resultAction = await dispatch(deleteProduct(deleteId));
-      if (success) {
-        await dispatch(getProducts({}));
-        toast.success('Product deleted successfully');
-      } else {
-        toast.error('Failed to delete product');
-      }
-      setShowModal(false);
-      setDeleteId(null);
-    }
-  };
-
-  const handleproduct = (e: React.MouseEvent, productId: string) => {
-    router.push(`/dashboard/update-item?productId=${productId}`);
-  };
-
-  const handleDeleteClick = (id: string) => {
-    setDeleteId(id);
-    setShowModal(true);
-  };
-
-  const handleCancel = () => {
-    setShowModal(false);
-    setDeleteId(null);
-  };
-
-  const confirmDelete = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    if (deleteId) {
-      const resultAction = await dispatch(deleteProduct(deleteId));
-      if (success) {
-        await dispatch(getProducts({}));
-        toast.success('Product deleted successfully');
-      } else {
-        toast.error('Failed to delete product');
-      }
-      setShowModal(false);
-      setDeleteId(null);
-    }
-  };
-
-  const handleproduct = (e: React.MouseEvent, productId: string) => {
-    router.push(`/dashboard/update-item?productId=${productId}`);
-  };
-
-  const handleDeleteClick = (id: string) => {
-    setDeleteId(id);
-    setShowModal(true);
-  };
-
-  const handleCancel = () => {
-    setShowModal(false);
-    setDeleteId(null);
-  };
 
   const confirmDelete = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -217,5 +153,4 @@ const GridListing: React.FC<GridListingProps> = ({ data }) => {
     </>
   );
 };
-
 export default GridListing;
