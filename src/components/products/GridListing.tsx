@@ -93,7 +93,6 @@ const GridListing: React.FC<GridListingProps> = ({ data }) => {
     setShowModal(false);
     setDeleteId(null);
   };
-
   return (
     <>
       {showModal && (
