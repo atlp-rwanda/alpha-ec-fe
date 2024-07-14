@@ -88,7 +88,7 @@ const Slider: React.FC<SliderProps> = ({ images }) => {
           <GrFormNext size={42} />
         </div>
       </div>
-      <div className="max-w-full h-16 overflow-x-scroll w-max md:h-20 flex gap-2 mt-2 mx-auto">
+      <div className="max-w-full h-16 overflow-x-scroll w-max md:h-20 flex gap-2 mt-2 mx-auto scroll-container">
         {images.map((img, index) => (
           <div
             onClick={() => {
