@@ -41,12 +41,8 @@ const ProductCard: React.FC<ProductCard> = ({ product, styles }) => {
 
   const handleProductClick = async () => {
     setLoading(true);
-    try {
-      await router.push(`/products/details?productId=${product.id}`);
-      await dispatch(getProductDetails(product.id));
-    } finally {
-      setLoading(false);
-    }
+
+    await router.push(`/products/details?productId=${product.id}`);
   };
   const isInCart = cart?.products?.some(
     (cartItem: { id: string }) => cartItem.id === product.id

@@ -22,7 +22,7 @@ const TopNav: FC = () => {
   useEffect(() => {
     const tokenString = localStorage.getItem('token');
     if (tokenString) {
-      const tokenData = JSON.parse(tokenString);
+      const tokenData = tokenString;
       const decoded = tokenData
         ? (jwtDecode(tokenData) as DecodedInterface)
         : null;
@@ -36,7 +36,6 @@ const TopNav: FC = () => {
       }
     }
   }, [dispatch]);
-
   return (
     <nav className="bg-main-400 w-ful text-xs px-4 h-full py-0.5 flex items-center justify-between text-gray-200">
       <div className="w-1/10 text-xxs  uppercase">

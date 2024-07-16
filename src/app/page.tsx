@@ -48,11 +48,10 @@ const HomeContent = () => {
 
   useEffect(() => {
     if (token) {
-      localStorage.setItem('token', `${token}[data]`);
-      router.push('/');
+      localStorage.setItem('token', `"${token}"`);
+      window.location.href = '/';
     }
   }, [token, router]);
-
   const { categoriesLoading, categoriesData, error } = useSelector(
     (state: RootState) => state.categories
   );
@@ -89,7 +88,7 @@ const HomeContent = () => {
       const tokenString = localStorage.getItem('token');
       if (tokenString) {
         try {
-          const token = JSON.parse(tokenString);
+          const token = tokenString;
           dispatch(setAuthToken(token));
         } catch (error) {
           console.error('Failed to parse token from localStorage', error);
