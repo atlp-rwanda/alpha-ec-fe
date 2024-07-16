@@ -23,6 +23,7 @@ import Google from '@/assets/images/Google.png';
 import Image from 'next/image';
 import PageLoading from '@/components/Loading/PageLoading';
 import { handleRedirect } from '@/utils/checkAuth';
+import { jwtDecode } from 'jwt-decode';
 
 export interface FormDataInterface {
   email: string;
@@ -43,9 +44,12 @@ export default function Home() {
 
   const { showSuccess, showError } = useToast();
 
-  const { loading, success, error } = useAppSelector(
-    (state: RootState) => state.user
-  );
+  const {
+    loading,
+    success,
+    error,
+    role: userRole
+  } = useAppSelector((state: RootState) => state.user);
 
   const [formData, setFormData] =
     useState<FormDataInterface>(InitialFormValues);
@@ -101,11 +105,28 @@ export default function Home() {
         router.push('/sellerAuth');
       } else {
         showSuccess('Login Successful!');
-        setTimeout(() => {
-          setPageLoading(true);
-          router.push('/dashboard');
-          setPageLoading(false);
-        }, 1000);
+        const token = localStorage.getItem('token');
+
+        if (token) {
+          const decodedToken = jwtDecode(token) as any;
+          const userRole = decodedToken.role;
+
+          localStorage.setItem('userRole', userRole);
+
+          if (userRole === 'buyer') {
+            setTimeout(() => {
+              setPageLoading(true);
+              window.location.href = '/products';
+              setPageLoading(false);
+            }, 2030);
+          } else {
+            setTimeout(() => {
+              setPageLoading(true);
+              window.location.href = '/dashboard';
+              setPageLoading(false);
+            }, 2030);
+          }
+        }
       }
     } else if (logInUser.rejected.match(result) && result.payload) {
       const errorMessage =

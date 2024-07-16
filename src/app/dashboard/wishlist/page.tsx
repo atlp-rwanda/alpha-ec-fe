@@ -125,13 +125,12 @@ const Wishlist: React.FC = () => {
             {wishlist2?.rows.map(product => (
               <div
                 key={product.product.id}
-                className="bg-[#a5c9ca] p-3 rounded-lg flex flex-col md:flex-row items-start"
+                className="bg-[#a5c9ca] p-3 rounded-md shadow-md flex flex-col md:flex-row items-start"
               >
-                <Image
-                  fill
+                <img
                   src={product.product.images[0]}
                   alt={product.product.name}
-                  className="w-full md:w-1/3 object-cover mb-3 md:mb-0"
+                  className="w-full md:w-1/3 h-32 md:h-40 object-cover object-center mb-3 md:mb-0"
                 />
                 <div className="flex-grow px-4">
                   <div className="font-bold md:text-lg sm:text-base">
@@ -177,13 +176,12 @@ const Wishlist: React.FC = () => {
             {wishlist?.rows.map(product => (
               <div
                 key={product.id}
-                className="bg-[#a5c9ca] p-3 rounded-lg flex flex-col md:flex-row items-start"
+                className="bg-[#a5c9ca] p-3 rounded-md shadow-md flex flex-col md:flex-row items-start"
               >
-                <Image
-                  fill
+                <img
                   src={product.images[0]}
                   alt={product.name}
-                  className="w-full md:w-1/3 object-cover mb-3 md:mb-0"
+                  className="w-full md:w-1/3 h-32 md:h-40 object-cover object-center mb-3 md:mb-0"
                 />
                 <div className="flex-grow px-4">
                   <div className="font-bold md:text-lg sm:text-base">
@@ -212,17 +210,17 @@ const Wishlist: React.FC = () => {
                   >
                     {loading ? 'Loading...' : 'Add to cart'}
                   </button>
-                  <div className="flex space-y-2 sm:space-y-0 sm:space-x-2">
+                  <div className="flex sm:space-y-0 ">
                     <button
                       onClick={() => removeWishlist(product.id)}
-                      className="bg-main-400 text-main-100 font-medium py-1 px-3 rounded-full hover:bg-main-300 hover:shadow-md transition-all w-full sm:w-auto"
+                      className="bg-main-400 text-main-100 mr-1 font-medium py-1 px-3 rounded-full hover:bg-main-300 hover:shadow-md transition-all w-full sm:w-auto"
                       disabled={loading}
                     >
                       {loading ? 'Loading...' : 'Remove'}
                     </button>
                     <Link
                       href={`/products/details?productId=${product.id}`}
-                      className="bg-main-400 text-main-100 font-medium py-1 px-3 rounded-full hover:bg-main-300 hover:shadow-md transition-all w-full sm:w-auto text-center"
+                      className="bg-main-400 text-main-100 font-medium py-1 px-4 rounded-full hover:bg-main-300 hover:shadow-md transition-all w-full sm:w-auto text-center"
                     >
                       {loading ? 'Loading...' : 'More'}
                     </Link>

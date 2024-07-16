@@ -13,9 +13,9 @@ export const GetStars: React.FC<GetStarsProps> = ({ rating }) => {
     if (i < fullStars) {
       stars.push(<FaStar key={i} size={18} className="text-star" />);
     } else {
-      stars.push(<FaStar key={i} size={18} className="text-main-150" />);
+      stars.push(<FaStar key={i} size={18} className="text-main-200" />);
     }
   }
 
-  return <span className="flex w-min gap-0.5">{stars}</span>;
+  return <span className="flex w-min gap-0.5 text-amber-400">{stars}</span>;
 };

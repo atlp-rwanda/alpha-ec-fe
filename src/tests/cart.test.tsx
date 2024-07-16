@@ -35,7 +35,7 @@ describe('FETCH CART thunk', () => {
   it('Should fetch cart successfully', async () => {
     const cartFetched = {
       id: '3e33dfe4-3355-45e2-8f3b-33dabcac319f',
-      produtcs: [
+      products: [
         {
           id: 'aed076f5-c354-4d69-8997-7ba61ef172cb',
           name: 'RANGE-ROVER',
@@ -78,7 +78,7 @@ describe('CART thunk', () => {
 
     const cartResponse = {
       id: '3e33dfe4-3355-45e2-8f3b-33dabcac319f',
-      produtcs: [
+      products: [
         {
           id: '3348da1f-cf05-4b76-bbd6-4abebb6ab711',
           name: 'HYUNDAI TUCSON',
@@ -128,7 +128,7 @@ describe('CART thunk', () => {
 
     const cartResponse = {
       id: '3e33dfe4-3355-45e2-8f3b-33dabcac319f',
-      produtcs: [],
+      products: [],
       totalprice: 0
     };
 
@@ -150,7 +150,7 @@ describe('CART thunk', () => {
 
     const cartResponse = {
       id: '3e33dfe4-3355-45e2-8f3b-33dabcac319f',
-      produtcs: [
+      products: [
         {
           id: '3348da1f-cf05-4b76-bbd6-4abebb6ab711',
           name: 'HYUNDAI TUCSON',

@@ -17,13 +17,14 @@ import { DecodedInterface } from '@/redux/slices/userSlice';
 import { formatDate } from '@/utils/formatDate';
 import Link from 'next/link';
 import { ReadMore } from './ReadMore';
-// import { ReadMore } from './ReadMore';
+import defaultImage from '@/assets/images/defaultProfileImage.png';
 
 const TopNav = () => {
   const dispatch = useAppDispatch();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const { data } = useAppSelector(state => state.notifications);
+  const { profile } = useAppSelector(state => state.profile);
   const [decoded, setDecoded] = useState<DecodedInterface | null>(null);
   const notifications = data?.data;
   const currentNotifications = notifications
@@ -99,7 +100,7 @@ const TopNav = () => {
             <CiBrightnessDown className="text-4xl text-black py-1 cursor-pointer" />
           </button>
           <Image
-            src="https://via.placeholder.com/40"
+            src={profile?.data?.photoUrl || defaultImage}
             alt="Profile"
             width={40}
             height={40}

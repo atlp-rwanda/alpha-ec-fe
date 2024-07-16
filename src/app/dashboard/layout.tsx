@@ -10,11 +10,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       <div className="hidden sm:block">
         <SideNav />
       </div>
-      <div className="flex flex-col w-full bg-white">
+      <div className="flex flex-col w-full ">
         <TopNav />
-        <main className="flex-1  p-2 sm:p-8 bg-white overflow-y-auto">
-          {children}
-        </main>
+        <main className="flex-1 p-2 sm:p-8 overflow-y-auto">{children}</main>
       </div>
     </div>
   );

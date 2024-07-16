@@ -41,7 +41,7 @@ export const Button = ({
     <button
       type={'submit'}
       {...rest}
-      className={`rounded-full max-w-full min-w-52 md:w-max justify-center ${size === ButtonSize.SMALL ? 'px-2 py-1 text-sm' : 'px-3 py-2 text-md'} text-sm  flex items-center gap-2 cursor-pointer hover:scale-105 transition-transform transform lg:mt-2 mx-auto  ${
+      className={`rounded-full max-w-full min-w-52 md:w-max justify-center ${size === ButtonSize.MAX ? 'px-4 py-2 text-lg' : size === ButtonSize.SMALL ? 'px-2 py-1 text-sm' : 'px-3 py-2 text-md'} text-sm  flex items-center gap-2 cursor-pointer hover:scale-105 transition-transform transform lg:mt-2 mx-auto  ${
         style === ButtonStyle.LIGHT
           ? 'border border-main-400  font-medium text-main-400 bg-main-100 bg-transparent hover:bg-main-150 hover:border-1'
           : style === ButtonStyle.DARK

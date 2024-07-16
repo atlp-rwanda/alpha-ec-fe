@@ -35,8 +35,10 @@ const Page: React.FC = () => {
       {status === 'paid' && (
         <h1 className="text-4xl font-bold text-center my-4">Orders 👍</h1>
       )}
-
       {loading && <PageLoading />}
+      {!loading && !error && orders.length > 0 && (
+        <h1 className="text-4xl font-bold text-center my-0">Orders ��</h1>
+      )}
       {error && <h1 className="text-red-500 text-center">Error: {error}</h1>}
       {!loading && !error && orders.length === 0 && (
         <h1 className="text-center">No orders found.</h1>

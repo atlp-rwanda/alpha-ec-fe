@@ -160,6 +160,7 @@ const BestDeals: React.FC<BestDealsProps> = () => {
                 label="MORE"
                 loading={false}
                 style={ButtonStyle.LIGHT}
+                size={ButtonSize.SMALL}
                 disabled={false}
                 icon={FaCartPlus}
               />
