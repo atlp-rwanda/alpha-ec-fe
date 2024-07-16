@@ -15,6 +15,7 @@ import { addProduct } from '@/redux/slices/itemSlice';
 import { RootState } from '@/redux/store';
 import { useSelector } from 'react-redux';
 import { getCategories } from '@/redux/slices/categorySlice';
+import { ToastContainer } from 'react-toastify';
 
 export interface FormDataInterface {
   price: string;
@@ -31,6 +32,7 @@ export type ProductKeys = keyof FormDataInterface;
 const Form = () => {
   const dispatch = useAppDispatch();
   const { status, error } = useAppSelector(state => state.product);
+  const { showSuccess, showError } = useToast();
   const [files, setFiles] = useState<File[]>([]);
   const [category, setCategory] = useState<string | null>(null);
   const [expiryDate, setExpiryDate] = useState<string>('');
@@ -95,9 +97,13 @@ const Form = () => {
       images: files
     };
 
-    dispatch(addProduct(productData));
-
-    router.push('/dashboard/products');
+    await dispatch(addProduct(productData));
+    if (status === 'succeeded') {
+      showSuccess('product added sucessfully');
+      router.push('/dashboard/products');
+    } else if (status === 'failed') {
+      showError('failed to add product');
+    }
   };
 
   return (
@@ -183,7 +189,7 @@ const Form = () => {
           />
         )}
         <input
-          type="text"
+          type="date"
           placeholder="Expiry Date"
           value={expiryDate}
           onChange={e => setExpiryDate(e.target.value)}
@@ -198,6 +204,7 @@ const Form = () => {
           />
         </div>
       </form>
+      <ToastContainer />
     </div>
   );
 };
