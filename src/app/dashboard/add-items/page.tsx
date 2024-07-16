@@ -1,5 +1,4 @@
 'use client';
-
 import Image from 'next/image';
 import { useState, useEffect, FormEvent } from 'react';
 import React from 'react';
@@ -15,6 +14,7 @@ import { addProduct } from '@/redux/slices/itemSlice';
 import { RootState } from '@/redux/store';
 import { useSelector } from 'react-redux';
 import { getCategories } from '@/redux/slices/categorySlice';
+import { ToastContainer } from 'react-toastify';
 
 export interface FormDataInterface {
   price: string;
@@ -25,18 +25,16 @@ export interface FormDataInterface {
   expiryDate?: string;
   images?: File[];
 }
-
 export type ProductKeys = keyof FormDataInterface;
-
 const Form = () => {
   const dispatch = useAppDispatch();
   const { status, error } = useAppSelector(state => state.product);
+  const { showSuccess, showError } = useToast();
   const [files, setFiles] = useState<File[]>([]);
   const [category, setCategory] = useState<string | null>(null);
   const [expiryDate, setExpiryDate] = useState<string>('');
   const [errors, setErrors] = useState<ErrorInterface[]>([]);
   const router = useRouter();
-
   const InitialFormValues: FormDataInterface = {
     name: '',
     price: '',
@@ -45,28 +43,23 @@ const Form = () => {
   };
   const [formData, setFormData] =
     useState<FormDataInterface>(InitialFormValues);
-
   const { categoriesLoading, success, categoriesData } = useSelector(
     (state: RootState) => state.categories
   );
-
   useEffect(() => {
     if (categoriesData === null && !categoriesLoading && error === null) {
       dispatch(getCategories());
     }
   }, [dispatch, categoriesData, categoriesLoading, error]);
-
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const newFiles = Array.from(e.target.files);
       setFiles(prevFiles => [...prevFiles, ...newFiles]);
     }
   };
-
   const handleRemoveImage = (index: number) => {
     setFiles(prevFiles => prevFiles.filter((_, i) => i !== index));
   };
-
   const handleChange = (key: RegistrationKeys, value: string) => {
     setErrors([]);
     setFormData(prevFormData => {
@@ -74,17 +67,14 @@ const Form = () => {
       return updatedFormData;
     });
   };
-
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setErrors([]);
-
     const newErrors: ErrorInterface[] = [];
     if (newErrors.length > 0) {
       setErrors(newErrors);
       return;
     }
-
     const productData: FormDataInterface = {
       name: formData.name,
       price: formData.price,
@@ -95,9 +85,13 @@ const Form = () => {
       images: files
     };
 
-    dispatch(addProduct(productData));
-
-    router.push('/dashboard/products');
+    await dispatch(addProduct(productData));
+    if (status === 'succeeded') {
+      showSuccess('product added sucessfully');
+      router.push('/dashboard/products');
+    } else if (status === 'failed') {
+      showError('failed to add product');
+    }
   };
 
   return (
@@ -169,7 +163,6 @@ const Form = () => {
             )}
           </div>
         ))}
-
         {categoriesData && (
           <CustomSelect
             options={categoriesData?.map(
@@ -183,7 +176,7 @@ const Form = () => {
           />
         )}
         <input
-          type="text"
+          type="date"
           placeholder="Expiry Date"
           value={expiryDate}
           onChange={e => setExpiryDate(e.target.value)}
@@ -198,11 +191,9 @@ const Form = () => {
           />
         </div>
       </form>
+      <ToastContainer />
     </div>
   );
 };
 
 export default Form;
-function showSuccess(arg0: string) {
-  throw new Error('Function not implemented.');
-}
