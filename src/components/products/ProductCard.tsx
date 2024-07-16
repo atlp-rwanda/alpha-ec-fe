@@ -1,20 +1,23 @@
 'use client';
 
-import { ProductInterface } from '@/redux/slices/ProductSlice';
+import {
+  ProductInterface,
+  getProductDetails
+} from '@/redux/slices/ProductSlice';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { GetStars } from '../reviews/GetStars';
 import { FaCartPlus, FaHeart } from 'react-icons/fa';
 import { CiHeart } from 'react-icons/ci';
-import PageLoading from '../Loading/PageLoading';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks/hook';
-import { addWishlist, fetchWishes } from '@/redux/slices/wishlistSlice';
+import { addWishlist } from '@/redux/slices/wishlistSlice';
 import { FormErrorInterface } from '@/utils';
-import { addToCart, fetchCart, removeFromCart } from '@/redux/slices/cartSlice';
+import { addToCart, removeFromCart } from '@/redux/slices/cartSlice';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { getCartState, getWishlist } from '@/redux/hooks/selectors';
+import LoadingCard from '../Loading/LoadingCard';
 
 interface ProductCard {
   product: ProductInterface;
@@ -38,13 +41,10 @@ const ProductCard: React.FC<ProductCard> = ({ product, styles }) => {
 
   const handleProductClick = async () => {
     setLoading(true);
-    try {
-      await router.push(`/products/details?productId=${product.id}`);
-    } finally {
-      setLoading(false);
-    }
+
+    await router.push(`/products/details?productId=${product.id}`);
   };
-  const isInCart = cart?.produtcs?.some(
+  const isInCart = cart?.products?.some(
     (cartItem: { id: string }) => cartItem.id === product.id
   );
 
@@ -129,11 +129,11 @@ const ProductCard: React.FC<ProductCard> = ({ product, styles }) => {
     }
   };
 
-  if (loading) return <PageLoading />;
+  if (loading) return <LoadingCard />;
 
   return (
     <article
-      className={`relative w-full flex flex-col overflow-hidden ${styles} hover:shadow-md cursor-pointer bg-white rounded-xl shadow-sm min-w-52 max-w-60group`}
+      className={`relative w-full flex flex-col overflow-hidden ${styles} hover:shadow-md cursor-pointer bg-white rounded-xl shadow-sm min-w-52 max-w-60 group`}
       key={product.id}
     >
       <div className="relative w-full" onClick={handleProductClick}>

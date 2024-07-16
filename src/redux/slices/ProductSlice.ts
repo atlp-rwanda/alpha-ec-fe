@@ -2,6 +2,8 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { axiosRequest, FormErrorInterface } from '@/utils';
 import { CategoryAttributes } from './categorySlice';
+import { ReactNode } from 'react';
+import { ReviewInterface } from './itemSlice';
 
 interface sellerInterface {
   id: string;
@@ -11,7 +13,7 @@ interface sellerInterface {
 }
 
 export interface ProductInterface {
-  description: string | undefined;
+  description: ReactNode;
   id: string;
   name: string;
   slug: string;
@@ -70,6 +72,7 @@ interface ProductState {
       loading: boolean;
     };
   };
+  reviews: any;
   data: ProductDataInterface | null;
   selectedProduct: ProductDetailsInterface | null;
   loading: boolean;
@@ -77,6 +80,16 @@ interface ProductState {
   success: boolean;
   showSideNav: boolean;
   message: String;
+}
+export interface ReviewAttributes {
+  id: string;
+  productId: string;
+  userId: string;
+  rating: number;
+  feedback: string;
+  repliesCount?: number;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 interface ProductsResponse {
@@ -107,7 +120,8 @@ const initialState: ProductState = {
   error: null,
   success: false,
   showSideNav: true,
-  message: ''
+  message: '',
+  reviews: undefined
 };
 
 export const getProductDetails = createAsyncThunk(
@@ -177,7 +191,8 @@ export const getProducts = createAsyncThunk(
       const response = await axiosRequest<null, ProductsResponse>(
         'GET',
         url,
-        null
+        null,
+        true
       );
 
       return response.data.data;
@@ -190,6 +205,14 @@ export const getProducts = createAsyncThunk(
     }
   }
 );
+export const getAverage = (reviews: ReviewInterface[]): number => {
+  if (!Array.isArray(reviews) || reviews.length === 0) {
+    return 0;
+  }
+
+  const totalRatings = reviews.reduce((acc, rev) => acc + rev.rating, 0);
+  return totalRatings / reviews.length;
+};
 
 export const getProductsByCategory = createAsyncThunk(
   'products/getByCategory',
@@ -208,6 +231,28 @@ export const getProductsByCategory = createAsyncThunk(
       }
       const error = err as Error;
       return rejectWithValue({ message: error.message });
+    }
+  }
+);
+
+export const updateProductStatus = createAsyncThunk(
+  'products/updateStatus',
+  async (productId: string, { rejectWithValue }) => {
+    try {
+      const response = await axiosRequest(
+        'PATCH',
+        `/products/${productId}/status`,
+        {},
+        true
+      );
+      return response.data.data;
+    } catch (err) {
+      if (axios.isAxiosError(err) && err.response) {
+        return rejectWithValue(
+          err.response.data || 'Failed to update product status'
+        );
+      }
+      return rejectWithValue({ message: (err as Error).message });
     }
   }
 );
@@ -307,6 +352,28 @@ const productSlice = createSlice({
             state.Grouped[section].error = action.payload as FormErrorInterface;
           }
         }
+      })
+      .addCase(updateProductStatus.pending, state => {
+        state.loading = true;
+        state.error = null;
+        state.success = false;
+      })
+      .addCase(updateProductStatus.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.success = true;
+        if (state.data) {
+          state.data.products = state.data.products.map(product =>
+            product.id === action.payload.id
+              ? { ...product, status: action.payload.status }
+              : product
+          );
+        }
+      })
+      .addCase(updateProductStatus.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as FormErrorInterface;
+        state.success = false;
       });
   }
 });

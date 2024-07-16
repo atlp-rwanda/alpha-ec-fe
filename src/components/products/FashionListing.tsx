@@ -1,7 +1,10 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { getProductsByCategory } from '@/redux/slices/ProductSlice';
+import {
+  getProductDetails,
+  getProductsByCategory
+} from '@/redux/slices/ProductSlice';
 import Image from 'next/image';
 import { FaCartPlus } from 'react-icons/fa';
 import { Button, ButtonSize, ButtonStyle } from '../formElements';
@@ -13,6 +16,7 @@ import Link from 'next/link';
 import { GrFormNext } from 'react-icons/gr';
 import FashionLoading from '../Loading/FashionLoading';
 import { getCategoriesData } from '@/redux/hooks/selectors';
+import { useRouter } from 'next/navigation';
 
 export enum Section {
   BONUS = 'bonus',
@@ -37,6 +41,8 @@ const FashionListing: React.FC<FashionListingProps> = ({
   bgColor
 }) => {
   const [category, setCategory] = useState<string>('');
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   const dispatch = useAppDispatch();
 
@@ -82,6 +88,16 @@ const FashionListing: React.FC<FashionListingProps> = ({
     return <FashionLoading title={title} bgColor={bgColor} />;
   }
 
+  const handleProductClick = async (id: string) => {
+    setLoading(true);
+
+    await router.push(`/products/details?productId=${id}`);
+  };
+
+  if (loading) {
+    return <FashionLoading title={title} bgColor={bgColor} />;
+  }
+
   return (
     <div
       className={`flex flex-col justify-between  min-w-screen w-full p-2 md:p-6 bg-main-${bgColor}`}
@@ -100,6 +116,7 @@ const FashionListing: React.FC<FashionListingProps> = ({
               key={index + 200}
             >
               <div
+                onClick={() => handleProductClick(product.id)}
                 className={`overflow-hidden aspect-w-1 aspect-h-1 h-120 flex flex-col items-center justify-between relative`}
               >
                 <div className="h-4/5 relative overflow-hidden w-full flex justify-center items-center">

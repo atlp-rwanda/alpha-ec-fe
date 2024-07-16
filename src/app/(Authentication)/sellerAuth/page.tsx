@@ -7,6 +7,7 @@ import { verifyOtp, setUserToken } from '@/redux/slices/otpSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks/hook';
 import useToast from '@/components/alerts/Alerts';
 import { ToastContainer } from 'react-toastify';
+import { jwtDecode } from 'jwt-decode';
 
 export interface OtpFormDataInterface {
   otp: string;
@@ -69,9 +70,16 @@ export default function VerifyOtp() {
   useEffect(() => {
     if (success) {
       showSuccess('OTP Verified Successfully!');
+
+      if (token) {
+        const decodedToken = jwtDecode(token) as any;
+        const userRole = decodedToken.role;
+        localStorage.setItem('userRole', userRole);
+      }
+
       setTimeout(() => {
-        router.push('/dashboard');
-      }, 2000);
+        window.location.href = '/dashboard';
+      }, 2030);
     } else if (error) {
       showError(error.message || 'Verification Failed!');
     }

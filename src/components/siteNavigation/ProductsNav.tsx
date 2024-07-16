@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { PRODUCT_ICONS, TOP_MENUS } from '@/utils/siteNavigation';
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
-import { IoMenuOutline, IoSearchSharp } from 'react-icons/io5';
+import { IoMenuOutline } from 'react-icons/io5';
 import { BsCart3 } from 'react-icons/bs';
 import { Search } from '../formElements/Search';
 import { useAppDispatch } from '@/redux/hooks/hook';
@@ -23,10 +23,7 @@ import { GrClose } from 'react-icons/gr';
 import Filters from './Filter';
 import { CiHeart } from 'react-icons/ci';
 import { useAppSelector } from '@/redux/hooks/hook';
-import { fetchWishes } from '@/redux/slices/wishlistSlice';
-import { fetchCart } from '@/redux/slices/cartSlice';
 import { getCategoriesData } from '@/redux/hooks/selectors';
-import error from 'next/error';
 
 const initialCategory: CategoryAttributes = {
   id: '',
@@ -39,6 +36,7 @@ const ProductNav: FC = () => {
   const [selectedCategory, setSelectedCategory] =
     useState<CategoryAttributes>(initialCategory);
   const [showMenu, setShowMenu] = useState<boolean>(false);
+  const [detailsPage, setDetailsPage] = useState<boolean>(false);
   const [showCategories, setShowCategories] = useState<boolean>(false);
   const dispatch = useAppDispatch();
 
@@ -59,13 +57,18 @@ const ProductNav: FC = () => {
 
   useEffect(() => {
     const currentParams = new URLSearchParams(window.location.search);
+    const detailsPageParam = currentParams.has('details');
+    setDetailsPage(detailsPageParam);
+
     const categoryId = currentParams.get('categoryId');
-    if (categoriesData && categoryId && categoryId !== '') {
-      const selected = categoriesData?.find(category =>
-        category.id.toLowerCase().includes(categoryId)
+    if (categoriesData && categoryId) {
+      const selectedCategory = categoriesData.find(
+        category => category.id.toLowerCase() === categoryId.toLowerCase()
       );
 
-      selected && setSelectedCategory(selected);
+      if (selectedCategory) {
+        setSelectedCategory(selectedCategory);
+      }
     }
   }, [categoriesData]);
 
@@ -130,46 +133,18 @@ const ProductNav: FC = () => {
     <div className="w-full flex flex-col h-30 mt-0 z-50 bg-main-100 fixed top-0 left-0 text-main-100">
       <TopNav />
       <nav
-        className="w-full flex justify-between items-center py-0.5 px-4 gap-2"
+        className="w-full flex justify-between items-center py-2 md:py-2 lg:py-0.5 px-4 gap-2"
         onClick={() => {
           setShowMenu(false);
         }}
       >
-        <div
-          className="hidden uppercase min-w-60 relative text-xs font-bold cursor-pointer border px-4 py-1 text-main-400 lg:flex items-center justify-between  rounded-md"
-          onClick={() => setShowCategories(!showCategories)}
-          onMouseOver={() => setShowCategories(true)}
-          onMouseLeave={() => setShowCategories(false)}
+        <Link
+          className=" hidden text-sm font-bold cursor-pointer px-4 py-1 text-main-400 md:flex  items-center justify-between gap-4 rounded-md"
+          href="/"
         >
-          <span className="flex">
-            <IoMenuOutline />
-          </span>
-          {selectedCategory.name}
-          {showCategories ? <FaAngleUp /> : <FaAngleDown />}
+          ALPHA
+        </Link>
 
-          {showCategories && (
-            <div className="min-h-screen min-w-full z-30 absolute left-0 top-7 overflow-y-hidden">
-              <ul className="bg-main-100 border border-t-0 shadow-sm min-h-screen text-left min-w-full z-30 pt-4 rounded-b-md left-0 top-7 animate__animated animate__fadeInDown animate__faster">
-                <li
-                  onClick={() => setSelectedCategory(initialCategory)}
-                  className={`w-full p-1 px-4 border-x-transparent  ${selectedCategory === initialCategory ? 'border font-bold' : ''} hover:bg-main-200  uppercase`}
-                >
-                  All
-                </li>
-                {categoriesData &&
-                  categoriesData.map(category => (
-                    <li
-                      key={category.id}
-                      onClick={() => setSelectedCategory(category)}
-                      className={`w-full p-1 px-4 border-x-transparent  ${selectedCategory === category ? 'border font-bold' : ''} hover:bg-main-200  uppercase`}
-                    >
-                      {category.name}
-                    </li>
-                  ))}
-              </ul>
-            </div>
-          )}
-        </div>
         <Search
           loading={loading && searchData !== ''}
           onChange={e => {
@@ -184,7 +159,7 @@ const ProductNav: FC = () => {
             e.stopPropagation();
             setShowMenu(!showMenu);
           }}
-          className="flex cursor-pointer lg:hidden z-40 max-w-12 min-w-12 text-main-400 h-9 items-center justify-center bg-main-100 shadow-md border  mt-4 p-2 rounded-md"
+          className="flex cursor-pointer lg:hidden z-40 max-w-12 min-w-12 text-main-400 h-9 items-center justify-center bg-main-100 shadow-md border  p-2 rounded-md"
         >
           {!showMenu ? (
             <VscMenu size={24} className="animate__animated  animate__faster" />
@@ -202,7 +177,7 @@ const ProductNav: FC = () => {
           >
             <BsCart3 size={24} />
             <span className="absolute top-0 right-0 bg-main-400 text-sm text-main-100 font-bold p-0.5 px-1 rounded-full">
-              {cart?.produtcs?.length || 0}
+              {cart?.products?.length || 0}
             </span>
             <label className="text-xxs text-black">CART</label>
           </Link>
@@ -251,7 +226,7 @@ const ProductNav: FC = () => {
                 >
                   <BsCart3 size={24} />
                   <span className="absolute top-0 right-0 bg-main-400 text-sm text-main-100 font-bold p-0.5 px-1 rounded-full">
-                    {cart?.produtcs?.length || 0}
+                    {cart?.products?.length || 0}
                   </span>
                   <label className="text-xxs text-black">CART</label>
                 </Link>
@@ -281,54 +256,59 @@ const ProductNav: FC = () => {
                     )
                 )}
               </div>
-              <div
-                className=" uppercase min-w-60 relative text-xs font-bold cursor-pointer border px-2 py-1 text-main-400 flex items-center justify-between  rounded-md"
-                onClick={() => setShowCategories(!showCategories)}
-                onMouseOver={() => setShowCategories(true)}
-                onMouseLeave={() => setShowCategories(false)}
-              >
-                <span className="flex">
-                  <IoMenuOutline />
-                </span>
-                {selectedCategory.name}
-                {showCategories ? <FaAngleUp /> : <FaAngleDown />}
+              {
+                <>
+                  <div
+                    className=" uppercase min-w-60 relative text-xs font-bold cursor-pointer border px-2 py-1 text-main-400 flex items-center justify-between  rounded-md"
+                    onClick={() => setShowCategories(!showCategories)}
+                    onMouseOver={() => setShowCategories(true)}
+                    onMouseLeave={() => setShowCategories(false)}
+                  >
+                    <span className="flex">
+                      <IoMenuOutline />
+                    </span>
+                    {selectedCategory.name}
+                    {showCategories ? <FaAngleUp /> : <FaAngleDown />}
 
-                {showCategories && (
-                  <div className="min-h-screen min-w-full z-30 absolute left-0 top-7 overflow-y-hidden">
-                    <ul className="bg-main-150 border border-t-0 shadow-sm min-h-screen text-left min-w-full z-30 pt-4 rounded-b-md left-0 top-7 animate__animated animate__fadeInDown animate__faster">
-                      <li
-                        onClick={() => {
-                          setShowMenu(false);
-                          setSelectedCategory(initialCategory);
-                        }}
-                        className={`w-full p-1 px-4 border-x-transparent  ${selectedCategory === initialCategory ? 'border font-bold' : ''} hover:bg-main-200  uppercase`}
-                      >
-                        All
-                      </li>
-                      {categoriesData &&
-                        categoriesData.map((category, index) => (
+                    {showCategories && (
+                      <div className="min-h-screen min-w-full z-30 absolute left-0 top-7 overflow-y-hidden">
+                        <ul className="bg-main-150 border border-t-0 shadow-sm min-h-screen text-left min-w-full z-30 pt-4 rounded-b-md left-0 top-7 animate__animated animate__fadeInDown animate__faster">
                           <li
-                            key={index}
                             onClick={() => {
                               setShowMenu(false);
-                              setSelectedCategory(category);
+                              setSelectedCategory(initialCategory);
                             }}
-                            className={`w-full p-1 px-4 border-x-transparent  ${selectedCategory === category ? 'border font-bold' : ''} hover:bg-main-200  uppercase`}
+                            className={`w-full p-1 px-4 border-x-transparent  ${selectedCategory === initialCategory ? 'border font-bold' : ''} hover:bg-main-200  uppercase`}
                           >
-                            {category.name}
+                            All
                           </li>
-                        ))}
-                    </ul>
+                          {categoriesData &&
+                            categoriesData.map((category, index) => (
+                              <li
+                                key={index}
+                                onClick={() => {
+                                  setShowMenu(false);
+                                  setSelectedCategory(category);
+                                }}
+                                className={`w-full p-1 px-4 border-x-transparent  ${selectedCategory === category ? 'border font-bold' : ''} hover:bg-main-200  uppercase`}
+                              >
+                                {category.name}
+                              </li>
+                            ))}
+                        </ul>
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
-              <div className="flex flex-col w-full h-full text-main-400">
-                <Filters
-                  onClick={() => {
-                    setShowMenu(false);
-                  }}
-                />
-              </div>
+
+                  <div className="flex flex-col w-full h-full text-main-400">
+                    <Filters
+                      onClick={() => {
+                        setShowMenu(false);
+                      }}
+                    />
+                  </div>
+                </>
+              }
             </div>
           </div>
         )}

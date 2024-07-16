@@ -18,10 +18,6 @@ const Footer: FC = () => {
 
   const categoriesData = useAppSelector(getCategoriesData);
 
-  //   const handleNavigation = (url: string) => {
-  //     router.push(url);
-  //   };
-
   useEffect(() => {
     const handler = setTimeout(() => {
       if (data === null && error === null) {
@@ -35,15 +31,11 @@ const Footer: FC = () => {
   }, [data, dispatch, error]);
 
   return (
-    <div className="w-full flex flex-col h-full gap-4 self-end bottom-0 mt-4 bg-main-150 text-main-100 shadow-md border-t-main-400 border-t-1 z-50">
-      <nav className="w-full bg-main-200 flex justify-end items-center p-1 gap-2">
-        {/* <div className="border bg-main-100 h-12 w-1/2 rounded-md">
-          <input className="border bg-main-100 h-12 w-full px-2 rounded-md focus:border-main-400" />
-        </div> */}
-      </nav>
+    <div className="w-full flex flex-col h-full gap-4 self-end bottom-0 mt-4 bg-main-150 text-main-100 shadow-md border-t-main-400 border-t-1 z-30">
+      <nav className="w-full bg-main-200 flex justify-end items-center p-1 gap-2"></nav>
       <div className="w-full sm:flex-col gap-8 p-6 md:flex md:flex-row justify-center bg-main-150 min-h-60 text-main-400 sm:gap-8 sm:p-12 md:gap-16 md:p-16 lg:gap-28 lg:p-12 ">
         <div className="flex flex-col gap-3">
-          <span className="font-bold relative h-9">
+          <span className="font-bold relative h-9 z-0">
             CONTACT US
             <span className="border-b-4 w-2/5 absolute left-0 bottom-0"></span>
           </span>
@@ -59,7 +51,7 @@ const Footer: FC = () => {
             </li>
             <li className="flex items-center gap-2">
               <MdOutlineEmail />
-              alpha@gmail.com
+              alphaatlpcohort29@gmail.com
             </li>
           </ul>
         </div>

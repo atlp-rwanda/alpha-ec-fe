@@ -121,13 +121,13 @@ const LineListing: React.FC<LineListingProps> = ({
         ref={scrollContainerRef}
       >
         {GroupedProducts.loading ? (
-          <div className="w-full flex justify-start gap-4 overflow-x-auto first-line:min-w-full relative">
+          <div className="w-full flex justify-start gap-4 overflow-x-auto first-line:min-w-full relative scroll-container">
             {Array.from({ length: 10 }).map((_, index) => (
               <LoadingCard key={index} />
             ))}
           </div>
         ) : (
-          <div className="w-full flex justify-start gap-4 overflow-x-auto first-line:min-w-full relative">
+          <div className="w-full flex justify-start gap-4 overflow-x-auto first-line:min-w-full relative scroll-container">
             {products.map((product, index) => (
               <ProductCard product={product} key={index + 10} />
             ))}

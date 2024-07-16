@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
@@ -13,6 +13,11 @@ import { fetchCart } from '@/redux/slices/cartSlice';
 import { setAuthToken } from '@/redux/slices/userSlice';
 import { fetchWishes } from '@/redux/slices/wishlistSlice';
 import ProductsSideNav from '@/components/siteNavigation/ProductsSideNav';
+import NotFound from '@/components/Loading/ProductNotFound';
+import ProductNav from '@/components/siteNavigation/ProductsNav';
+import AdsListing from '@/components/products/adsListing';
+import LineLoading from '@/components/Loading/LineLoading';
+import { Section } from '@/components/products/FashionListing';
 
 export default function Home() {
   const dispatch = useAppDispatch();
@@ -54,19 +59,28 @@ export default function Home() {
     }
   }, [dispatch]);
 
-  if (loading)
+  if (data) {
     return (
-      <div className="flex justify-between gap-4 min-w-screen p-0 w-full z-0">
-        <ProductsSideNav />
-        <ProductLoading />
-      </div>
+      <>
+        <ProductNav />
+        <div className="flex justify-between gap-4 min-w-screen p-0 w-full z-0">
+          <ProductsSideNav />
+          <GridListing data={data} />
+        </div>
+        <Suspense fallback={<LineLoading title="ali express" bgColor={150} />}>
+          <AdsListing title="Aliexpress" bgColor={100} section={Section.ADS} />
+        </Suspense>
+      </>
     );
-  if (error) return <div>Error: {error.message || ''}</div>;
-  if (data)
+  } else {
     return (
-      <div className="flex justify-between gap-4 min-w-screen p-0 w-full z-0">
-        <ProductsSideNav />
-        <GridListing data={data} />
-      </div>
+      <>
+        <ProductNav />
+        <div className="flex justify-between gap-4 min-w-screen p-0 w-full z-0">
+          <ProductsSideNav />
+          <ProductLoading />
+        </div>
+      </>
     );
+  }
 }

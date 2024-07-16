@@ -1,7 +1,11 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks/hook';
-import { fetchAllUsers, disableAccount } from '@/redux/slices/disableaccount';
+import {
+  fetchAllUsers,
+  disableAccount,
+  assignRole
+} from '@/redux/slices/disableaccount';
 import Image from 'next/image';
 import unKnownImage from '@/assets/images/unknown.png';
 import useToast from '@/components/alerts/Alerts';
@@ -9,6 +13,7 @@ import { ToastContainer } from 'react-toastify';
 import Pagination from '@/components/pagination/Pagination';
 import ReasonModal from './ReasonModal';
 import ToggleSwitch from './ToggleSwitch';
+import Select, { SingleValue } from 'react-select';
 
 interface EmptyDataType {
   message: string;
@@ -23,13 +28,13 @@ const EmptyData: React.FC<EmptyDataType> = ({ message }) => {
     </div>
   );
 };
-const AccountStatus: React.FC = () => {
+const Users: React.FC = () => {
   const dispatch = useAppDispatch();
   const [toggles, setToggles] = useState<{ [key: string]: boolean }>({});
   const [filter, setFilter] = useState<'all' | 'active' | 'inactive'>('all');
   const [currentPage, setCurrentPage] = useState(1);
   const usersPerPage = 3;
-  const { users, message, success } = useAppSelector(
+  const { users, message, success, error } = useAppSelector(
     state => state.registereUsers
   );
   const [showModal, setShowModal] = useState(false);
@@ -81,6 +86,8 @@ const AccountStatus: React.FC = () => {
           ...prevToggles,
           [userId]: previousState
         }));
+      } else {
+        dispatch(fetchAllUsers());
       }
     }
   };
@@ -140,10 +147,39 @@ const AccountStatus: React.FC = () => {
   const inactiveCount =
     users?.data.filter((user: any) => user.status === false).length || 0;
   const allUsers = users?.data.length || 0;
+
+  const roleOptions = [
+    { value: 'd290f1ee-6c54-4b01-90e6-d701748f0852', label: 'Buyer' },
+    { value: 'd290f1ee-6c54-4b01-90e6-d701748f0851', label: 'Seller' },
+    { value: 'd290f1ee-6c54-4b01-90e6-d701748f0853', label: 'Admin' }
+  ];
+
+  const mapRoleIdToRole = (roleId: string) => {
+    const role = roleOptions.find(option => option.value === roleId);
+    return role ? role.label : 'Buyer';
+  };
+
+  const handleRoleChange = async (
+    userId: string,
+    option: SingleValue<{ value: string; label: string }>
+  ) => {
+    if (option) {
+      await dispatch(assignRole({ userId, roleId: option.value }));
+      if (success) {
+        showSuccess(
+          `${mapRoleIdToRole(option.value)} role assigned successfully ` ||
+            'Role assigned successfully'
+        );
+      } else if (error) {
+        showError(error || 'Assigning role failed');
+      }
+    }
+  };
+
   return (
     <>
-      <div className="sm:w-4/6 w-full sm:p-0  p-3 h-[100%] sm:h-4/6 lg:w-full md:w-full">
-        <div className="flex flex-col justify-start sm:flex-row sm:gap-3 mt-4 sm:items-baseline items-center text-xs sm:text-lg mb-4">
+      <div className=" w-full sm:p-0  p-3 h-[100%] sm:h-4/6 lg:w-full md:w-full">
+        <div className="flex flex-col justify-start sm:flex-row sm:gap-3 sm:items-baseline items-center text-xs sm:text-lg mb-4">
           <button
             onClick={() => handleFilterChange('all')}
             className={`p-3 ${filter === 'inactive' ? 'border border-main-200' : 'border border-main-200'} text-black rounded sm:h-fit sm:w-fit  flex gap-1 active:opacity-10`}
@@ -173,17 +209,18 @@ const AccountStatus: React.FC = () => {
           </button>
         </div>
         <div className="min-h-[460px]">
-          <div className="hidden sm:flex sm: flex-wrap justify-between p-5 text-black bg-main-100 rounded-lg font-medium md:flex md:flex-wrap">
+          <div className="hidden sm:flex sm: flex-wrap px-4 justify-between p-5 text-black bg-main-100 rounded-lg font-medium md:flex md:flex-wrap">
             <p className="w-1/12 text-left">Picture</p>
             <p className="w-3/12 text-left">Name/Email</p>
             <p className="w-2/12 text-left">Gender</p>
             <p className="w-2/12 text-left">Date of Birth</p>
             <p className="w-2/12 text-left">Status</p>
+            <p className="w-2/12 text-left">Role</p>
           </div>
           {currentUsers?.map((user: any) => (
             <div
               key={user.id}
-              className="sm:flex sm:justify-between sm:flex-wrap sm:text-lg text-xs items-center p-2 lg:p-5 bg-main-100 my-2 rounded-lg text-main-300 font-medium"
+              className="sm:flex sm:justify-between sm:flex-wrap sm:text-lg text-xs items-center p-2 lg:p-4 bg-main-100 my-2 rounded-lg text-main-300 font-medium"
             >
               <div className="w-full sm:w-1/12 flex justify-center sm:justify-start items-center mb-3 sm:mb-0">
                 <Image
@@ -210,10 +247,17 @@ const AccountStatus: React.FC = () => {
                   value={toggles[user.id]}
                 />
               </div>
+              <div className="sm:w-2/12 w-full flex justify-center sm:justify-start items-center mt-2 sm:mt-0">
+                <Select
+                  options={roleOptions}
+                  onChange={option => handleRoleChange(user.id, option)}
+                  placeholder={mapRoleIdToRole(user.roleId)}
+                ></Select>
+              </div>
             </div>
           ))}
         </div>
-        <div className="flex justify-center my-3 inset-x-0 ">
+        <div className="flex justify-center inset-x-0 pb-4">
           {totalPages > 1 && (
             <Pagination
               totalItems={totalItems}
@@ -235,4 +279,4 @@ const AccountStatus: React.FC = () => {
   );
 };
 
-export default AccountStatus;
+export default Users;
