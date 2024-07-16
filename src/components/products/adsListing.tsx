@@ -31,6 +31,7 @@ const AdsListing: React.FC<LineListingProps> = ({ title, bgColor }) => {
   useEffect(() => {
     const continuousScroll = () => {
       const scrollContainer = scrollContainerRef.current;
+
       if (scrollContainer && isScrolling) {
         if (
           scrollContainer.scrollLeft + scrollContainer.clientWidth >=
