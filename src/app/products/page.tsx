@@ -67,9 +67,9 @@ export default function Home() {
           <ProductsSideNav />
           <GridListing data={data} />
         </div>
-        <Suspense fallback={<LineLoading title="ali express" bgColor={150} />}>
+        {/* <Suspense fallback={<LineLoading title="ali express" bgColor={150} />}>
           <AdsListing title="Aliexpress" bgColor={100} section={Section.ADS} />
-        </Suspense>
+        </Suspense> */}
       </>
     );
   } else {

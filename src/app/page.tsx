@@ -129,9 +129,9 @@ const HomeContent = () => {
       <Suspense fallback={<FocusLoading title="Phones" bgColor={150} />}>
         <FocusListing title="Phones" bgColor={150} section={Section.PHONES} />
       </Suspense>
-      <Suspense fallback={<LineLoading title="ali express" bgColor={150} />}>
+      {/* <Suspense fallback={<LineLoading title="ali express" bgColor={150} />}>
         <AdsListing title="Aliexpress" bgColor={100} section={Section.ADS} />
-      </Suspense>
+      </Suspense> */}
       <Footer />
       <ToastContainer />
     </main>

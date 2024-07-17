@@ -196,7 +196,7 @@ const Wishlist: React.FC = () => {
                         ).toLocaleString()
                       : product.price.toLocaleString()}
                     {product.bonus && (
-                      <p className="font-thin text-sm line-through">
+                      <p className="font-thin text-xm line-through">
                         $ {product.price.toLocaleString()}
                       </p>
                     )}

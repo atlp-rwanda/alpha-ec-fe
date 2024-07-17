@@ -7,7 +7,7 @@ export interface NavigationSubmenuInterface {
   title: string;
   url: string;
   label: string;
-  access: 'all';
+  access: 'all' | 'authenticated';
 }
 
 export interface NavigationInterface {
@@ -15,7 +15,7 @@ export interface NavigationInterface {
   url: string;
   icon: IconType | null;
   label: string;
-  access: 'all';
+  access: 'all' | 'authenticated';
   subMenus: NavigationSubmenuInterface[];
 }
 
@@ -50,7 +50,7 @@ export const PRODUCT_ICONS: NavigationInterface[] = [
   {
     title: 'account',
     label: 'CHAT',
-    access: 'all',
+    access: 'authenticated',
     url: '/chat',
     icon: FaRegMessage,
     subMenus: []

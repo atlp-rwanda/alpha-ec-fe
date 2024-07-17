@@ -24,6 +24,12 @@ import Filters from './Filter';
 import { CiHeart } from 'react-icons/ci';
 import { useAppSelector } from '@/redux/hooks/hook';
 import { getCategoriesData } from '@/redux/hooks/selectors';
+import {
+  DecodedInterface,
+  updateUserRole,
+  USER_ROLE
+} from '@/redux/slices/userSlice';
+import { jwtDecode } from 'jwt-decode';
 
 const initialCategory: CategoryAttributes = {
   id: '',
@@ -45,6 +51,7 @@ const ProductNav: FC = () => {
   const { wishlist } = useAppSelector((state: RootState) => state.wishlist);
   const { wishlist2 } = useAppSelector((state: RootState) => state.wishlist);
   const { cart } = useAppSelector((state: RootState) => state.cart);
+  const [authenticated, setAuthenticated] = useState<boolean>(false);
 
   const [searchData, setSearchData] = useState<string>('');
 
@@ -55,6 +62,23 @@ const ProductNav: FC = () => {
     setSearchData(e.target.value);
   };
 
+  useEffect(() => {
+    const tokenString = localStorage.getItem('token');
+    if (tokenString) {
+      const tokenData = tokenString;
+      const decoded = tokenData
+        ? (jwtDecode(tokenData) as DecodedInterface)
+        : null;
+
+      if (decoded) {
+        setAuthenticated(true);
+      }
+
+      if (decoded && decoded.role === USER_ROLE.SELLER) {
+        dispatch(updateUserRole(USER_ROLE.SELLER));
+      }
+    }
+  }, [dispatch]);
   useEffect(() => {
     const currentParams = new URLSearchParams(window.location.search);
     const detailsPageParam = currentParams.has('details');
@@ -191,19 +215,22 @@ const ProductNav: FC = () => {
             </span>
             <label className="text-xxs text-black">WISHLIST</label>
           </Link>
-          {PRODUCT_ICONS.map(
-            (item, index) =>
-              item.access === 'all' && (
+          {PRODUCT_ICONS.map((item, index) => {
+            if (item.access === 'authenticated' && !authenticated) {
+              return <></>;
+            } else {
+              return (
                 <Link
                   href={item.url}
-                  key={index}
+                  key={index + 10}
                   className="flex flex-col items-center justify-center cursor-pointer p-1 text-main-400"
                 >
                   {item.icon && <item.icon size={24} />}
                   <label className="text-xxs text-black">{item.label}</label>
                 </Link>
-              )
-          )}
+              );
+            }
+          })}
         </div>
         {showMenu === true && (
           <div

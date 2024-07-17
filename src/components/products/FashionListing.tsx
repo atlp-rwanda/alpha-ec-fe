@@ -142,14 +142,15 @@ const FashionListing: React.FC<FashionListingProps> = ({
                   <span className="font-black text-lg text-main-400 flex items-center gap-2">
                     ${' '}
                     {product.bonus
-                      ? (
-                          product.price -
-                          (product.price * parseInt(product.bonus)) / 100
-                        ).toLocaleString()
+                      ? product.price.toLocaleString()
                       : product.price.toLocaleString()}
                     {product.bonus && (
-                      <p className="font-thin text-sm line-through">
-                        $ {product.price.toLocaleString()}
+                      <p className="font-thin text-xm line-through">
+                        $
+                        {(
+                          (product.price / (100 - parseInt(product.bonus))) *
+                          100
+                        ).toLocaleString()}
                       </p>
                     )}
                   </span>

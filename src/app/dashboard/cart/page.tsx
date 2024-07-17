@@ -133,7 +133,18 @@ const Cart: React.FC = () => {
                     {product.name}
                   </div>
                   <span className="font-black text-lg text-main-400 flex items-center gap-2">
-                    ${product.price.toLocaleString()}
+                    ${' '}
+                    {product.bonus
+                      ? (
+                          product.price -
+                          (product.price * parseInt(product.bonus)) / 100
+                        ).toLocaleString()
+                      : product.price.toLocaleString()}
+                    {product.bonus && (
+                      <p className="font-thin text-xs line-through">
+                        $ {product.price.toLocaleString()}
+                      </p>
+                    )}
                   </span>
                 </div>
                 <div className="flex flex-col items-center justify-between w-[120px] gap-1 ">

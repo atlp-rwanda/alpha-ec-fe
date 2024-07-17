@@ -113,7 +113,9 @@ The project uses:
 
 👤 **Rwema Remy**
 
-- GitHub: [@RWEMAREMY](https://github.com/RWEMAREMY)
+- GitHub: [@rwemaremy](https://github.com/RWEMAREMY)
+- LinkedIn: [@rwemaremy](www.linkedin.com/in/rwema-remy)
+- E-mail: <a href="rwemaremy21@gmail.com">rwemaremy21@gmail.com</a>
 
 👤 **Manzi David**
 
@@ -127,7 +129,9 @@ The project uses:
 
 👤 **Irasubiza Elyse**
 
-- GitHub: [@IrasubizaElyse]
+- E-mail: <a href="mailto:h.irasubiza@gmail.com">h.irasubiza@gmail.com</a>
+- Github: [@](https://github.com/IRASUBIZA-Elyse)
+- Linkedin: [@](https://www.linkedin.com/in/irasubiza-elyse-096865242)
 
 👤 **Mukunzi Ndahiro James**
 
@@ -142,6 +146,8 @@ The project uses:
 👤 **Izibyose Musabe Honore**
 
 - GitHub: [@musabehonore](https://github.com/musabehonore)
+- LinkedIn: [@MusabeHonore](https://www.linkedin.com/in/musabe-honore-87983526a/)
+- E-mail: <a href="mailto:musabehonore@gmail.com">musabehonore@gmail.com</a>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

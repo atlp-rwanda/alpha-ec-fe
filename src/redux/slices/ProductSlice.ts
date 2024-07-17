@@ -263,6 +263,9 @@ const productSlice = createSlice({
   reducers: {
     showSideNav(state, action) {
       state.showSideNav = action.payload;
+    },
+    resetSelectedProduct(state) {
+      state.selectedProduct = null;
     }
   },
   extraReducers: builder => {
@@ -379,4 +382,4 @@ const productSlice = createSlice({
 });
 
 export default productSlice.reducer;
-export const { showSideNav } = productSlice.actions;
+export const { showSideNav, resetSelectedProduct } = productSlice.actions;
