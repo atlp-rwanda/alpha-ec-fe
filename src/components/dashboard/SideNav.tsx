@@ -170,7 +170,7 @@ const SideNav: React.FC<SideNavProps1> = ({ className }) => {
           )}
           {loggedInRole === 'seller' && (
             <>
-              <SidebarButton paths={[]}>
+              <SidebarButton paths={['/dashboard/statistics']}>
                 <FcStatistics className="text-xl" />
                 <p className="text-nowrap">Statistics</p>
               </SidebarButton>
