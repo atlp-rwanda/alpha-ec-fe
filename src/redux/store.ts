@@ -19,6 +19,7 @@ import updateprofilereducer from './slices/updateproductSlice';
 import notificationsReducer from './slices/notificationSlice';
 import updateorderstatusreducer from './slices/updateorderstatusSlice';
 import adsReducer from './slices/adsSlice';
+import statsReducer from './slices/stasticsSlice';
 
 export const rootReducer = combineReducers({
   otp: otpReducer,
@@ -41,7 +42,8 @@ export const rootReducer = combineReducers({
   updateproduct: updateprofilereducer,
   notifications: notificationsReducer,
   updateorderstatus: updateorderstatusreducer,
-  ads: adsReducer
+  ads: adsReducer,
+  stats: statsReducer
 });
 
 export const store = configureStore({
