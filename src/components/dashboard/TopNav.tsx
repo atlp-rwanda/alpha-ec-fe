@@ -18,6 +18,7 @@ import { formatDate } from '@/utils/formatDate';
 import Link from 'next/link';
 import { ReadMore } from './ReadMore';
 import defaultImage from '@/assets/images/defaultProfileImage.png';
+import SideNav from './SideNav';
 
 const TopNav = () => {
   const dispatch = useAppDispatch();
@@ -77,14 +78,7 @@ const TopNav = () => {
             className="text-2xl text-[#32475C] sm:hidden lg:hidden xl:hidden cursor-pointer"
             onClick={toggleSidebar}
           />
-          <FiSearch className="text-2xl text-[#32475C]" />
-          <div className="w-full h-full">
-            <input
-              className="w-full h-full focus:outline-none"
-              type="text"
-              placeholder="Search"
-            />
-          </div>
+          <div className="w-full h-full"></div>
         </div>
         <div className="flex items-center space-x-4">
           <button
@@ -95,9 +89,6 @@ const TopNav = () => {
             <p className="text-xs font-extrabold absolute transform translate-y-[-15px] translate-x-[25px]">
               {numberOfUnreadNotifications}
             </p>
-          </button>
-          <button className="text-lg cursor-pointer relative">
-            <CiBrightnessDown className="text-4xl text-black py-1 cursor-pointer" />
           </button>
           <Image
             src={profile?.data?.photoUrl || defaultImage}
@@ -183,6 +174,7 @@ const TopNav = () => {
           />
         </>
       )}
+      <div className="w-[430px]">{isSidebarOpen && <SideNav />}</div>
     </div>
   );
 };

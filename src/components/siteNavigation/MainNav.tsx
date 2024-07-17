@@ -13,17 +13,42 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks/hook';
 import { RootState } from '@/redux/store';
 import { GrClose } from 'react-icons/gr';
 import { VscMenu } from 'react-icons/vsc';
+import {
+  DecodedInterface,
+  updateUserRole,
+  USER_ROLE
+} from '@/redux/slices/userSlice';
+import { jwtDecode } from 'jwt-decode';
 
 const MainNav: FC = () => {
   const [showMenu, setShowMenu] = useState<boolean>(false);
   const router = useRouter();
   const [currentPath, setCurrentPath] = useState<string>('');
+  const [authenticated, setAuthenticated] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
       setCurrentPath(window.location.pathname);
     }
   }, []);
+  useEffect(() => {
+    const tokenString = localStorage.getItem('token');
+    if (tokenString) {
+      const tokenData = tokenString;
+      const decoded = tokenData
+        ? (jwtDecode(tokenData) as DecodedInterface)
+        : null;
+
+      if (decoded) {
+        setAuthenticated(true);
+      }
+
+      if (decoded && decoded.role === USER_ROLE.SELLER) {
+        dispatch(updateUserRole(USER_ROLE.SELLER));
+      }
+    }
+  }, [dispatch]);
 
   const [pageLoading, setPageLoading] = useState<boolean>(false);
 
@@ -113,9 +138,11 @@ const MainNav: FC = () => {
             </span>
             <label className="text-xxs text-black">WISHLIST</label>
           </Link>
-          {PRODUCT_ICONS.map(
-            (item, index) =>
-              item.access === 'all' && (
+          {PRODUCT_ICONS.map((item, index) => {
+            if (item.access === 'authenticated' && !authenticated) {
+              return <></>;
+            } else {
+              return (
                 <Link
                   href={item.url}
                   key={index + 10}
@@ -124,8 +151,9 @@ const MainNav: FC = () => {
                   {item.icon && <item.icon size={24} />}
                   <label className="text-xxs text-black">{item.label}</label>
                 </Link>
-              )
-          )}
+              );
+            }
+          })}
         </div>
         {showMenu === true && (
           <div

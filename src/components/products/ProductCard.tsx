@@ -2,7 +2,8 @@
 
 import {
   ProductInterface,
-  getProductDetails
+  getProductDetails,
+  resetSelectedProduct
 } from '@/redux/slices/ProductSlice';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -41,7 +42,7 @@ const ProductCard: React.FC<ProductCard> = ({ product, styles }) => {
 
   const handleProductClick = async () => {
     setLoading(true);
-
+    dispatch(resetSelectedProduct());
     await router.push(`/products/details?productId=${product.id}`);
   };
   const isInCart = cart?.products?.some(

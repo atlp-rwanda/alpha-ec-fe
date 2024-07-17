@@ -86,9 +86,7 @@ export const addProduct = createAsyncThunk<Product, Product>(
         }
       });
 
-      const response = await axiosInstance.post('/products', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-      });
+      const response = await axiosRequest('POST', '/products', formData, true);
 
       return response.data as Product;
     } catch (error: any) {

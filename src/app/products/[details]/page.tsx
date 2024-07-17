@@ -712,7 +712,7 @@ const Details = () => {
               </div>
             </div>
           </div>
-          <Suspense
+          {/* <Suspense
             fallback={<LineLoading title="ali express" bgColor={150} />}
           >
             <AdsListing
@@ -720,7 +720,7 @@ const Details = () => {
               bgColor={100}
               section={Section.ADS}
             />
-          </Suspense>
+          </Suspense> */}
         </>
       ) : (
         <PageLoading />

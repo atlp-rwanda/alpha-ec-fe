@@ -1,5 +1,4 @@
 'use client';
-
 import Image from 'next/image';
 import { useState, useEffect, FormEvent } from 'react';
 import React from 'react';
@@ -26,9 +25,7 @@ export interface FormDataInterface {
   expiryDate?: string;
   images?: File[];
 }
-
 export type ProductKeys = keyof FormDataInterface;
-
 const Form = () => {
   const dispatch = useAppDispatch();
   const { status, error } = useAppSelector(state => state.product);
@@ -38,7 +35,6 @@ const Form = () => {
   const [expiryDate, setExpiryDate] = useState<string>('');
   const [errors, setErrors] = useState<ErrorInterface[]>([]);
   const router = useRouter();
-
   const InitialFormValues: FormDataInterface = {
     name: '',
     price: '',
@@ -47,28 +43,23 @@ const Form = () => {
   };
   const [formData, setFormData] =
     useState<FormDataInterface>(InitialFormValues);
-
   const { categoriesLoading, success, categoriesData } = useSelector(
     (state: RootState) => state.categories
   );
-
   useEffect(() => {
     if (categoriesData === null && !categoriesLoading && error === null) {
       dispatch(getCategories());
     }
   }, [dispatch, categoriesData, categoriesLoading, error]);
-
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const newFiles = Array.from(e.target.files);
       setFiles(prevFiles => [...prevFiles, ...newFiles]);
     }
   };
-
   const handleRemoveImage = (index: number) => {
     setFiles(prevFiles => prevFiles.filter((_, i) => i !== index));
   };
-
   const handleChange = (key: RegistrationKeys, value: string) => {
     setErrors([]);
     setFormData(prevFormData => {
@@ -76,17 +67,14 @@ const Form = () => {
       return updatedFormData;
     });
   };
-
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setErrors([]);
-
     const newErrors: ErrorInterface[] = [];
     if (newErrors.length > 0) {
       setErrors(newErrors);
       return;
     }
-
     const productData: FormDataInterface = {
       name: formData.name,
       price: formData.price,
@@ -155,7 +143,7 @@ const Form = () => {
       >
         {ProductFields.map((field, i) => (
           <div
-            className="w-full mt-2 flex flex-col gap-1 animate__animated animate__fadeInDown"
+            className="w-full mt-2 flex flex-col gap-1 animate_animated animate_fadeInDown"
             key={i}
           >
             <Input
@@ -169,13 +157,12 @@ const Form = () => {
               valid={getErrorForField(errors, field.key) ? false : true}
             />
             {getErrorForField(errors, field.key) && (
-              <span className="text-xs text-red-600 px-2 animate__animated animate__fadeInDown">
+              <span className="text-xs text-red-600 px-2 animate_animated animate_fadeInDown">
                 {getErrorForField(errors, field.key)}
               </span>
             )}
           </div>
         ))}
-
         {categoriesData && (
           <CustomSelect
             options={categoriesData?.map(
@@ -210,6 +197,3 @@ const Form = () => {
 };
 
 export default Form;
-function showSuccess(arg0: string) {
-  throw new Error('Function not implemented.');
-}

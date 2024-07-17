@@ -9,9 +9,10 @@ export interface cartFormData {
 export interface ProductsInCart {
   id: string;
   name: string;
-  price: string;
+  price: number;
   quantity: string;
   images: string[];
+  bonus: string;
 }
 
 export interface cartDataResponse {
