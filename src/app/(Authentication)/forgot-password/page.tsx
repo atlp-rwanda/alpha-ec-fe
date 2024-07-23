@@ -46,7 +46,7 @@ export default function ForgotPassword() {
             type="text"
             value={email}
             onChange={e => setEmail(e.target.value)}
-            valid={false}
+            valid={true}
           />
           <Button
             label="Send"
